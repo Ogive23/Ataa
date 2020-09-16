@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "45168288106",
+    "firebase_url": "https://feedme-ee76c.firebaseio.com",
+    "project_id": "feedme-ee76c",
+    "storage_bucket": "feedme-ee76c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:45168288106:android:11db37f00dcb398ac0c513",
+        "android_client_info": {
+          "package_name": "com.ogive.feedme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "45168288106-o5oriko28d1v3jskkhofeid80p09h0ea.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_27yJ1gltrQKhmc3BT-wEwv_cL97Nads"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "45168288106-o5oriko28d1v3jskkhofeid80p09h0ea.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
