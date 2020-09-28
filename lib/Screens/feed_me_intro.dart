@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:feedme/Session/session_manager.dart';
+import 'package:feedme/Themes/app_language.dart';
 import 'package:feedme/Themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,8 +8,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class FeedMeIntro extends StatelessWidget {
   final AppTheme appTheme;
+  final AppLanguage appLanguage;
   final SessionManager sessionManager = new SessionManager();
-  FeedMeIntro(this.appTheme);
+  FeedMeIntro(this.appTheme, this.appLanguage);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,9 +25,7 @@ class FeedMeIntro extends StatelessWidget {
           backgroundColor: appTheme.themeData.backgroundColor,
           elevation: 10,
           splashColor: Colors.blue,
-          tooltip: sessionManager.loadPreferredLanguage() == 'En'
-              ? 'Info'
-              : 'معلومات',
+          tooltip: appLanguage.words['FeedMeIntroInfo'],
           heroTag: "info",
         ),
         body: Container(
@@ -156,16 +156,9 @@ class FeedMeIntro extends StatelessWidget {
                                     filter: ImageFilter.blur(
                                         sigmaX: 1.5, sigmaY: 1.5),
                                     child: Text(
-                                      sessionManager.loadPreferredLanguage() ==
-                                              'En'
-                                          ? 'Achievement Center\nComing Soon!'
-                                          : 'قريباً إن شاء الله.',
+                                      appLanguage.words['FeedMeIntroAchievementCenter'],
                                       textAlign: TextAlign.center,
-                                      textDirection: sessionManager
-                                                  .loadPreferredLanguage() ==
-                                              'En'
-                                          ? TextDirection.ltr
-                                          : TextDirection.rtl,
+                                      textDirection: appLanguage.textDirection,
                                       style: TextStyle(
                                           color: Colors.amber[100],
                                           fontSize: 24.0),
@@ -194,9 +187,7 @@ class FeedMeIntro extends StatelessWidget {
                           color: appTheme.themeData.backgroundColor,
                         ),
                         label: Text(
-                          sessionManager.loadPreferredLanguage() == 'En'
-                              ? 'Share your food'
-                              : 'شارك طعامك',
+                          appLanguage.words['FeedMeIntroFirstButton'],
                           style: GoogleFonts.aBeeZee(
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
@@ -222,9 +213,7 @@ class FeedMeIntro extends StatelessWidget {
                           color: Colors.redAccent,
                         ),
                         label: Text(
-                            sessionManager.loadPreferredLanguage() == 'En'
-                                ? 'Volunteer'
-                                : 'تطوع',
+                            appLanguage.words['FeedMeIntroSecondButton'],
                             style: GoogleFonts.aBeeZee(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w600,
@@ -237,14 +226,9 @@ class FeedMeIntro extends StatelessWidget {
                   height: 30,
                 ),
                 Text(
-                    sessionManager.loadPreferredLanguage() == 'En'
-                        ? 'Thank you for making the world a better place 😀'
-                        : 'شكراً لجعلك من العالم مكاناً أفضل 😀',
+                    appLanguage.words['FeedMeIntroWord'],
                     textAlign: TextAlign.center,
-                    textDirection:
-                        sessionManager.loadPreferredLanguage() == 'En'
-                            ? TextDirection.ltr
-                            : TextDirection.rtl,
+                    textDirection: appLanguage.textDirection,
                     style: GoogleFonts.aBeeZee(
                         fontSize: 25,
                         fontWeight: FontWeight.w600,

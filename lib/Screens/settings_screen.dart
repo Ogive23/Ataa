@@ -13,7 +13,7 @@ class SettingsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          appLanguage.language == 'En' ? 'Settings' : 'الإعدادت',
+          appLanguage.words['SettingsTitle'],
           style: appTheme.themeData.textTheme.title,
         ),
         backgroundColor: appTheme.themeData.appBarTheme.color,
@@ -55,7 +55,7 @@ class SettingsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: appLanguage.language == 'En'
                     ? <Widget>[
-                        Text('Dark Mode',
+                        Text(appLanguage.words['SettingsDarkMode'],
                             style: appTheme.themeData.textTheme.body1),
                         Switch(
                           value: appTheme.isDark,
@@ -75,7 +75,7 @@ class SettingsScreen extends StatelessWidget {
                             appTheme.changeTheme(value);
                           },
                         ),
-                        Text('الوضع المظلم',
+                        Text(appLanguage.words['SettingsDarkMode'],
                             style: appTheme.themeData.textTheme.body1),
                       ],
               ),
@@ -83,7 +83,7 @@ class SettingsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: appLanguage.language == 'En'
                     ? <Widget>[
-                        Text('Language',
+                        Text(appLanguage.words['SettingsLanguage'],
                             style: appTheme.themeData.textTheme.body1),
                         DropdownButton(
                             items: [
@@ -137,7 +137,7 @@ class SettingsScreen extends StatelessWidget {
                               sessionManager.createPreferredLanguage(value);
                               appLanguage.changeLanguage(value);
                             }),
-                        Text('اللغة',
+                        Text(appLanguage.words['SettingsLanguage'],
                             style: appTheme.themeData.textTheme.body1),
                       ],
               )

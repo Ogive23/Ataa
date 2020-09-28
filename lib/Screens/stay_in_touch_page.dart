@@ -18,7 +18,7 @@ class StayInTouchPage extends StatelessWidget {
         centerTitle: true,
         backgroundColor: appTheme.themeData.appBarTheme.color,
         title: Text(
-          appLanguage.language=='En'?'Our Society':'مجتمعنا',
+          appLanguage.words['StayInTouchTitle'],
           style: appTheme.themeData.textTheme.title,
         ),
       ),
@@ -55,8 +55,8 @@ class StayInTouchPage extends StatelessWidget {
               card(
                   appTheme.themeData.cardTheme.color,
                   appTheme.themeData.textTheme.body2,
-                  appLanguage.language=='En'?'Facebook':'فيسبوك',
-                  appLanguage.language=='En'?'Visit our facebook Page.':'زوروا صفحتنا.',
+                  appLanguage.words['StayInTouchFacebookTitle'],
+                  appLanguage.words['StayInTouchFacebookSubtitle'],
                   'https://www.facebook.com/ogive23/',
                   FontAwesomeIcons.facebook,
                   Colors.blue,
@@ -69,8 +69,8 @@ class StayInTouchPage extends StatelessWidget {
               card(
                   appTheme.themeData.cardTheme.color,
                   appTheme.themeData.textTheme.body2,
-                  appLanguage.language=='En'?'Instagram':'إنستجرام',
-                  appLanguage.language=='En'?'Visit our Instagram Account.':'زوروا حسابنا علي إنستجرام.',
+                  appLanguage.words['StayInTouchInstagramTitle'],
+                  appLanguage.words['StayInTouchInstagramSubtitle'],
                   'https://www.instagram.com/mahmoued.martin/',
                   FontAwesomeIcons.instagram,
                   Colors.black,
@@ -83,8 +83,8 @@ class StayInTouchPage extends StatelessWidget {
               card(
                   appTheme.themeData.cardTheme.color,
                   appTheme.themeData.textTheme.body2,
-                  appLanguage.language=='En'?'Youtube':'يوتيوب',
-                  appLanguage.language=='En'?'Visit our youtube channel.':'زوروا قناتنا علي يوتيوب.',
+                  appLanguage.words['StayInTouchYoutubeTitle'],
+                  appLanguage.words['StayInTouchYoutubeSubtitle'],
                   'https://www.youtube.com/channel/UCedueKqOIz38zog0alc7_eg',
                   FontAwesomeIcons.youtube,
                   Colors.red,
@@ -97,8 +97,8 @@ class StayInTouchPage extends StatelessWidget {
               card(
                   appTheme.themeData.cardTheme.color,
                   appTheme.themeData.textTheme.body2,
-                  appLanguage.language=='En'?'Twitter':'تويتر',
-                  appLanguage.language=='En'?'Find us on twitter.':'زورونا علي تويتر.',
+                  appLanguage.words['StayInTouchTwitterTitle'],
+                  appLanguage.words['StayInTouchTwitterSubtitle'],
                   'https://twitter.com/MahmouedMartin2',
                   FontAwesomeIcons.twitter,
                   Colors.blue,

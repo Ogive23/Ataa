@@ -6,6 +6,7 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'Screens/feed_me_intro.dart';
 import 'Screens/feed_me_main.dart';
 import 'Screens/feed_me_marker_creation.dart';
@@ -40,6 +41,7 @@ class WhiteOrBlackMain extends StatelessWidget {
   final FirebaseAnalytics analytics = FirebaseAnalytics();
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     return MaterialApp(
       title: 'FeedMe',
       debugShowCheckedModeBanner: false,

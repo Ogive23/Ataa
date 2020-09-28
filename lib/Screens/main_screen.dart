@@ -95,7 +95,6 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
   void _navigateToItemDetail(Map<String, dynamic> message) {
-    // Clear away dialogs
     Navigator.popUntil(context, (Route<dynamic> route) => route is PageRoute);
     Navigator.pushNamed(context, "MainScreen");
   }

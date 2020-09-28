@@ -13,7 +13,7 @@ class HomeScreen extends StatelessWidget {
     return GestureDetector(
         onTap: () {
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => FeedMeIntro(appTheme)));
+          MaterialPageRoute(builder: (context) => FeedMeIntro(appTheme,appLanguage)));
     },
     child: Container(
         height: MediaQuery.of(context).size.height,
@@ -42,7 +42,7 @@ class HomeScreen extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.center,
                   child: Text(
-                    appLanguage.language == 'En' ? 'Feed Me' : 'إطعام',
+                    appLanguage.words['HomeTitle'],
                     style: TextStyle(
                       color: Colors.pink[500],
                       fontSize: 70,
@@ -69,9 +69,7 @@ class HomeScreen extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    appLanguage.language == 'En'
-                        ? 'Feed Me is a program that helps you to save people from starving by sharing your food with them.'
-                        : 'إطعام هو برنامج يساعد في إنقاذ البشر من التضور جوعاً عن طريق مشاركة الطعام.',
+                    appLanguage.words['HomeBody'],
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -84,7 +82,7 @@ class HomeScreen extends StatelessWidget {
               ),
               Padding(
                   padding: EdgeInsets.only(top: 10),
-                  child: Text(appLanguage.language=='En'?'Click to Proceed':'أضغط للدخول')),
+                  child: Text(appLanguage.words['HomeSubtitle'],)),
             ],
           ),
         ));
