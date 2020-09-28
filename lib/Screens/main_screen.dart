@@ -10,15 +10,6 @@ import 'settings_screen.dart';
 import 'stay_in_touch_page.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
-  if (message.containsKey('data')) {
-    // Handle data message
-    final dynamic data = message['data'];
-  }
-  if (message.containsKey('notification')) {
-    // Handle notification message
-    final dynamic notification = message['notification'];
-  }
-  // Or do other work.
 }
 class MainScreen extends StatefulWidget {
   @override
@@ -29,7 +20,7 @@ class _MainScreenState extends State<MainScreen> {
   int selectedIndex = 1;
   final pageOption = [StayInTouchPage(), HomeScreen(), SettingsScreen()];
   BannerAd bannerAd;
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  final FirebaseMessaging firebaseMessaging = FirebaseMessaging();
 
   void loadBannerAd() {
     bannerAd
@@ -48,53 +39,21 @@ class _MainScreenState extends State<MainScreen> {
     initNotification();
   }
   initNotification(){
-    _firebaseMessaging.configure(
+    firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-        _showItemDialog(message);
+        //Do Nothing
       },
       onBackgroundMessage: myBackgroundMessageHandler,
       onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
-        _navigateToItemDetail(message);
+        navigateToHome(message);
       },
       onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
-        _navigateToItemDetail(message);
+        navigateToHome(message);
       },
     );
   }
 
-  Widget _buildDialog(BuildContext context) {
-    return AlertDialog(
-      content: Text("Item has been updated"),
-      actions: <Widget>[
-        FlatButton(
-          child: const Text('CLOSE'),
-          onPressed: () {
-            Navigator.pop(context, false);
-          },
-        ),
-        FlatButton(
-          child: const Text('SHOW'),
-          onPressed: () {
-            Navigator.pop(context, true);
-          },
-        ),
-      ],
-    );
-  }
-  void _showItemDialog(Map<String, dynamic> message) {
-    showDialog<bool>(
-      context: context,
-      builder: (_) => _buildDialog(context),
-    ).then((bool shouldNavigate) {
-      if (shouldNavigate == true) {
-        _navigateToItemDetail(message);
-      }
-    });
-  }
-  void _navigateToItemDetail(Map<String, dynamic> message) {
+  void navigateToHome(Map<String, dynamic> message) {
     Navigator.popUntil(context, (Route<dynamic> route) => route is PageRoute);
     Navigator.pushNamed(context, "MainScreen");
   }
