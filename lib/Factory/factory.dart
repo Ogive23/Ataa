@@ -29,9 +29,9 @@ class Factory {
 //      icon: markerOption.getIcon(),
         icon: getMarkerColor(marker.get('priority').toString()),
         infoWindow: InfoWindow(
-            title: marker.get('name'),
+            title: marker.get('type'),
             snippet: marker.get('description') +
-                ' \nQuantity = ${marker.get('quantity')}'),
+                ' \nQuantity = ${double.parse(marker.get('quantity').toString()).toInt()} bags'),
       ));
     });
     return returnedMarkers;

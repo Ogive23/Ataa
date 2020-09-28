@@ -232,7 +232,39 @@ class _FeedMeState extends State<FeedMe> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: true,
+        appBar: AppBar(title: Text('Volunteering'),actions: <Widget>[IconButton(
+          icon: Icon(Icons.info, color: Colors.white, size: 30),
+          onPressed: () {
+            return showDialog<void>(
+              context: context,
+              barrierDismissible: true,
+              // false = user must tap button, true = tap outside dialog
+              builder: (BuildContext dialogContext) {
+                return AlertDialog(
+                  title: Text('Priorities'),
+                  content: SingleChildScrollView(child: Column(
+                    children: <Widget>[
+                      Text('Green : Means it won\'t get rotten.\n',style: TextStyle(color: Colors.green),),
+                      Text('Blue : Means it can waits for about 5 Days before it gets rotten.\n',style: TextStyle(color: Colors.blue),),
+                      Text('Azure : Means it can waits for about 3 Days before it gets rotten.\n',style: TextStyle(color: Colors.blueAccent),),
+                      Text('Orange : Means it can waits for about 24 hours before it gets rotten.\n',style: TextStyle(color: Colors.orange),),
+                      Text('Red : Means it must be taken immediately & can\'t really waits for 3 hours.\n',style: TextStyle(color: Colors.red),),
+                    ],
+                  ),),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('I Got it'),
+                      onPressed: () {
+                        Navigator.of(dialogContext)
+                            .pop(); // Dismiss alert dialog
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+        )],),
         body: Stack(
           children: <Widget>[
             Container(

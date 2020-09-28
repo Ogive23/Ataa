@@ -1,10 +1,11 @@
 import 'package:feedme/API_Callers/marker_api_caller.dart';
+import 'package:feedme/Custom_Widgets/text.dart';
+import 'package:feedme/Custom_Widgets/text_field.dart';
 import 'package:feedme/Models/user_location.dart';
-import 'package:feedme/Session/session_manager.dart';
-import 'package:feedme/Themes/app_theme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:numberpicker/numberpicker.dart';
-import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 
 class MarkerCreation extends StatefulWidget {
@@ -17,161 +18,194 @@ class _MarkerCreationState extends State<MarkerCreation> {
   TextEditingController description = new TextEditingController();
   NumberPicker integerNumberPicker;
   List<DropdownMenuItem<int>> dropDownMenuItems;
-  int quantity = 1;
+  double quantity = 1.0;
   int priority = 1;
-  List<int> priorities;
+  List<int> priorities = [1, 3, 5, 7, 10];
+  List<bool> chosenPriority = [true] + List.filled(4, false);
+  String type = 'Food';
+  List<String> types = ['Food', 'Drink', 'Both of them'];
+  List<bool> chosenType = [true] + List.filled(2, false);
   @override
   void initState() {
     super.initState();
-    priorities = [1, 3, 5, 7, 10];
-    dropDownMenuItems = buildDropDownMenuItems(priorities);
-    initializeNumberPickers();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-        child: Container(
-      padding: EdgeInsets.only(right: 20, left: 20),
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-        colors: [Colors.greenAccent, Colors.yellowAccent],
-      )),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Align(
-              alignment: Alignment.topRight,
-              child: Icon(
-                Icons.info,
-                color: Colors.blue,
-                size: 40,
-              )),
-          SizedBox(
-            height: 20,
-          ),
-          TextField(
-            controller: name,
-            decoration: InputDecoration(
-              labelText: 'name',
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          TextField(
-            controller: description,
-            decoration: InputDecoration(
-              labelText: 'describe it',
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Text('Quantity: $quantity'),
-          SizedBox(
-            height: 10,
-          ),
-          RaisedButton.icon(
-              onPressed: showIntDialog,
-              icon: Icon(Icons.touch_app),
-              label: Text('Change Quantity')),
-          SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Priority: '),
-              DropdownButton(
-                value: priority,
-                items: dropDownMenuItems,
-                onChanged: onChangedDropdownItem,
-                icon: Icon(Icons.arrow_drop_down),
-                hint: Text('Select Priority'),
-              )
-            ],
-          ),
-          SizedBox(
-            height: 40,
-          ),
-          RaisedButton(
-            child: Text('Create Marker'),
-            onPressed: () async {
-              UserLocation userLocation = new UserLocation();
-              if (userLocation.getLatLng() == null)
-                await userLocation.getUserLocation();
-              MarkerApiCaller markerApiCaller = new MarkerApiCaller();
-              markerApiCaller.initialize();
-              bool status = await markerApiCaller.create(
-                  userLocation.getLatLng().latitude,
-                  userLocation.getLatLng().longitude,
-                  name.value.text,
-                  description.value.text,
-                  quantity,
-                  priority);
-              if (status) {
-                Toast.show('Thank You!', context, duration: 7);
-                Navigator.pop(context);
-              } else {
-                Toast.show('Please fill all the required Data', context);
-              }
-            },
-          )
-        ],
-      ),
-    ));
-  }
-
-  void initializeNumberPickers() {
-    integerNumberPicker = new NumberPicker.horizontal(
-      initialValue: quantity,
-      minValue: 1,
-      maxValue: 10,
-      step: 1,
-      onChanged: (value) => setState(() => quantity = value),
-    );
-  }
-
-  Future showIntDialog() async {
-    await showDialog<int>(
-      context: context,
-      builder: (BuildContext context) {
-        return new Theme(
-            data: ThemeData.dark(),
-            child: NumberPickerDialog.integer(
-                minValue: 1,
-                maxValue: 10,
-                step: 1,
-                initialIntegerValue: quantity,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                )));
-      },
-    ).then((num value) {
-      if (value != null) {
-        setState(() => quantity = value);
-      }
-    });
-  }
-
-  List<DropdownMenuItem<int>> buildDropDownMenuItems(List<int> priorities) {
-    List<DropdownMenuItem<int>> list = List();
-    for (int priority in priorities) {
-      list.add(
-        DropdownMenuItem(
-          value: priority,
-          child: Text('${priority.toString()}'),
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Marker Creation'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.info, color: Colors.white, size: 30),
+              onPressed: () {
+                return showDialog<void>(
+                  context: context,
+                  barrierDismissible: true,
+                  // false = user must tap button, true = tap outside dialog
+                  builder: (BuildContext dialogContext) {
+                    return AlertDialog(
+                      title: Text('Info'),
+                      content: SingleChildScrollView(child: Column(
+                        children: <Widget>[
+                          Text('Priorities'),
+                          Text('1 : Means it won\'t get rotten (Usually Banana, honey, uncooked rice, beans, Lentil).\n'),
+                          Text('3 : Means it can waits for about 5 Days before it gets rotten(Usually Bread).\n'),
+                          Text('5 : Means it can waits for about 3 Days before it gets rotten(Usually Fruits).\n'),
+                          Text('7 : Means it can waits for about 24 hours before it gets rotten (Usually corn).\n'),
+                          Text('10 : Means it must be taken immediately & can\'t really waits for 3 hours (Usually meats, chickens, fish, milk & eggs or even cooked food).\n'),
+                          // ToDo: To add notes about bag color, etc...
+                          Text('Notes'),
+                          Text('Note 1'),
+                          Text('Note 2')
+                        ],
+                      ),),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text('I Got it'),
+                          onPressed: () {
+                            Navigator.of(dialogContext)
+                                .pop(); // Dismiss alert dialog
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            )
+          ],
         ),
-      );
-    }
-    return list;
-  }
-
-  void onChangedDropdownItem(value) {
-    setState(() {
-      priority = value;
-    });
+        body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(new FocusNode());
+          },
+          child: Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.only(right: 20, left: 20, top: 20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
+            child: SingleChildScrollView(child:Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 20,
+                ),
+                textField(description, 'Description', Colors.black, false, null,
+                    'Describe it “E.g. it\s 4 bags of meat & one cup of cooked rice”'),
+                SizedBox(
+                  height: 10,
+                ),
+                text('Priority', Colors.black, 16.0, 1.5, FontWeight.normal),
+                SizedBox(
+                  height: 5,
+                ),
+                ToggleButtons(
+                  color: Colors.black.withOpacity(0.5),
+                  selectedColor: Colors.amber,
+                  splashColor: Colors.green,
+                  fillColor: Colors.red[400],
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  children: List.generate(priorities.length,
+                      (index) => Text(priorities[index].toString())),
+                  isSelected: chosenPriority,
+                  onPressed: (index) {
+                    setState(() {
+                      chosenPriority = List.filled(5, false);
+                      priority = priorities[index];
+                      chosenPriority[index] = true;
+                    });
+                  },
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                text('Type', Colors.black, 16.0, 1.5, FontWeight.normal),
+                SizedBox(
+                  height: 5,
+                ),
+                ToggleButtons(
+                  color: Colors.black.withOpacity(0.5),
+                  selectedColor: Colors.amber,
+                  splashColor: Colors.green,
+                  fillColor: Colors.red[400],
+                  children: [
+                    Column(
+                      children: <Widget>[
+                        Icon(Icons.cake),
+                        Text(' Food '),
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Icon(Icons.local_drink),
+                        Text(' Drink '),
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Icon(Icons.fastfood),
+                        Text(' Both of them '),
+                      ],
+                    ),
+                  ],
+                  isSelected: chosenType,
+                  onPressed: (index) {
+                    setState(() {
+                      chosenType = List.filled(3, false);
+                      type = types[index];
+                      chosenType[index] = true;
+                    });
+                  },
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                text('Quantity (Bags)', Colors.black, 16.0, 1.5, FontWeight.normal),
+                Slider(
+                  value: quantity,
+                  min: 1.0,
+                  max: 10,
+                  onChanged: (double value) {
+                    setState(() {
+                      quantity = value;
+                    });
+                  },
+                  divisions: 9,
+                  label: '${quantity.toInt()}',
+                  activeColor: Colors.amber,
+                  inactiveColor: Colors.black.withOpacity(0.5),
+                ),
+                RaisedButton(
+                  child: Text('Create Marker'),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
+                    color: Colors.amber,
+                    onPressed: () async {
+                    UserLocation userLocation = new UserLocation();
+                    if (userLocation.getLatLng() == null)
+                      await userLocation.getUserLocation();
+                    MarkerApiCaller markerApiCaller = new MarkerApiCaller();
+                    markerApiCaller.initialize();
+                    bool status = await markerApiCaller.create(
+                        userLocation.getLatLng().latitude,
+                        userLocation.getLatLng().longitude,
+                        description.value.text,
+                        priority,
+                        type,
+                        quantity,);
+                    if (status) {
+                      Toast.show('Thank You!', context, duration: 7);
+                      Navigator.pop(context);
+                    } else {
+                      Toast.show('Please fill all the required Data', context);
+                    }
+                  },
+                ),
+                SizedBox(height: 10,)
+              ],
+            ),
+          )),
+        ));
   }
 }

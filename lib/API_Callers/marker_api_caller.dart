@@ -17,13 +17,13 @@ class MarkerApiCaller {
         FirebaseFirestore.instance.collection('markers');
   }
   Future<bool> create(
-      latitude, longitude, name, description, quantity, priority) async {
+      latitude, longitude, String description, int priority, String type,double quantity) async {
     bool done;
     await markers
         .add({
           'latitude': latitude,
           'longitude': longitude,
-          'name': name,
+          'type': type,
           'description': description,
           'quantity': quantity,
           'priority': priority
