@@ -46,20 +46,56 @@ class _MarkerCreationState extends State<MarkerCreation> {
                   builder: (BuildContext dialogContext) {
                     return AlertDialog(
                       title: Text('Info'),
-                      content: SingleChildScrollView(child: Column(
-                        children: <Widget>[
-                          Text('Priorities'),
-                          Text('1 : Means it won\'t get rotten (Usually Banana, honey, uncooked rice, beans, Lentil).\n'),
-                          Text('3 : Means it can waits for about 5 Days before it gets rotten(Usually Bread).\n'),
-                          Text('5 : Means it can waits for about 3 Days before it gets rotten(Usually Fruits).\n'),
-                          Text('7 : Means it can waits for about 24 hours before it gets rotten (Usually corn).\n'),
-                          Text('10 : Means it must be taken immediately & can\'t really waits for 3 hours (Usually meats, chickens, fish, milk & eggs or even cooked food).\n'),
-                          // ToDo: To add notes about bag color, etc...
-                          Text('Notes'),
-                          Text('Note 1'),
-                          Text('Note 2')
-                        ],
-                      ),),
+                      content: SingleChildScrollView(
+                        child: Column(
+                          children: <Widget>[
+                            Text('Priorities'),
+                            Text(
+                              '1 : Means it won\'t get rotten (Usually Banana, honey, uncooked rice, beans, Lentil).\n',
+                              style: TextStyle(color: Colors.green),
+                            ),
+                            Text(
+                              '3 : Means it can waits for about 5 Days before it gets rotten(Usually Bread).\n',
+                              style: TextStyle(color: Colors.blue),
+                            ),
+                            Text(
+                              '5 : Means it can waits for about 3 Days before it gets rotten(Usually Fruits).\n',
+                              style: TextStyle(color: Colors.blueAccent),
+                            ),
+                            Text(
+                              '7 : Means it can waits for about 24 hours before it gets rotten (Usually corn).\n',
+                              style: TextStyle(color: Colors.orange),
+                            ),
+                            Text(
+                              '10 : Means it must be taken immediately & can\'t really waits for 3 hours (Usually meats, chickens, fish, milk & eggs or even cooked food).\n',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                            // ToDo: To add notes about bag color, etc...
+                            Text(
+                              'Notes',
+                              style: TextStyle(color: Colors.cyan),
+                            ),
+                            Text(
+                              'Try to put mint or lemon in the bag cause it maybe keeps cats away\n',
+                              style: TextStyle(color: Colors.yellow),
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                  text:
+                                      'Don\'t use blue bags as cats like it the most ',
+                                  children: [
+                                    TextSpan(
+                                        text:
+                                            'try to use Pastel green ',
+                                        style: TextStyle(color: Colors.green,decoration: TextDecoration.none),children: [TextSpan(text: 'or Pastel purple.',style: TextStyle(color: Colors.purple))])
+                                  ],
+                                  style: TextStyle(
+                                      color: Colors.blue.withOpacity(0.5),
+                                      decoration: TextDecoration.lineThrough)),
+                            )
+                          ],
+                        ),
+                      ),
                       actions: <Widget>[
                         FlatButton(
                           child: Text('I Got it'),
@@ -81,131 +117,144 @@ class _MarkerCreationState extends State<MarkerCreation> {
             FocusScope.of(context).requestFocus(new FocusNode());
           },
           child: Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.only(right: 20, left: 20, top: 20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-            ),
-            child: SingleChildScrollView(child:Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 20,
-                ),
-                textField(description, 'Description', Colors.black, false, null,
-                    'Describe it “E.g. it\s 4 bags of meat & one cup of cooked rice”'),
-                SizedBox(
-                  height: 10,
-                ),
-                text('Priority', Colors.black, 16.0, 1.5, FontWeight.normal),
-                SizedBox(
-                  height: 5,
-                ),
-                ToggleButtons(
-                  color: Colors.black.withOpacity(0.5),
-                  selectedColor: Colors.amber,
-                  splashColor: Colors.green,
-                  fillColor: Colors.red[400],
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  children: List.generate(priorities.length,
-                      (index) => Text(priorities[index].toString())),
-                  isSelected: chosenPriority,
-                  onPressed: (index) {
-                    setState(() {
-                      chosenPriority = List.filled(5, false);
-                      priority = priorities[index];
-                      chosenPriority[index] = true;
-                    });
-                  },
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                text('Type', Colors.black, 16.0, 1.5, FontWeight.normal),
-                SizedBox(
-                  height: 5,
-                ),
-                ToggleButtons(
-                  color: Colors.black.withOpacity(0.5),
-                  selectedColor: Colors.amber,
-                  splashColor: Colors.green,
-                  fillColor: Colors.red[400],
+              alignment: Alignment.center,
+              padding: EdgeInsets.only(right: 20, left: 20, top: 20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Column(
-                      children: <Widget>[
-                        Icon(Icons.cake),
-                        Text(' Food '),
-                      ],
+                    SizedBox(
+                      height: 20,
                     ),
-                    Column(
-                      children: <Widget>[
-                        Icon(Icons.local_drink),
-                        Text(' Drink '),
-                      ],
+                    textField(
+                        description,
+                        'Description',
+                        Colors.black,
+                        false,
+                        null,
+                        'Describe it “E.g. it\s 4 bags of meat & one cup of cooked rice”'),
+                    SizedBox(
+                      height: 10,
                     ),
-                    Column(
-                      children: <Widget>[
-                        Icon(Icons.fastfood),
-                        Text(' Both of them '),
-                      ],
+                    text(
+                        'Priority', Colors.black, 16.0, 1.5, FontWeight.normal),
+                    SizedBox(
+                      height: 5,
                     ),
+                    ToggleButtons(
+                      color: Colors.black.withOpacity(0.5),
+                      selectedColor: Colors.amber,
+                      splashColor: Colors.green,
+                      fillColor: Colors.red[400],
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      children: List.generate(priorities.length,
+                          (index) => Text(priorities[index].toString())),
+                      isSelected: chosenPriority,
+                      onPressed: (index) {
+                        setState(() {
+                          chosenPriority = List.filled(5, false);
+                          priority = priorities[index];
+                          chosenPriority[index] = true;
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    text('Type', Colors.black, 16.0, 1.5, FontWeight.normal),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    ToggleButtons(
+                      color: Colors.black.withOpacity(0.5),
+                      selectedColor: Colors.amber,
+                      splashColor: Colors.green,
+                      fillColor: Colors.red[400],
+                      children: [
+                        Column(
+                          children: <Widget>[
+                            Icon(Icons.cake),
+                            Text(' Food '),
+                          ],
+                        ),
+                        Column(
+                          children: <Widget>[
+                            Icon(Icons.local_drink),
+                            Text(' Drink '),
+                          ],
+                        ),
+                        Column(
+                          children: <Widget>[
+                            Icon(Icons.fastfood),
+                            Text(' Both of them '),
+                          ],
+                        ),
+                      ],
+                      isSelected: chosenType,
+                      onPressed: (index) {
+                        setState(() {
+                          chosenType = List.filled(3, false);
+                          type = types[index];
+                          chosenType[index] = true;
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    text('Quantity (Bags)', Colors.black, 16.0, 1.5,
+                        FontWeight.normal),
+                    Slider(
+                      value: quantity,
+                      min: 1.0,
+                      max: 10,
+                      onChanged: (double value) {
+                        setState(() {
+                          quantity = value;
+                        });
+                      },
+                      divisions: 9,
+                      label: '${quantity.toInt()}',
+                      activeColor: Colors.amber,
+                      inactiveColor: Colors.black.withOpacity(0.5),
+                    ),
+                    RaisedButton(
+                      child: Text('Create Marker'),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
+                      color: Colors.amber,
+                      onPressed: () async {
+                        UserLocation userLocation = new UserLocation();
+                        if (userLocation.getLatLng() == null)
+                          await userLocation.getUserLocation();
+                        MarkerApiCaller markerApiCaller = new MarkerApiCaller();
+                        markerApiCaller.initialize();
+                        bool status = await markerApiCaller.create(
+                          userLocation.getLatLng().latitude,
+                          userLocation.getLatLng().longitude,
+                          description.value.text,
+                          priority,
+                          type,
+                          quantity,
+                        );
+                        if (status) {
+                          Toast.show('Thank You!', context, duration: 7);
+                          Navigator.pop(context);
+                        } else {
+                          Toast.show(
+                              'Please fill all the required Data', context);
+                        }
+                      },
+                    ),
+                    SizedBox(
+                      height: 10,
+                    )
                   ],
-                  isSelected: chosenType,
-                  onPressed: (index) {
-                    setState(() {
-                      chosenType = List.filled(3, false);
-                      type = types[index];
-                      chosenType[index] = true;
-                    });
-                  },
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-                text('Quantity (Bags)', Colors.black, 16.0, 1.5, FontWeight.normal),
-                Slider(
-                  value: quantity,
-                  min: 1.0,
-                  max: 10,
-                  onChanged: (double value) {
-                    setState(() {
-                      quantity = value;
-                    });
-                  },
-                  divisions: 9,
-                  label: '${quantity.toInt()}',
-                  activeColor: Colors.amber,
-                  inactiveColor: Colors.black.withOpacity(0.5),
-                ),
-                RaisedButton(
-                  child: Text('Create Marker'),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30))),
-                    color: Colors.amber,
-                    onPressed: () async {
-                    UserLocation userLocation = new UserLocation();
-                    if (userLocation.getLatLng() == null)
-                      await userLocation.getUserLocation();
-                    MarkerApiCaller markerApiCaller = new MarkerApiCaller();
-                    markerApiCaller.initialize();
-                    bool status = await markerApiCaller.create(
-                        userLocation.getLatLng().latitude,
-                        userLocation.getLatLng().longitude,
-                        description.value.text,
-                        priority,
-                        type,
-                        quantity,);
-                    if (status) {
-                      Toast.show('Thank You!', context, duration: 7);
-                      Navigator.pop(context);
-                    } else {
-                      Toast.show('Please fill all the required Data', context);
-                    }
-                  },
-                ),
-                SizedBox(height: 10,)
-              ],
-            ),
-          )),
+              )),
         ));
   }
 }
