@@ -53,8 +53,6 @@ class WhiteOrBlackMain extends StatelessWidget {
         "SplashScreen": (BuildContext context) => SplashScreen(),
         "WelcomeScreen": (BuildContext context) => WelcomeScreen(),
         "MainScreen": (BuildContext context) => MainScreen(),
-        // "FeedMeIntro": (BuildContext context) => FeedMeIntro(),
-        "MarkerCreation": (BuildContext context) => MarkerCreation(),
         "FeedMe": (BuildContext context) => FeedMe(),
       },
     );

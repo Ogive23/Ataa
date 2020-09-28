@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:feedme/Screens/feed_me_marker_creation.dart';
 import 'package:feedme/Session/session_manager.dart';
 import 'package:feedme/Themes/app_language.dart';
 import 'package:feedme/Themes/app_theme.dart';
@@ -14,20 +15,6 @@ class FeedMeIntro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(
-            FontAwesomeIcons.info,
-            color: appTheme.themeData.accentColor,
-            size: 23,
-          ),
-          backgroundColor: appTheme.themeData.backgroundColor,
-          elevation: 10,
-          splashColor: Colors.blue,
-          tooltip: appLanguage.words['FeedMeIntroInfo'],
-          heroTag: "info",
-        ),
         body: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
@@ -180,7 +167,8 @@ class FeedMeIntro extends StatelessWidget {
                       child: RaisedButton.icon(
                         elevation: 10,
                         onPressed: () {
-                          Navigator.pushNamed(context, 'MarkerCreation');
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => MarkerCreation(appTheme,appLanguage)));
                         },
                         icon: Icon(
                           Icons.flag,

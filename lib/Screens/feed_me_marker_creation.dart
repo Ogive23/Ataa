@@ -2,18 +2,29 @@ import 'package:feedme/API_Callers/marker_api_caller.dart';
 import 'package:feedme/Custom_Widgets/text.dart';
 import 'package:feedme/Custom_Widgets/text_field.dart';
 import 'package:feedme/Models/user_location.dart';
+import 'package:feedme/Themes/app_language.dart';
+import 'package:feedme/Themes/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 
 class MarkerCreation extends StatefulWidget {
+  final AppTheme appTheme;
+  final AppLanguage appLanguage;
+  MarkerCreation(this.appTheme, this.appLanguage);
+
   @override
-  _MarkerCreationState createState() => _MarkerCreationState();
+  _MarkerCreationState createState() => _MarkerCreationState(this.appTheme, this.appLanguage);
 }
 
 class _MarkerCreationState extends State<MarkerCreation> {
+  AppLanguage appLanguage;
+  AppTheme appTheme;
+  _MarkerCreationState(this.appTheme, this.appLanguage);
+
   TextEditingController name = new TextEditingController();
   TextEditingController description = new TextEditingController();
   NumberPicker integerNumberPicker;
@@ -25,16 +36,12 @@ class _MarkerCreationState extends State<MarkerCreation> {
   String type = 'Food';
   List<String> types = ['Food', 'Drink', 'Both of them'];
   List<bool> chosenType = [true] + List.filled(2, false);
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Marker Creation'),
+          title: Text(appLanguage.words['MarkerCreationTitle']),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.info, color: Colors.white, size: 30),
@@ -85,9 +92,16 @@ class _MarkerCreationState extends State<MarkerCreation> {
                                       'Don\'t use blue bags as cats like it the most ',
                                   children: [
                                     TextSpan(
-                                        text:
-                                            'try to use Pastel green ',
-                                        style: TextStyle(color: Colors.green,decoration: TextDecoration.none),children: [TextSpan(text: 'or Pastel purple.',style: TextStyle(color: Colors.purple))])
+                                        text: 'try to use Pastel green ',
+                                        style: TextStyle(
+                                            color: Colors.green,
+                                            decoration: TextDecoration.none),
+                                        children: [
+                                          TextSpan(
+                                              text: 'or Pastel purple.',
+                                              style: TextStyle(
+                                                  color: Colors.purple))
+                                        ])
                                   ],
                                   style: TextStyle(
                                       color: Colors.blue.withOpacity(0.5),
@@ -131,16 +145,16 @@ class _MarkerCreationState extends State<MarkerCreation> {
                     ),
                     textField(
                         description,
-                        'Description',
+                        appLanguage.words['MarkerCreationDescription'],
                         Colors.black,
                         false,
                         null,
-                        'Describe it “E.g. it\s 4 bags of meat & one cup of cooked rice”'),
+                        appLanguage.words['MarkerCreationDescriptionDetails']),
                     SizedBox(
                       height: 10,
                     ),
                     text(
-                        'Priority', Colors.black, 16.0, 1.5, FontWeight.normal),
+                        appLanguage.words['MarkerCreationPriority'], Colors.black, 16.0, 1.5, FontWeight.normal),
                     SizedBox(
                       height: 5,
                     ),
@@ -164,7 +178,7 @@ class _MarkerCreationState extends State<MarkerCreation> {
                     SizedBox(
                       height: 10,
                     ),
-                    text('Type', Colors.black, 16.0, 1.5, FontWeight.normal),
+                    text(appLanguage.words['MarkerCreationType'], Colors.black, 16.0, 1.5, FontWeight.normal),
                     SizedBox(
                       height: 5,
                     ),
@@ -177,19 +191,19 @@ class _MarkerCreationState extends State<MarkerCreation> {
                         Column(
                           children: <Widget>[
                             Icon(Icons.cake),
-                            Text(' Food '),
+                            Text(appLanguage.words['MarkerCreationFood']),
                           ],
                         ),
                         Column(
                           children: <Widget>[
                             Icon(Icons.local_drink),
-                            Text(' Drink '),
+                            Text(appLanguage.words['MarkerCreationDrink']),
                           ],
                         ),
                         Column(
                           children: <Widget>[
                             Icon(Icons.fastfood),
-                            Text(' Both of them '),
+                            Text(appLanguage.words['MarkerCreationBoth']),
                           ],
                         ),
                       ],
@@ -205,7 +219,7 @@ class _MarkerCreationState extends State<MarkerCreation> {
                     SizedBox(
                       height: 10,
                     ),
-                    text('Quantity (Bags)', Colors.black, 16.0, 1.5,
+                    text(appLanguage.words['MarkerCreationQuantity'], Colors.black, 16.0, 1.5,
                         FontWeight.normal),
                     Slider(
                       value: quantity,
@@ -222,7 +236,7 @@ class _MarkerCreationState extends State<MarkerCreation> {
                       inactiveColor: Colors.black.withOpacity(0.5),
                     ),
                     RaisedButton(
-                      child: Text('Create Marker'),
+                      child: Text(appLanguage.words['MarkerCreationCreateMarkerButton']),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(30))),
                       color: Colors.amber,
