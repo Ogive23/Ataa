@@ -8,13 +8,23 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:toast/toast.dart';
 import 'dart:math';
 import 'package:vector_math/vector_math.dart' as math;
-
+import 'package:feedme/Themes/app_language.dart';
+import 'package:feedme/Themes/app_theme.dart';
+import 'feed_me_intro.dart';
 class FeedMe extends StatefulWidget {
+  final AppTheme appTheme;
+  final AppLanguage appLanguage;
+  FeedMe(this.appTheme, this.appLanguage);
+
   @override
-  _FeedMeState createState() => _FeedMeState();
+  _FeedMeState createState() =>
+      _FeedMeState(this.appTheme, this.appLanguage);
 }
 
 class _FeedMeState extends State<FeedMe> {
+  AppLanguage appLanguage;
+  AppTheme appTheme;
+  _FeedMeState(this.appTheme, this.appLanguage);
   GoogleMap googleMap;
   UserLocation userLocation;
   List<Marker> markers;
@@ -173,7 +183,7 @@ class _FeedMeState extends State<FeedMe> {
         } else {
           return Container(
             alignment: Alignment.center,
-            child: Text('Loading'),
+            child: Text(''),
           );
         }
       },
@@ -204,7 +214,8 @@ class _FeedMeState extends State<FeedMe> {
                     duration: 7, backgroundColor: Colors.green);
                 await markerApiCaller.delete(markers[0].markerId.value);
                 following = !following;
-                Navigator.popAndPushNamed(context, 'FeedMe');
+                Navigator.popUntil(context, (Route<dynamic> route) => route is PageRoute);
+                Navigator.pushNamed(context, "Background");
               });
             }),
         FlatButton(
@@ -232,43 +243,49 @@ class _FeedMeState extends State<FeedMe> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Volunteering'),actions: <Widget>[IconButton(
-          icon: Icon(Icons.info, color: Colors.white, size: 30),
-          onPressed: () {
-            return showDialog<void>(
-              context: context,
-              barrierDismissible: true,
-              // false = user must tap button, true = tap outside dialog
-              builder: (BuildContext dialogContext) {
-                return AlertDialog(
-                  title: Text('Priorities'),
-                  content: SingleChildScrollView(child: Column(
-                    children: <Widget>[
-                      Text('Green : Means it won\'t get rotten.\n',style: TextStyle(color: Colors.green),),
-                      Text('Blue : Means it can waits for about 5 Days before it gets rotten.\n',style: TextStyle(color: Colors.blue),),
-                      Text('Azure : Means it can waits for about 3 Days before it gets rotten.\n',style: TextStyle(color: Colors.blueAccent),),
-                      Text('Orange : Means it can waits for about 24 hours before it gets rotten.\n',style: TextStyle(color: Colors.orange),),
-                      Text('Red : Means it must be taken immediately & can\'t really waits for 3 hours.\n',style: TextStyle(color: Colors.red),),
-                    ],
-                  ),),
-                  actions: <Widget>[
-                    FlatButton(
-                      child: Text('I Got it'),
-                      onPressed: () {
-                        Navigator.of(dialogContext)
-                            .pop(); // Dismiss alert dialog
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-        )],),
+        // appBar: AppBar(title: Text('Volunteering'),actions: <Widget>[
+        //   ],),
         body: Stack(
           children: <Widget>[
             Container(
               child: showGoogleMap(),
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: IconButton(
+                icon: Icon(Icons.info, color: Colors.black, size: 30),
+                onPressed: () {
+                  return showDialog<void>(
+                    context: context,
+                    barrierDismissible: true,
+                    // false = user must tap button, true = tap outside dialog
+                    builder: (BuildContext dialogContext) {
+                      return AlertDialog(
+                        title: Text(appLanguage.words['VolunteerInfoTitle'],textDirection: appLanguage.textDirection,),
+                        content: SingleChildScrollView(
+                          child: Column(
+                          children: <Widget>[
+                            Text(appLanguage.words['VolunteerInfoOne'],style: TextStyle(color: Colors.green),textDirection: appLanguage.textDirection,),
+                            Text(appLanguage.words['VolunteerInfoTwo'],style: TextStyle(color: Colors.blue),textDirection: appLanguage.textDirection,),
+                            Text(appLanguage.words['VolunteerInfoThree'],style: TextStyle(color: Colors.blueAccent),textDirection: appLanguage.textDirection,),
+                            Text(appLanguage.words['VolunteerInfoFour'],style: TextStyle(color: Colors.orange),textDirection: appLanguage.textDirection,),
+                            Text(appLanguage.words['VolunteerInfoFive'],style: TextStyle(color: Colors.red),textDirection: appLanguage.textDirection,),
+                          ],
+                        ),),
+                        actions: <Widget>[
+                          FlatButton(
+                            child: Text('I Got it'),
+                            onPressed: () {
+                              Navigator.of(dialogContext)
+                                  .pop(); // Dismiss alert dialog
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
             ),
             following
                 ? Align(
