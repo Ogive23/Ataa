@@ -13,10 +13,11 @@ class StayInTouchPage extends StatelessWidget {
     AppTheme appTheme = Provider.of<AppTheme>(context);
     AppLanguage appLanguage = Provider.of<AppLanguage>(context);
     return Scaffold(
-      backgroundColor: appTheme.themeData.appBarTheme.color,
+      // backgroundColor: appTheme.themeData.appBarTheme.color,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: appTheme.themeData.appBarTheme.color,
+        elevation: 0.0,
         title: Text(
           appLanguage.words['StayInTouchTitle'],
           style: appTheme.themeData.textTheme.title,
@@ -24,6 +25,7 @@ class StayInTouchPage extends StatelessWidget {
       ),
       body: Container(
         padding: EdgeInsets.only(left: 5,right: 5,top: 10,bottom: 10),
+        height: double.infinity,
         decoration: BoxDecoration(color: appTheme.themeData.backgroundColor),
         child: SingleChildScrollView(
           child: Column(
