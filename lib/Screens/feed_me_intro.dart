@@ -6,6 +6,7 @@ import 'package:feedme/Themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'feed_me_main.dart';
 
 class FeedMeIntro extends StatelessWidget {
   final AppTheme appTheme;
@@ -194,7 +195,8 @@ class FeedMeIntro extends StatelessWidget {
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       child: RaisedButton.icon(
                         onPressed: () {
-                          Navigator.pushNamed(context, 'FeedMe');
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => FeedMe(appTheme,appLanguage)));
                         },
                         icon: Icon(
                           Icons.flash_on,

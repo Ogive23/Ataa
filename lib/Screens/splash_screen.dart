@@ -50,7 +50,7 @@ class _SplashScreen extends State<SplashScreen>
 
   getHomePage() {
     if (sessionManager.notFirstTime())
-      return 'MainScreen';
+      return 'Background';
     else
       return 'WelcomeScreen';
   }

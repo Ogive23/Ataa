@@ -52,8 +52,8 @@ class WhiteOrBlackMain extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         "SplashScreen": (BuildContext context) => SplashScreen(),
         "WelcomeScreen": (BuildContext context) => WelcomeScreen(),
+        "Background": (BuildContext context) => Background(),
         "MainScreen": (BuildContext context) => MainScreen(),
-        "FeedMe": (BuildContext context) => FeedMe(),
       },
     );
   }
