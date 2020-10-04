@@ -53,7 +53,7 @@ class AppTheme extends ChangeNotifier {
       backgroundColor: Colors.black87,
       accentColor: Colors.white,
       appBarTheme: AppBarTheme(
-        color: Colors.black87,
+        color: Colors.black,
         iconTheme: IconThemeData(
           color: Colors.white,
         ),
