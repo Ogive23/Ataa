@@ -25,9 +25,6 @@ Future<void> main() async {
   };
   // Pass all uncaught errors from the framework to Crashlytics.
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-  runZoned<Future<void>>(() async {
-    // ...
-  }, onError: FirebaseCrashlytics.instance.recordError);
   Isolate.current.addErrorListener(RawReceivePort((pair) async {
     final List<dynamic> errorAndStacktrace = pair;
     await FirebaseCrashlytics.instance.recordError(
@@ -59,6 +56,7 @@ class FeedMeMain extends StatelessWidget {
     );
   }
 }
+
 class MainScreen extends StatelessWidget {
   final SessionManager sessionManager = new SessionManager();
   static late AppTheme appTheme;

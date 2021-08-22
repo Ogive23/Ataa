@@ -12,11 +12,9 @@ class BackgroundScreen extends StatefulWidget {
 }
 
 class _BackgroundScreenState extends State<BackgroundScreen> {
-  static late double w, h;
   static late CommonData commonData;
   static late AppLanguage appLanguage;
   static late AppTheme appTheme;
-  static late TabController tabController;
 
   Future<bool> _onWillPop(context) async {
     return commonData.lastStep()
@@ -59,9 +57,6 @@ class _BackgroundScreenState extends State<BackgroundScreen> {
   Widget build(BuildContext context) {
     commonData = Provider.of<CommonData>(context);
     appTheme = Provider.of<AppTheme>(context);
-    w = MediaQuery.of(context).size.width;
-    h = MediaQuery.of(context).size.height;
-    print(commonData.step);
     return WillPopScope(
       onWillPop: () => _onWillPop(context),
       child: Scaffold(
