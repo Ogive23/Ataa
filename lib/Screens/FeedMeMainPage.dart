@@ -1,43 +1,30 @@
 import 'dart:async';
-import 'package:feedme/API_Callers/marker_api_caller.dart';
-import 'package:feedme/Models/user_location.dart';
+import 'package:feedme/APICallers/MarkerApiCaller.dart';
+import 'package:feedme/Models/UserLocation.dart';
 import 'package:feedme/Session/session_manager.dart';
+import 'package:feedme/Shared%20Data/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:toast/toast.dart';
 import 'dart:math';
 import 'package:vector_math/vector_math.dart' as math;
-import 'package:feedme/Themes/app_language.dart';
-import 'package:feedme/Themes/app_theme.dart';
-import 'feed_me_intro.dart';
-class FeedMe extends StatefulWidget {
-  final AppTheme appTheme;
-  final AppLanguage appLanguage;
-  FeedMe(this.appTheme, this.appLanguage);
+import 'package:feedme/Shared%20Data/app_language.dart';
 
+class FeedMeMainPage extends StatefulWidget {
   @override
-  _FeedMeState createState() =>
-      _FeedMeState(this.appTheme, this.appLanguage);
+  _FeedMeMainPageState createState() => _FeedMeMainPageState();
 }
 
-class _FeedMeState extends State<FeedMe> {
-  AppLanguage appLanguage;
-  AppTheme appTheme;
-  _FeedMeState(this.appTheme, this.appLanguage);
-  GoogleMap googleMap;
-  UserLocation userLocation;
-  List<Marker> markers;
+class _FeedMeMainPageState extends State<FeedMeMainPage> {
+  static late AppLanguage appLanguage;
+  static late AppTheme appTheme;
+  static late GoogleMap googleMap;
+  final UserLocation userLocation = new UserLocation();
+  static late List<Marker> markers;
   bool following = false;
-  Marker chosenMarker;
+  static late Marker chosenMarker;
   SessionManager sessionManager = new SessionManager();
-  MarkerApiCaller markerApiCaller = new MarkerApiCaller();
-  @override
-  void initState() {
-    super.initState();
-    userLocation = new UserLocation();
-    markerApiCaller.initialize();
-  }
+  final MarkerApiCaller markerApiCaller = new MarkerApiCaller();
 
   double calculateDistance(LatLng startPoint, LatLng endPoint) {
     int radius = 6371; // radius of earth in Km
@@ -53,7 +40,7 @@ class _FeedMeState extends State<FeedMe> {
   }
 
   void onMarkerTapped(MarkerId markerId) {
-    Marker tappedMarker;
+    late Marker? tappedMarker;
     int i = 0;
     for (; i < markers.length; i++) {
       if (markerId == markers.elementAt(i).markerId) {
@@ -113,9 +100,7 @@ class _FeedMeState extends State<FeedMe> {
       await userLocation.getUserLocation();
     }
 
-    following
-        ? 1
-        : markers = await markerApiCaller.getAll();
+    following ? 1 : markers = await markerApiCaller.getAll();
     for (int i = 0; i < markers.length; i++) {
       markers[i] = markers.elementAt(i).copyWith(onTapParam: () {
         onMarkerTapped(markers.elementAt(i).markerId);
@@ -174,7 +159,7 @@ class _FeedMeState extends State<FeedMe> {
       builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.data != null) {
-          return snapshot.data;
+          return Container(child: snapshot.data);
         } else if (snapshot.error != null) {
           return Container(
             alignment: Alignment.center,
@@ -209,12 +194,13 @@ class _FeedMeState extends State<FeedMe> {
             child: Text("Yes i got it!"),
             onPressed: () {
               setState(() async {
-                Toast.show(
-                    'Thank You for making the world a better place!', context,
-                    duration: 7, backgroundColor: Colors.green);
+                // Toast.show(
+                //     'Thank You for making the world a better place!', context,
+                //     duration: 7, backgroundColor: Colors.green);
                 await markerApiCaller.delete(markers[0].markerId.value);
                 following = !following;
-                Navigator.popUntil(context, (Route<dynamic> route) => route is PageRoute);
+                Navigator.popUntil(
+                    context, (Route<dynamic> route) => route is PageRoute);
                 Navigator.pushNamed(context, "Background");
               });
             }),
@@ -225,11 +211,11 @@ class _FeedMeState extends State<FeedMe> {
           ),
           onPressed: () {
             setState(() async {
-              Toast.show(
-                  'Sorry for wasting your time, but consider that it has gone to its place, Thank you!',
-                  context,
-                  duration: 7,
-                  backgroundColor: Colors.green);
+              // Toast.show(
+              //     'Sorry for wasting your time, but consider that it has gone to its place, Thank you!',
+              //     context,
+              //     duration: 7,
+              //     backgroundColor: Colors.green);
               await markerApiCaller.delete(markers[0].markerId.value);
               following = !following;
               Navigator.popAndPushNamed(context, 'FeedMe');
@@ -246,68 +232,92 @@ class _FeedMeState extends State<FeedMe> {
         // appBar: AppBar(title: Text('Volunteering'),actions: <Widget>[
         //   ],),
         body: Stack(
-          children: <Widget>[
-            Container(
-              child: showGoogleMap(),
-            ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: IconButton(
-                icon: Icon(Icons.info, color: Colors.black, size: 30),
-                onPressed: () {
-                  return showDialog<void>(
-                    context: context,
-                    barrierDismissible: true,
-                    // false = user must tap button, true = tap outside dialog
-                    builder: (BuildContext dialogContext) {
-                      return AlertDialog(
-                        title: Text(appLanguage.words['VolunteerInfoTitle'],textDirection: appLanguage.textDirection,),
-                        content: SingleChildScrollView(
-                          child: Column(
-                          children: <Widget>[
-                            Text(appLanguage.words['VolunteerInfoOne'],style: TextStyle(color: Colors.green),textDirection: appLanguage.textDirection,),
-                            Text(appLanguage.words['VolunteerInfoTwo'],style: TextStyle(color: Colors.blue),textDirection: appLanguage.textDirection,),
-                            Text(appLanguage.words['VolunteerInfoThree'],style: TextStyle(color: Colors.blueAccent),textDirection: appLanguage.textDirection,),
-                            Text(appLanguage.words['VolunteerInfoFour'],style: TextStyle(color: Colors.orange),textDirection: appLanguage.textDirection,),
-                            Text(appLanguage.words['VolunteerInfoFive'],style: TextStyle(color: Colors.red),textDirection: appLanguage.textDirection,),
-                          ],
-                        ),),
-                        actions: <Widget>[
-                          FlatButton(
-                            child: Text('I Got it'),
-                            onPressed: () {
-                              Navigator.of(dialogContext)
-                                  .pop(); // Dismiss alert dialog
-                            },
+      children: <Widget>[
+        Container(
+          child: showGoogleMap(),
+        ),
+        Align(
+          alignment: Alignment.topLeft,
+          child: IconButton(
+            icon: Icon(Icons.info, color: Colors.black, size: 30),
+            onPressed: () async {
+              return showDialog<void>(
+                context: context,
+                barrierDismissible: true,
+                // false = user must tap button, true = tap outside dialog
+                builder: (BuildContext dialogContext) {
+                  return AlertDialog(
+                    title: Text(
+                      appLanguage.words['VolunteerInfoTitle']!,
+                      textDirection: appLanguage.textDirection,
+                    ),
+                    content: SingleChildScrollView(
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            appLanguage.words['VolunteerInfoOne']!,
+                            style: TextStyle(color: Colors.green),
+                            textDirection: appLanguage.textDirection,
+                          ),
+                          Text(
+                            appLanguage.words['VolunteerInfoTwo']!,
+                            style: TextStyle(color: Colors.blue),
+                            textDirection: appLanguage.textDirection,
+                          ),
+                          Text(
+                            appLanguage.words['VolunteerInfoThree']!,
+                            style: TextStyle(color: Colors.blueAccent),
+                            textDirection: appLanguage.textDirection,
+                          ),
+                          Text(
+                            appLanguage.words['VolunteerInfoFour']!,
+                            style: TextStyle(color: Colors.orange),
+                            textDirection: appLanguage.textDirection,
+                          ),
+                          Text(
+                            appLanguage.words['VolunteerInfoFive']!,
+                            style: TextStyle(color: Colors.red),
+                            textDirection: appLanguage.textDirection,
                           ),
                         ],
-                      );
-                    },
+                      ),
+                    ),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text('I Got it'),
+                        onPressed: () {
+                          Navigator.of(dialogContext)
+                              .pop(); // Dismiss alert dialog
+                        },
+                      ),
+                    ],
                   );
                 },
-              ),
-            ),
-            following
-                ? Align(
-                    alignment: Alignment.topRight,
-                    child: RaisedButton(
-                      onPressed: () {
-                        setState(() {
-                          following = !following;
-                          markers.clear();
-                        });
-                      },
-                      child: Text('Cancel'),
-                    ),
-                  )
-                : Container(),
-            following
-                ? Align(
-                    alignment: Alignment.center,
-                    child: getAcquiringWidget(),
-                  )
-                : Container(),
-          ],
-        ));
+              );
+            },
+          ),
+        ),
+        following
+            ? Align(
+                alignment: Alignment.topRight,
+                child: RaisedButton(
+                  onPressed: () {
+                    setState(() {
+                      following = !following;
+                      markers.clear();
+                    });
+                  },
+                  child: Text('Cancel'),
+                ),
+              )
+            : Container(),
+        following
+            ? Align(
+                alignment: Alignment.center,
+                child: getAcquiringWidget(),
+              )
+            : Container(),
+      ],
+    ));
   }
 }

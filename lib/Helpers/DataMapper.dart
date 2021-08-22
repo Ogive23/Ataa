@@ -1,7 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feedme/Models/User.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class Factory {
+import 'Helper.dart';
+
+class DataMapper {
+  Helper helper = new Helper();
   getMarkerColor(priority) {
     switch (priority) {
       case '1':
@@ -20,7 +24,7 @@ class Factory {
 
   List<Marker> getMarkersFromSnapshot(QuerySnapshot snapShot) {
 //  MarkerIcon markerOption = new MarkerIcon();      ///for custom marker icon
-    List<Marker> returnedMarkers = new List<Marker>();
+    List<Marker> returnedMarkers = <Marker>[];
     snapShot.docs.forEach((marker) {
       returnedMarkers.add(Marker(
         markerId: new MarkerId(marker.id.toString()),
@@ -35,5 +39,24 @@ class Factory {
       ));
     });
     return returnedMarkers;
+  }
+  User getUserFromJson(String url, Map<String, dynamic> info) {
+    return User(
+        helper.getAppropriateText(info['user']['id']),
+        helper.getAppropriateText(info['user']['name'].toString()),
+        helper.getAppropriateText(info['user']['user_name'].toString()),
+        helper.getAppropriateText(info['user']['email'].toString()),
+        helper.getAppropriateText(info['user']['gender'].toString()),
+        helper.getAppropriateText(info['user']['phone_number'].toString()),
+        helper.getAppropriateText(info['user']['address'].toString()),
+        info['user']['email_verified_at'] != null ? true : false,
+        info['token'],
+        info['profile']['image'] != null
+            ? url + info['profile']['image']
+            : 'N/A',
+        info['profile']['cover'] != null
+            ? url + info['profile']['cover']
+            : 'N/A',
+        helper.getAppropriateText(info['profile']['bio'].toString()));
   }
 }

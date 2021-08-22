@@ -1,7 +1,5 @@
-import 'package:feedme/Custom_Widgets/text.dart';
 import 'package:feedme/Session/session_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -22,19 +20,20 @@ class WelcomeScreen extends StatelessWidget {
                 SizedBox(height: 30),
                 Text(
                   'Welcome To FeedMe App!',
-                  style: GoogleFonts.delius(
-                    color: Colors.black,
-                    fontSize: 22.0,
-                  ),
+                  // style: GoogleFonts.delius(
+                  //   color: Colors.black,
+                  //   fontSize: 22.0,
+                  // ),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 10),
-                text(
-                    'We gonna help you to change \nTHE WORLD.',
-                    Colors.blue,
-                    22.0,
-                    1.5,
-                    FontWeight.w800),
+                Text(
+                  'We gonna help you to change \nTHE WORLD.',
+                  // Colors.blue,
+                  // 22.0,
+                  // 1.5,
+                  // FontWeight.w800
+                ),
                 SizedBox(height: 30),
                 RaisedButton.icon(
                     color: Colors.white,
@@ -42,8 +41,10 @@ class WelcomeScreen extends StatelessWidget {
                       Icons.fast_forward,
                       color: Colors.green,
                     ),
-                    label: text(
-                        'Continue', Colors.green, 18.0, 1.5, FontWeight.w600),
+                    label: Text(
+                      'Continue',
+                      // Colors.green, 18.0, 1.5, FontWeight.w600
+                    ),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(30))),
                     onPressed: () {
@@ -61,11 +62,12 @@ class WelcomeScreen extends StatelessWidget {
 
 class PreferredLanguageTakingScreen extends StatelessWidget {
   final SessionManager sessionManager = new SessionManager();
-  void finishedChoosing(context,String lang){
+  void finishedChoosing(context, String lang) {
     sessionManager.createPreferredLanguage(lang);
     sessionManager.changeStatus();
     Navigator.popAndPushNamed(context, 'MainScreen');
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,8 +77,13 @@ class PreferredLanguageTakingScreen extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  text('Now, Tell us which Language do you prefer?\n الآن، أخبرنا ما هي اللغة التي تفضلها؟', Colors.white,
-                      22.0, 1.5, FontWeight.w500),
+                  Text(
+                    'Now, Tell us which Language do you prefer?\n الآن، أخبرنا ما هي اللغة التي تفضلها؟',
+                    // Colors.white,
+                    // 22.0,
+                    // 1.5,
+                    // FontWeight.w500
+                  ),
                   SizedBox(
                     height: 20,
                   ),
@@ -86,18 +93,24 @@ class PreferredLanguageTakingScreen extends StatelessWidget {
                     children: <Widget>[
                       RaisedButton(
                         color: Colors.white,
-                        child: text('العربية', Colors.black, 16.0, 1.5,
-                            FontWeight.w500),
+                        child: Text(
+                          'العربية',
+                          // Colors.black, 16.0, 1.5,
+                          // FontWeight.w500
+                        ),
                         onPressed: () {
-                          finishedChoosing(context,'Ar');
+                          finishedChoosing(context, 'Ar');
                         },
                       ),
                       RaisedButton(
                         color: Colors.black,
-                        child: text('English', Colors.white, 16.0, 1.5,
-                            FontWeight.w500),
+                        child: Text(
+                          'English',
+                          // Colors.white, 16.0, 1.5,
+                          // FontWeight.w500
+                        ),
                         onPressed: () {
-                          finishedChoosing(context,'En');
+                          finishedChoosing(context, 'En');
                         },
                       ),
                     ],
@@ -110,15 +123,15 @@ class PreferredLanguageTakingScreen extends StatelessWidget {
 
 class PreferredThemeTakingScreen extends StatelessWidget {
   final SessionManager sessionManager = new SessionManager();
-  void finishedChoosing(context, bool theme){
+  void finishedChoosing(context, bool theme) {
     sessionManager.createPreferredTheme(theme);
     Navigator.pop(context);
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) =>
-                PreferredLanguageTakingScreen()));
+            builder: (context) => PreferredLanguageTakingScreen()));
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,8 +141,11 @@ class PreferredThemeTakingScreen extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  text('Now Tell us which theme do you prefer?', Colors.white,
-                      22.0, 1.5, FontWeight.w500),
+                  Text(
+                    'Now Tell us which theme do you prefer?',
+                    // Colors.white,
+                    // 22.0, 1.5, FontWeight.w500
+                  ),
                   SizedBox(
                     height: 20,
                   ),
@@ -139,16 +155,22 @@ class PreferredThemeTakingScreen extends StatelessWidget {
                     children: <Widget>[
                       RaisedButton(
                         color: Colors.white,
-                        child: text('White Theme', Colors.black, 16.0, 1.5,
-                            FontWeight.w500),
+                        child: Text(
+                          'White Theme',
+                          // Colors.black, 16.0, 1.5,
+                          // FontWeight.w500
+                        ),
                         onPressed: () {
                           finishedChoosing(context, false);
                         },
                       ),
                       RaisedButton(
                         color: Colors.black,
-                        child: text('Black Theme', Colors.white, 16.0, 1.5,
-                            FontWeight.w500),
+                        child: Text(
+                          'Black Theme',
+                          // Colors.white, 16.0, 1.5,
+                          // FontWeight.w500
+                        ),
                         onPressed: () {
                           finishedChoosing(context, true);
                         },

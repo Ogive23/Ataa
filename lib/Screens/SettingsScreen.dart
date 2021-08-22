@@ -1,19 +1,21 @@
 import 'package:feedme/Session/session_manager.dart';
-import 'package:feedme/Themes/app_language.dart';
-import 'package:feedme/Themes/app_theme.dart';
+import 'package:feedme/Shared%20Data/app_language.dart';
+import 'package:feedme/Shared%20Data/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatelessWidget {
   final SessionManager sessionManager = new SessionManager();
+  static late AppTheme appTheme;
+  static late AppLanguage appLanguage;
   @override
   Widget build(BuildContext context) {
-    AppTheme appTheme = Provider.of<AppTheme>(context);
-    AppLanguage appLanguage = Provider.of<AppLanguage>(context);
+    appTheme = Provider.of<AppTheme>(context);
+    appLanguage = Provider.of<AppLanguage>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          appLanguage.words['SettingsTitle'],
+          appLanguage.words['SettingsTitle']!,
           style: appTheme.themeData.textTheme.title,
         ),
         backgroundColor: appTheme.themeData.appBarTheme.color,
@@ -51,18 +53,20 @@ class SettingsScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+
+              //ToDo: Refactor -> Directionality
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: appLanguage.language == 'En'
                     ? <Widget>[
-                        Text(appLanguage.words['SettingsDarkMode'],
+                        Text(appLanguage.words['SettingsDarkMode']!,
                             style: appTheme.themeData.textTheme.body1),
                         Switch(
                           value: appTheme.isDark,
                           activeColor: appTheme.themeData.toggleableActiveColor,
                           onChanged: (value) {
                             sessionManager.createPreferredTheme(value);
-                            appTheme.changeTheme(value);
+                            appTheme.changeTheme(value, context);
                           },
                         ),
                       ]
@@ -72,10 +76,10 @@ class SettingsScreen extends StatelessWidget {
                           activeColor: appTheme.themeData.toggleableActiveColor,
                           onChanged: (value) {
                             sessionManager.createPreferredTheme(value);
-                            appTheme.changeTheme(value);
+                            appTheme.changeTheme(value, context);
                           },
                         ),
-                        Text(appLanguage.words['SettingsDarkMode'],
+                        Text(appLanguage.words['SettingsDarkMode']!,
                             style: appTheme.themeData.textTheme.body1),
                       ],
               ),
@@ -83,7 +87,7 @@ class SettingsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: appLanguage.language == 'En'
                     ? <Widget>[
-                        Text(appLanguage.words['SettingsLanguage'],
+                        Text(appLanguage.words['SettingsLanguage']!,
                             style: appTheme.themeData.textTheme.body1),
                         DropdownButton(
                             items: [
@@ -106,8 +110,8 @@ class SettingsScreen extends StatelessWidget {
                             dropdownColor: Colors.amber,
                             icon: Icon(Icons.language),
                             // style: appTheme.themeData.textTheme.body1,
-                            onChanged: (value) {
-                              sessionManager.createPreferredLanguage(value);
+                            onChanged: (String? value) {
+                              sessionManager.createPreferredLanguage(value!);
                               appLanguage.changeLanguage(value);
                             }),
                       ]
@@ -133,11 +137,11 @@ class SettingsScreen extends StatelessWidget {
                             dropdownColor: Colors.amber,
                             icon: Icon(Icons.language),
                             // style: appTheme.themeData.textTheme.body1,
-                            onChanged: (value) {
-                              sessionManager.createPreferredLanguage(value);
+                            onChanged: (String? value) {
+                              sessionManager.createPreferredLanguage(value!);
                               appLanguage.changeLanguage(value);
                             }),
-                        Text(appLanguage.words['SettingsLanguage'],
+                        Text(appLanguage.words['SettingsLanguage']!,
                             style: appTheme.themeData.textTheme.body1),
                       ],
               )

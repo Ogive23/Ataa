@@ -1,35 +1,31 @@
-import 'package:feedme/API_Callers/marker_api_caller.dart';
-import 'package:feedme/Custom_Widgets/text.dart';
-import 'package:feedme/Custom_Widgets/text_field.dart';
-import 'package:feedme/Models/user_location.dart';
-import 'package:feedme/Themes/app_language.dart';
-import 'package:feedme/Themes/app_theme.dart';
+import 'package:feedme/APICallers/MarkerApiCaller.dart';
+import 'package:feedme/CustomWidgets/CustomSpacing.dart';
+import 'package:feedme/CustomWidgets/CustomTextField.dart';
+import 'package:feedme/Models/UserLocation.dart';
+import 'package:feedme/Shared%20Data/app_language.dart';
+import 'package:feedme/Shared%20Data/app_theme.dart';
+import 'package:feedme/Shared%20Data/common_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
-import 'package:toast/toast.dart';
 
-class MarkerCreation extends StatefulWidget {
-  final AppTheme appTheme;
-  final AppLanguage appLanguage;
-  MarkerCreation(this.appTheme, this.appLanguage);
-
+class MarkerCreationPage extends StatefulWidget {
   @override
-  _MarkerCreationState createState() =>
-      _MarkerCreationState(this.appTheme, this.appLanguage);
+  _MarkerCreationPageState createState() => _MarkerCreationPageState();
 }
 
-class _MarkerCreationState extends State<MarkerCreation> {
-  AppLanguage appLanguage;
-  AppTheme appTheme;
-  _MarkerCreationState(this.appTheme, this.appLanguage);
+class _MarkerCreationPageState extends State<MarkerCreationPage> {
+  late double w,h;
+  static late CommonData commonData;
+  static late AppLanguage appLanguage;
+  static late AppTheme appTheme;
 
   TextEditingController name = new TextEditingController();
   TextEditingController description = new TextEditingController();
-  NumberPicker integerNumberPicker;
-  List<DropdownMenuItem<int>> dropDownMenuItems;
+  late NumberPicker integerNumberPicker;
+  late List<DropdownMenuItem<int>> dropDownMenuItems;
   double quantity = 1.0;
   int priority = 1;
   List<int> priorities = [1, 3, 5, 7, 10];
@@ -40,6 +36,11 @@ class _MarkerCreationState extends State<MarkerCreation> {
 
   @override
   Widget build(BuildContext context) {
+    w = MediaQuery.of(context).size.width;
+    h = MediaQuery.of(context).size.height;
+    commonData = Provider.of<CommonData>(context);
+    appTheme = Provider.of<AppTheme>(context);
+    appLanguage = Provider.of<AppLanguage>(context);
     return Scaffold(
         // backgroundColor: appTheme.themeData.backgroundColor,
         //   appBar: AppBar(
@@ -72,61 +73,76 @@ class _MarkerCreationState extends State<MarkerCreation> {
                   child: IconButton(
                     icon: Icon(Icons.info,
                         color: appTheme.themeData.accentColor, size: 30),
-                    onPressed: () {
+                    onPressed: () async {
                       return showDialog<void>(
                         context: context,
                         barrierDismissible: true,
                         // false = user must tap button, true = tap outside dialog
                         builder: (BuildContext dialogContext) {
                           return AlertDialog(
-                            title: Text(appLanguage.words['InfoTitle'],textDirection: appLanguage.textDirection,),
+                            title: Text(
+                              appLanguage.words['InfoTitle']!,
+                              textDirection: appLanguage.textDirection,
+                            ),
                             content: SingleChildScrollView(
                               child: Column(
                                 children: <Widget>[
-                                  Text(appLanguage.words['InfoSubtitle'],textDirection: appLanguage.textDirection,),
                                   Text(
-                                    appLanguage.words['InfoOne'],textDirection: appLanguage.textDirection,
+                                    appLanguage.words['InfoSubtitle']!,
+                                    textDirection: appLanguage.textDirection,
+                                  ),
+                                  Text(
+                                    appLanguage.words['InfoOne']!,
+                                    textDirection: appLanguage.textDirection,
                                     style: TextStyle(color: Colors.green),
                                   ),
                                   Text(
-                                    appLanguage.words['InfoTwo'],textDirection: appLanguage.textDirection,
+                                    appLanguage.words['InfoTwo']!,
+                                    textDirection: appLanguage.textDirection,
                                     style: TextStyle(color: Colors.blue),
                                   ),
                                   Text(
-                                    appLanguage.words['InfoThree'],textDirection: appLanguage.textDirection,
+                                    appLanguage.words['InfoThree']!,
+                                    textDirection: appLanguage.textDirection,
                                     style: TextStyle(color: Colors.blueAccent),
                                   ),
                                   Text(
-                                    appLanguage.words['InfoFour'],textDirection: appLanguage.textDirection,
+                                    appLanguage.words['InfoFour']!,
+                                    textDirection: appLanguage.textDirection,
                                     style: TextStyle(color: Colors.orange),
                                   ),
                                   Text(
-                                    appLanguage.words['InfoFive'],textDirection: appLanguage.textDirection,
+                                    appLanguage.words['InfoFive']!,
+                                    textDirection: appLanguage.textDirection,
                                     style: TextStyle(color: Colors.red),
                                   ),
                                   Text(
-                                    appLanguage.words['InfoNoteTitle'],textDirection: appLanguage.textDirection,
+                                    appLanguage.words['InfoNoteTitle']!,
+                                    textDirection: appLanguage.textDirection,
                                     style: TextStyle(color: Colors.cyan),
                                   ),
                                   Text(
-                                    appLanguage.words['InfoNoteOne'],textDirection: appLanguage.textDirection,
+                                    appLanguage.words['InfoNoteOne']!,
+                                    textDirection: appLanguage.textDirection,
                                     style: TextStyle(color: Colors.yellow),
                                   ),
                                   RichText(
                                     textDirection: appLanguage.textDirection,
                                     text: TextSpan(
-                                        text:
-                                        appLanguage.words['InfoNoteTwoPartOne'],
+                                        text: appLanguage
+                                            .words['InfoNoteTwoPartOne'],
                                         children: [
                                           TextSpan(
-                                              text: appLanguage.words['InfoNoteTwoPartTwo'],
+                                              text: appLanguage
+                                                  .words['InfoNoteTwoPartTwo'],
                                               style: TextStyle(
                                                   color: Colors.green,
                                                   decoration:
                                                       TextDecoration.none),
                                               children: [
                                                 TextSpan(
-                                                    text: appLanguage.words['InfoNoteTwoPartThree'],
+                                                    text: appLanguage.words[
+                                                        'InfoNoteTwoPartThree'],
                                                     style: TextStyle(
                                                         color: Colors.purple))
                                               ])
@@ -141,7 +157,7 @@ class _MarkerCreationState extends State<MarkerCreation> {
                             ),
                             actions: <Widget>[
                               FlatButton(
-                                child: Text(appLanguage.words['InfoOkButton']),
+                                child: Text(appLanguage.words['InfoOkButton']!),
                                 onPressed: () {
                                   Navigator.of(dialogContext)
                                       .pop(); // Dismiss alert dialog
@@ -154,25 +170,31 @@ class _MarkerCreationState extends State<MarkerCreation> {
                     },
                   )),
               Text(
-                appLanguage.words['MarkerCreationTitle'],
+                appLanguage.words['MarkerCreationTitle']!,
                 style: appTheme.themeData.textTheme.subtitle,
                 textAlign: TextAlign.center,
               ),
               SizedBox(
                 height: 20,
               ),
-              textField(
-                  description,
-                  appLanguage.words['MarkerCreationDescription'],
-                  appTheme.themeData.accentColor,
-                  false,
-                  null,
-                  appLanguage.words['MarkerCreationDescriptionDetails']),
-              SizedBox(
-                height: 10,
+              CustomTextField(
+                  controller: description,
+                  label: appLanguage.words['MarkerCreationDescription']!,
+                  selectedColor: appTheme.themeData.accentColor,
+                  borderColor: appTheme.themeData.accentColor,
+                  obscureText: false,
+                  keyboardType: TextInputType.multiline,
+                  hint: appLanguage.words['MarkerCreationDescriptionDetails']!,
+                  error: null,
+                  width: w,
+                  enableFormatters: false),
+              CustomSpacing(
+                value: 100,
               ),
-              text(appLanguage.words['MarkerCreationPriority'],
-                  appTheme.themeData.accentColor, 16.0, 1.5, FontWeight.normal),
+              Text(
+                appLanguage.words['MarkerCreationPriority']!,
+                // appTheme.themeData.accentColor, 16.0, 1.5, FontWeight.normal
+              ),
               SizedBox(
                 height: 5,
               ),
@@ -198,8 +220,9 @@ class _MarkerCreationState extends State<MarkerCreation> {
               SizedBox(
                 height: 10,
               ),
-              text(appLanguage.words['MarkerCreationType'],
-                  appTheme.themeData.accentColor, 16.0, 1.5, FontWeight.normal),
+              Text(appLanguage.words['MarkerCreationType']!,
+                  // appTheme.themeData.accentColor, 16.0, 1.5, FontWeight.normal
+              ),
               SizedBox(
                 height: 5,
               ),
@@ -214,19 +237,19 @@ class _MarkerCreationState extends State<MarkerCreation> {
                   Column(
                     children: <Widget>[
                       Icon(Icons.cake),
-                      Text(appLanguage.words['MarkerCreationFood']),
+                      Text(appLanguage.words['MarkerCreationFood']!),
                     ],
                   ),
                   Column(
                     children: <Widget>[
                       Icon(Icons.local_drink),
-                      Text(appLanguage.words['MarkerCreationDrink']),
+                      Text(appLanguage.words['MarkerCreationDrink']!),
                     ],
                   ),
                   Column(
                     children: <Widget>[
                       Icon(Icons.fastfood),
-                      Text(appLanguage.words['MarkerCreationBoth']),
+                      Text(appLanguage.words['MarkerCreationBoth']!),
                     ],
                   ),
                 ],
@@ -242,8 +265,9 @@ class _MarkerCreationState extends State<MarkerCreation> {
               SizedBox(
                 height: 10,
               ),
-              text(appLanguage.words['MarkerCreationQuantity'],
-                  appTheme.themeData.accentColor, 16.0, 1.5, FontWeight.normal),
+              Text(appLanguage.words['MarkerCreationQuantity']!,
+                  // appTheme.themeData.accentColor, 16.0, 1.5, FontWeight.normal
+              ),
               Slider(
                 value: quantity,
                 min: 1.0,
@@ -260,7 +284,7 @@ class _MarkerCreationState extends State<MarkerCreation> {
               ),
               RaisedButton(
                 child:
-                    Text(appLanguage.words['MarkerCreationCreateMarkerButton']),
+                    Text(appLanguage.words['MarkerCreationCreateMarkerButton']!),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30))),
                 color: Colors.amber,
@@ -279,10 +303,10 @@ class _MarkerCreationState extends State<MarkerCreation> {
                     quantity,
                   );
                   if (status) {
-                    Toast.show('Thank You!', context, duration: 7);
+                    // Toast.show('Thank You!', context, duration: 7);
                     Navigator.pop(context);
                   } else {
-                    Toast.show('Please fill all the required Data', context);
+                    // Toast.show('Please fill all the required Data', context);
                   }
                 },
               ),

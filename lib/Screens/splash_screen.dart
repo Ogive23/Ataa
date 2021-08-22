@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:feedme/Session/session_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'dart:math';
 
 class SplashScreen extends StatefulWidget {
@@ -12,9 +11,9 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreen extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
-  SessionManager sessionManager;
-  AnimationController _animationController;
-  Animation<Color> _colorAnimation;
+  late SessionManager sessionManager;
+  late AnimationController _animationController;
+  late Animation<Color> _colorAnimation;
   double value = 0.0;
   double opacity = 0;
   String quote = "";
@@ -49,10 +48,13 @@ class _SplashScreen extends State<SplashScreen>
   }
 
   getHomePage() {
-    if (sessionManager.notFirstTime())
-      return 'Background';
-    else
-      return 'WelcomeScreen';
+
+    if (!sessionManager.notFirstTime()) return 'WelcomeScreen';
+    if (sessionManager.isLoggedIn()){
+      sessionManager.loadSession();
+      return 'MainScreen';
+    }
+    return 'LoginScreen';
   }
 
   @override
@@ -124,10 +126,10 @@ class _SplashScreen extends State<SplashScreen>
                   padding: EdgeInsets.only(bottom: 20),
                   child: Text(
                     '$quote',
-                    style: GoogleFonts.quando(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                    ),
+                    // style: GoogleFonts.quando(
+                    //   color: Colors.white,
+                    //   fontSize: 16.0,
+                    // ),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -142,9 +144,9 @@ class _SplashScreen extends State<SplashScreen>
                           value < 1.0
                               ? '${(value * 100).toStringAsPrecision(3)}%'
                               : 'Welcome',
-                          style: GoogleFonts.snippet(
-                            color: Colors.white,
-                          ),
+                          // style: GoogleFonts.snippet(
+                          //   color: Colors.white,
+                          // ),
                         ),
                         LinearProgressIndicator(
                           value: value,

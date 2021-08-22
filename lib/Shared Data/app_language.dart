@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class AppLanguage extends ChangeNotifier {
-  String language;
-  Map<String, String> words;
-  TextDirection textDirection;
+  late String language;
+  late Map<String, String> words;
+  late TextDirection textDirection;
   AppLanguage(String language) {
     this.language = language;
     textDirection = initTextDirection(this.language);
