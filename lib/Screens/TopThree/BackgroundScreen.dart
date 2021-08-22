@@ -23,16 +23,31 @@ class _BackgroundScreenState extends State<BackgroundScreen> {
         ? (await showDialog(
             context: context,
             builder: (context) => new AlertDialog(
-              title: new Text('هل أت متأكد؟'),
-              content: new Text('هل  تريد إغلاق التطبيق'),
+              backgroundColor: appTheme.themeData.cardColor,
+              //ToDo: Support English
+              title: new Text(
+                appLanguage.words['QuitDialogTitle']!,
+                style: appTheme.themeData.primaryTextTheme.headline5,
+              ),
+              content: new Text(
+                appLanguage.words['QuitDialogSubtitle']!,
+                style: appTheme.themeData.primaryTextTheme.headline5,
+              ),
               actions: <Widget>[
                 new TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: new Text('لا'),
+                  child: new Text(
+                    appLanguage.words['QuitActionButtonTwo']!,
+                    style: appTheme.themeData.primaryTextTheme.headline5,
+                  ),
                 ),
                 new TextButton(
                   onPressed: () => Navigator.of(context).pop(true),
-                  child: new Text('نعم'),
+                  child: new Text(
+                    appLanguage.words['QuitActionButtonOne']!,
+                    style: appTheme.themeData.primaryTextTheme.headline5!
+                        .apply(color: Colors.red),
+                  ),
                 ),
               ],
             ),

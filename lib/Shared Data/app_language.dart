@@ -86,6 +86,10 @@ class AppLanguage extends ChangeNotifier {
                 'Orange : Means it can waits for about 24 hours before it gets rotten.\n',
             'VolunteerInfoFive':
                 'Red : Means it must be taken immediately & can\'t really waits for 3 hours.\n',
+            'QuitDialogTitle': 'Are you sure?',
+            'QuitDialogSubtitle': 'You wanna quit the app',
+            'QuitActionButtonOne': 'Yes',
+            'QuitActionButtonTwo': 'No',
           }
         : {
             'bottomNavigationItemFirst': 'أبقي علي تواصل',
@@ -153,6 +157,10 @@ class AppLanguage extends ChangeNotifier {
                 'البرتقالي : تعني أنه يمكنه الإنتظار لمدة 24 ساعة قبل أن يتعفن. \n',
             'VolunteerInfoFive':
                 'الأحمر : تعني أنه يجب أخذه في الحال ولا يمكنه الإنتظار لأكثر من 3 ساعات. \n',
+            'QuitDialogTitle': 'هل أنت متأكد؟',
+            'QuitDialogSubtitle': 'هل  تريد إغلاق التطبيق',
+            'QuitActionButtonOne': 'نعم',
+            'QuitActionButtonTwo': 'لا',
           };
   }
 
