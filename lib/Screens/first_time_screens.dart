@@ -35,8 +35,14 @@ class WelcomeScreen extends StatelessWidget {
                   // FontWeight.w800
                 ),
                 SizedBox(height: 30),
-                RaisedButton.icon(
-                    color: Colors.white,
+                ElevatedButton.icon(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white),
+                        shape: MaterialStateProperty
+                            .all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30))))),
                     icon: Icon(
                       Icons.fast_forward,
                       color: Colors.green,
@@ -45,8 +51,6 @@ class WelcomeScreen extends StatelessWidget {
                       'Continue',
                       // Colors.green, 18.0, 1.5, FontWeight.w600
                     ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(30))),
                     onPressed: () {
                       Navigator.pop(context);
                       Navigator.push(
@@ -91,8 +95,11 @@ class PreferredLanguageTakingScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      RaisedButton(
-                        color: Colors.white,
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.white),
+                        ),
                         child: Text(
                           'العربية',
                           // Colors.black, 16.0, 1.5,
@@ -102,8 +109,11 @@ class PreferredLanguageTakingScreen extends StatelessWidget {
                           finishedChoosing(context, 'Ar');
                         },
                       ),
-                      RaisedButton(
-                        color: Colors.black,
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.black),
+                        ),
                         child: Text(
                           'English',
                           // Colors.white, 16.0, 1.5,
@@ -153,8 +163,11 @@ class PreferredThemeTakingScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      RaisedButton(
-                        color: Colors.white,
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.white),
+                        ),
                         child: Text(
                           'White Theme',
                           // Colors.black, 16.0, 1.5,
@@ -164,8 +177,11 @@ class PreferredThemeTakingScreen extends StatelessWidget {
                           finishedChoosing(context, false);
                         },
                       ),
-                      RaisedButton(
-                        color: Colors.black,
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.black),
+                        ),
                         child: Text(
                           'Black Theme',
                           // Colors.white, 16.0, 1.5,

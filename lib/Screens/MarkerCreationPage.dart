@@ -156,7 +156,7 @@ class _MarkerCreationPageState extends State<MarkerCreationPage> {
                               ),
                             ),
                             actions: <Widget>[
-                              FlatButton(
+                              TextButton(
                                 child: Text(appLanguage.words['InfoOkButton']!),
                                 onPressed: () {
                                   Navigator.of(dialogContext)

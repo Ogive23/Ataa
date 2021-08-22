@@ -55,7 +55,7 @@ class _FeedMeMainPageState extends State<FeedMeMainPage> {
 
   showAlertDialog(index) {
     // set up the buttons
-    Widget launchButton = FlatButton(
+    Widget launchButton = TextButton(
       child: Text("Go And Get IT!"),
       onPressed: () {
         setState(() {
@@ -67,7 +67,7 @@ class _FeedMeMainPageState extends State<FeedMeMainPage> {
         Navigator.of(context).pop();
       },
     );
-    Widget cancelButton = FlatButton(
+    Widget cancelButton = TextButton(
       child: Text("Cancel"),
       onPressed: () async {
         Navigator.of(context).pop();
@@ -190,7 +190,7 @@ class _FeedMeMainPageState extends State<FeedMeMainPage> {
       content: Text(
           'it seems that you are ${num.parse((calculateDistance(userLocation.getLatLng(), markers[0].position) * 1000).toStringAsFixed(2))} Meter away from.'),
       actions: [
-        FlatButton(
+        TextButton(
             child: Text("Yes i got it!"),
             onPressed: () {
               setState(() async {
@@ -204,7 +204,7 @@ class _FeedMeMainPageState extends State<FeedMeMainPage> {
                 Navigator.pushNamed(context, "Background");
               });
             }),
-        FlatButton(
+        TextButton(
           child: Text(
             "it's not found!",
             style: TextStyle(color: Colors.red),
@@ -283,7 +283,7 @@ class _FeedMeMainPageState extends State<FeedMeMainPage> {
                       ),
                     ),
                     actions: <Widget>[
-                      FlatButton(
+                      TextButton(
                         child: Text('I Got it'),
                         onPressed: () {
                           Navigator.of(dialogContext)
@@ -300,7 +300,7 @@ class _FeedMeMainPageState extends State<FeedMeMainPage> {
         following
             ? Align(
                 alignment: Alignment.topRight,
-                child: RaisedButton(
+                child: ElevatedButton(
                   onPressed: () {
                     setState(() {
                       following = !following;

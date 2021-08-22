@@ -163,8 +163,10 @@ class IntroPage extends StatelessWidget {
                   splashColor: Colors.redAccent,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10))),
-                  child: RaisedButton.icon(
-                    elevation: 10,
+                  child: ElevatedButton.icon(
+                    style: ButtonStyle(
+                      elevation: MaterialStateProperty.all<double>(10.0)
+                    ),
                     onPressed: () {
                       commonData.changeStep(Pages.MarkerCreationPage.index);
                     },
@@ -190,7 +192,7 @@ class IntroPage extends StatelessWidget {
                   splashColor: Colors.redAccent,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10))),
-                  child: RaisedButton.icon(
+                  child: ElevatedButton.icon(
                     onPressed: () {
                       commonData.changeStep(Pages.FeedMeMainPage.index);
                     },
