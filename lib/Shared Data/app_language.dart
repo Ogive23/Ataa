@@ -63,9 +63,9 @@ class AppLanguage extends ChangeNotifier {
             'MarkerCreationType': 'Type',
             'MarkerCreationQuantity': 'Quantity(Bags)',
             'MarkerCreationCreateMarkerButton': 'Create Marker',
-      'MarkerCreationLocationError': 'We couldn\'t locate your location, Kindly try again' ,
       'MarkerCreationSuccessText': 'Thank You!',
       'MarkerCreationFailText': 'Please fill all the required Data',
+            'MarkerCreationLocationError':
             'InfoTitle': 'Info',
             'InfoSubtitle': 'Priorities',
             'InfoOne':
@@ -97,6 +97,10 @@ class AppLanguage extends ChangeNotifier {
             'VolunteerInfoFive':
                 'Red : Means it must be taken immediately & can\'t really waits for 3 hours.\n',
       'FeedMeMainTitle':'Volunteering',
+            'FeedMeMainAcquiringErrorOne': 'We couldn\'t locate your location',
+            'FeedMeMainAcquiringErrorTwo':
+                'Error happened while trying to show Google map.',
+            'FeedMeMainError': 'Something went wrong',
             'QuitDialogTitle': 'Are you sure?',
             'QuitDialogSubtitle': 'You wanna quit the app',
             'QuitActionButtonOne': 'Yes',
@@ -146,9 +150,10 @@ class AppLanguage extends ChangeNotifier {
             'MarkerCreationType': 'النوع',
             'MarkerCreationQuantity': 'عدد الحقائب',
             'MarkerCreationCreateMarkerButton': 'أضف العلامة',
-      'MarkerCreationLocationError': 'لم نتمكن من الحصول علي موقعك، الرجاء إعادة المحاولة',
-      'MarkerCreationSuccessText': 'شكراً لك!',
-      'MarkerCreationFailText': 'من فضلك قم بملئ المعلومات المطلوبة',
+            'MarkerCreationLocationError':
+                'لم نتمكن من الحصول علي موقعك، الرجاء إعادة المحاولة',
+            'MarkerCreationSuccessText': 'شكراً لك',
+            'MarkerCreationFailText': 'من فضلك قم بملئ المعلومات المطلوبة',
             'InfoTitle': 'معلومات',
             'InfoSubtitle': 'الأهمية',
             'InfoOne':
@@ -179,6 +184,10 @@ class AppLanguage extends ChangeNotifier {
             'VolunteerInfoFive':
                 'الأحمر : تعني أنه يجب أخذه في الحال ولا يمكنه الإنتظار لأكثر من 3 ساعات. \n',
       'FeedMeMainTitle':'التطوع',
+            'FeedMeMainAcquiringErrorOne':
+                'حدث خطأ ما لأننا لم نستطع أن نحصل علي موقعك',
+            'FeedMeMainAcquiringErrorTwo': 'حدث خطأ ما أثناء تحميل الخريطة',
+            'FeedMeMainError': 'حدث خطأ ما',
             'QuitDialogTitle': 'هل أنت متأكد؟',
             'QuitDialogSubtitle': 'هل  تريد إغلاق التطبيق',
             'QuitActionButtonOne': 'نعم',
