@@ -5,7 +5,7 @@ class MarkerApiCaller {
   late FirebaseFirestore firestore;
   late CollectionReference markers;
   DataMapper factory = new DataMapper();
-  initialize() {
+  void initialize() {
     firestore = FirebaseFirestore.instance;
     markers = FirebaseFirestore.instance.collection('markers');
   }
@@ -35,6 +35,7 @@ class MarkerApiCaller {
 
   dynamic getAll() async {
     QuerySnapshot snapshot = await markers.get();
+    print(snapshot);
     return factory.getMarkersFromSnapshot(snapshot);
   }
 }
