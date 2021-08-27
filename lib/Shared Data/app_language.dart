@@ -44,8 +44,15 @@ class AppLanguage extends ChangeNotifier {
             'FeedMeIntroSecondButton': 'Volunteer',
             'FeedMeIntroWord':
                 'Thank you for making the world a better place 😀',
-            'MarkerCreationTitle':
-                'Remember That\n\n"You Don\'t Only Share It With The Poor\nSo Share the best you have".',
+            'AchievementCenterOne': 'Hey, you have',
+            'AchievementCenterTwo': 'Markers published',
+            'AchievementCenterThree': '&',
+            'AchievementCenterFour': 'Markers collected',
+            'AchievementCenterFive': 'Your progress',
+            'AchievementCenterSix': '62 Markers left to your prize.',
+      'MarkerCreationTitle': 'Food Sharing',
+            'MarkerCreationSubtitle':
+                'Remember That\n\nYou Don\'t Only Share It With The Poor\nSo Share the best you have.',
             'MarkerCreationFood': ' Food ',
             'MarkerCreationDrink': ' Drink ',
             'MarkerCreationBoth': ' Both of them ',
@@ -56,6 +63,9 @@ class AppLanguage extends ChangeNotifier {
             'MarkerCreationType': 'Type',
             'MarkerCreationQuantity': 'Quantity(Bags)',
             'MarkerCreationCreateMarkerButton': 'Create Marker',
+      'MarkerCreationLocationError': 'We couldn\'t locate your location, Kindly try again' ,
+      'MarkerCreationSuccessText': 'Thank You!',
+      'MarkerCreationFailText': 'Please fill all the required Data',
             'InfoTitle': 'Info',
             'InfoSubtitle': 'Priorities',
             'InfoOne':
@@ -86,6 +96,7 @@ class AppLanguage extends ChangeNotifier {
                 'Orange : Means it can waits for about 24 hours before it gets rotten.\n',
             'VolunteerInfoFive':
                 'Red : Means it must be taken immediately & can\'t really waits for 3 hours.\n',
+      'FeedMeMainTitle':'Volunteering',
             'QuitDialogTitle': 'Are you sure?',
             'QuitDialogSubtitle': 'You wanna quit the app',
             'QuitActionButtonOne': 'Yes',
@@ -116,8 +127,15 @@ class AppLanguage extends ChangeNotifier {
             'FeedMeIntroFirstButton': 'شارك طعامك',
             'FeedMeIntroSecondButton': 'تطوع',
             'FeedMeIntroWord': 'شكراً لجعلك من العالم مكاناً أفضل 😀',
-            'MarkerCreationTitle':
-                'تذكر ذلك\n\nأنت لا تشارك طعامك مع الفقراء فقط"\n."فشارك أفضل ما تملك',
+      'AchievementCenterOne': 'مرحباً، أنت تملك',
+      'AchievementCenterTwo': 'طعام مشارك',
+      'AchievementCenterThree': '&',
+      'AchievementCenterFour': 'طعام تم توصيله',
+      'AchievementCenterFive': 'معدل وصولك',
+      'AchievementCenterSix': '62 مشاركة أخري تبقت للحصول علي الجائزة',
+      'MarkerCreationTitle': 'مشاركة الطعام',
+            'MarkerCreationSubtitle':
+                'تذكر ذلك\n\nأنت لا تشارك طعامك مع الفقراء فقط\n.فشارك أفضل ما تملك',
             'MarkerCreationFood': ' طعام ',
             'MarkerCreationDrink': ' شراب ',
             'MarkerCreationBoth': ' كلاهما ',
@@ -126,8 +144,11 @@ class AppLanguage extends ChangeNotifier {
                 'قم بوصفه علي سبيل المثال، ”يوجد هنا 4 أكياس من اللحم و طبق من الأرز“.',
             'MarkerCreationPriority': 'الأهمية',
             'MarkerCreationType': 'النوع',
-            'MarkerCreationQuantity': 'عدد الأكياس',
+            'MarkerCreationQuantity': 'عدد الحقائب',
             'MarkerCreationCreateMarkerButton': 'أضف العلامة',
+      'MarkerCreationLocationError': 'لم نتمكن من الحصول علي موقعك، الرجاء إعادة المحاولة',
+      'MarkerCreationSuccessText': 'شكراً لك!',
+      'MarkerCreationFailText': 'من فضلك قم بملئ المعلومات المطلوبة',
             'InfoTitle': 'معلومات',
             'InfoSubtitle': 'الأهمية',
             'InfoOne':
@@ -157,6 +178,7 @@ class AppLanguage extends ChangeNotifier {
                 'البرتقالي : تعني أنه يمكنه الإنتظار لمدة 24 ساعة قبل أن يتعفن. \n',
             'VolunteerInfoFive':
                 'الأحمر : تعني أنه يجب أخذه في الحال ولا يمكنه الإنتظار لأكثر من 3 ساعات. \n',
+      'FeedMeMainTitle':'التطوع',
             'QuitDialogTitle': 'هل أنت متأكد؟',
             'QuitDialogSubtitle': 'هل  تريد إغلاق التطبيق',
             'QuitActionButtonOne': 'نعم',
