@@ -6,7 +6,7 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import '../RegistrationScreens/login_screen.dart';
 import 'BackgroundScreen.dart';
@@ -19,6 +19,7 @@ import '../../Shared Data/common_data.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
   await Firebase.initializeApp();
   ErrorWidget.builder = (errorDetails) {
     return Container(child: Text('حدث خطأ ما'));
@@ -39,7 +40,6 @@ class FeedMeMain extends StatelessWidget {
   final FirebaseAnalytics analytics = FirebaseAnalytics();
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     return MaterialApp(
       title: 'FeedMe',
       debugShowCheckedModeBanner: false,

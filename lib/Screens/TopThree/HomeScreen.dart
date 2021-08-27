@@ -2,6 +2,7 @@ import 'package:feedme/Shared%20Data/app_language.dart';
 import 'package:feedme/Shared%20Data/app_theme.dart';
 import 'package:feedme/Shared%20Data/common_data.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import '../../GeneralInfo.dart';
 
@@ -10,19 +11,25 @@ class HomeScreen extends StatelessWidget {
   static late CommonData commonData;
   static late AppTheme appTheme;
   static late AppLanguage appLanguage;
-  // InterstitialAd myInterstitial;
-  // Future<void> initAdMob() {
-  //   return FirebaseAdMob.instance.initialize(appId: AdManager.appId);
-  // }
-  // void loadInterstitial(){
-  //   InterstitialAd.
-  //     ..load()
-  //     ..show(
-  //       anchorType: AnchorType.bottom,
-  //       anchorOffset: 0.0,
-  //       horizontalCenterOffset: 0.0,
-  //     );
-  // }
+  static late List<Color> gradientColors;
+
+  void loadInterstitial() {
+    InterstitialAd.load(
+        adUnitId: InterstitialAd.testAdUnitId,
+        request: AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (InterstitialAd ad) {
+            print('InterstitialAd success to load: $ad');
+            ad.show();
+            // Keep a reference to the ad so you can show it later.
+            // this._interstitialAd = ad;
+          },
+          onAdFailedToLoad: (LoadAdError error) {
+            print('InterstitialAd failed to load: $error');
+          },
+        ));
+  }
+
   void loadGradientColors() {
     if (appTheme.isDark) {
       gradientColors = [
@@ -58,17 +65,11 @@ class HomeScreen extends StatelessWidget {
     commonData = Provider.of<CommonData>(context);
     appTheme = Provider.of<AppTheme>(context);
     appLanguage = Provider.of<AppLanguage>(context);
-    // myInterstitial = InterstitialAd(
-    //   adUnitId: InterstitialAd.testAdUnitId,
-    //   listener: (MobileAdEvent event) {
-    //     print("InterstitialAd event is $event");
-    //   },
-    // );
     loadGradientColors();
     return GestureDetector(
         onTap: () {
           commonData.changeStep(Pages.IntroPage.index);
-          // loadInterstitial();
+          loadInterstitial();
         },
         child: Container(
           height: MediaQuery.of(context).size.height,
