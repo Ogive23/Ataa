@@ -1,11 +1,17 @@
 import 'dart:async';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:feedme/APICallers/MarkerApiCaller.dart';
+import 'package:feedme/CustomWidgets/ErrorMessage.dart';
+import 'package:feedme/GeneralInfo.dart';
 import 'package:feedme/Models/UserLocation.dart';
 import 'package:feedme/Session/session_manager.dart';
 import 'package:feedme/Shared%20Data/app_theme.dart';
+import 'package:feedme/Shared%20Data/common_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 import 'dart:math';
 import 'package:vector_math/vector_math.dart' as math;
 import 'package:feedme/Shared%20Data/app_language.dart';
@@ -16,22 +22,24 @@ class FeedMeMainPage extends StatefulWidget {
 }
 
 class _FeedMeMainPageState extends State<FeedMeMainPage> {
+  static late double w, h;
+  static late CommonData commonData;
   static late AppLanguage appLanguage;
   static late AppTheme appTheme;
   static late GoogleMap googleMap;
   final UserLocation userLocation = new UserLocation();
-  static late List<Marker> markers;
+  late List<Marker> markers;
   bool following = false;
   static late Marker chosenMarker;
   SessionManager sessionManager = new SessionManager();
   final MarkerApiCaller markerApiCaller = new MarkerApiCaller();
 
-  double calculateDistance(LatLng startPoint, LatLng endPoint) {
+  double calculateDistance(Position userLocation, LatLng endPoint) {
     int radius = 6371; // radius of earth in Km
-    double dLat = math.radians(endPoint.latitude - startPoint.latitude);
-    double dLon = math.radians(endPoint.longitude - startPoint.longitude);
+    double dLat = math.radians(endPoint.latitude - userLocation.latitude);
+    double dLon = math.radians(endPoint.longitude - userLocation.longitude);
     double a = sin(dLat / 2) * sin(dLat / 2) +
-        cos(math.radians(startPoint.latitude)) *
+        cos(math.radians(userLocation.latitude)) *
             cos(math.radians(endPoint.latitude)) *
             sin(dLon / 2) *
             sin(dLon / 2);
@@ -54,53 +62,62 @@ class _FeedMeMainPageState extends State<FeedMeMainPage> {
   }
 
   showAlertDialog(index) {
-    // set up the buttons
-    Widget launchButton = TextButton(
-      child: Text("Go And Get IT!"),
-      onPressed: () {
-        setState(() {
-          chosenMarker = markers[index];
-          markers.clear();
-        });
-        markers.add(chosenMarker);
-        following = true;
-        Navigator.of(context).pop();
-      },
-    );
-    Widget cancelButton = TextButton(
-      child: Text("Cancel"),
-      onPressed: () async {
-        Navigator.of(context).pop();
-      },
-    );
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("${markers[index].infoWindow.title}"),
-      content: Text(
-        '${(calculateDistance(userLocation.getLatLng(), markers[index].position) * 1000).toStringAsFixed(2)} meter to get it' +
-            '\n${markers[index].infoWindow.snippet}',
-      ),
-      actions: [
-        launchButton,
-        cancelButton,
-      ],
-    );
-    // show the dialog
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return alert;
+        return AlertDialog(
+          backgroundColor: appTheme.themeData.cardColor,
+          title: Text(
+            "${markers[index].infoWindow.title}",
+            style: appTheme.themeData.primaryTextTheme.headline4,
+          ),
+          content: Text(
+            '${(calculateDistance(userLocation.currentLocation!, markers[index].position) * 1000).toStringAsFixed(2)} ' +
+                appLanguage.words['FeedMeMainAcquiringDialogOne']! +
+                '\n${markers[index].infoWindow.snippet}',
+            style: appTheme.themeData.primaryTextTheme.headline4,
+            textDirection: appLanguage.textDirection,
+          ),
+          actions: [
+            TextButton(
+              child: Text(
+                appLanguage.words['FeedMeMainAcquiringActionOne']!,
+                style: appTheme.themeData.primaryTextTheme.headline4!
+                    .apply(color: Colors.green),
+              ),
+              onPressed: () {
+                setState(() {
+                  chosenMarker = markers[index];
+                  markers.clear();
+                });
+                markers.add(chosenMarker);
+                following = true;
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(
+                appLanguage.words['FeedMeMainAcquiringActionTwo']!,
+                style: appTheme.themeData.primaryTextTheme.headline4!
+                    .apply(color: Colors.red),
+              ),
+              onPressed: () async {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
       },
     );
   }
 
-  Future<GoogleMap> getGoogleMap() async {
+  Future<GoogleMap?> getGoogleMap() async {
     Completer<GoogleMapController> _controller = Completer();
-    if (userLocation.getLatLng() == null) {
-      await userLocation.getUserLocation();
+    if (!await userLocation.canLocateUserLocation()) {
+      return null;
     }
-
-    following ? 1 : markers = await markerApiCaller.getAll();
+    markerApiCaller.initialize();
+    if (!following) markers = await markerApiCaller.getAll();
     for (int i = 0; i < markers.length; i++) {
       markers[i] = markers.elementAt(i).copyWith(onTapParam: () {
         onMarkerTapped(markers.elementAt(i).markerId);
@@ -109,8 +126,8 @@ class _FeedMeMainPageState extends State<FeedMeMainPage> {
     return googleMap = GoogleMap(
       mapType: MapType.normal,
       initialCameraPosition: CameraPosition(
-          target: LatLng(userLocation.getLatLng().latitude,
-              userLocation.getLatLng().longitude),
+          target: LatLng(userLocation.currentLocation!.latitude,
+              userLocation.currentLocation!.longitude),
           zoom: 18),
       markers: Set<Marker>.of(markers),
       onMapCreated: (GoogleMapController controller) {
@@ -124,23 +141,30 @@ class _FeedMeMainPageState extends State<FeedMeMainPage> {
   }
 
   Widget showGoogleMap() {
-    return FutureBuilder<GoogleMap>(
+    return FutureBuilder<GoogleMap?>(
       future: getGoogleMap(),
-      builder: (BuildContext context, AsyncSnapshot<GoogleMap> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<GoogleMap?> snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.data != null) {
           return googleMap;
+        } else if (snapshot.connectionState == ConnectionState.done &&
+            snapshot.data == null) {
+          return Container(
+            alignment: Alignment.center,
+            child: ErrorMessage(
+                message: appLanguage.words['FeedMeMainAcquiringErrorOne']!),
+          );
         } else if (snapshot.error != null) {
           return Container(
             alignment: Alignment.center,
-            child: Text(
-                'Error Showing Google map, Please Restart ${snapshot.error}'),
+            child: ErrorMessage(
+                message: appLanguage.words['FeedMeMainAcquiringErrorTwo']!),
           );
         } else {
           return Container(
             alignment: Alignment.center,
             child: CupertinoActionSheet(
-              title: Text('Loading'),
+              title: Text(appLanguage.words['loading']!),
               actions: [
                 CupertinoActivityIndicator(
                   radius: 50,
@@ -163,12 +187,19 @@ class _FeedMeMainPageState extends State<FeedMeMainPage> {
         } else if (snapshot.error != null) {
           return Container(
             alignment: Alignment.center,
-            child: Text('Error ${snapshot.error}'),
+            child: ErrorMessage(message: appLanguage.words['FeedMeMainError']!),
           );
         } else {
           return Container(
             alignment: Alignment.center,
-            child: Text(''),
+            child: CupertinoActionSheet(
+              title: Text(appLanguage.words['loading']!),
+              actions: [
+                CupertinoActivityIndicator(
+                  radius: 50,
+                )
+              ],
+            ),
           );
         }
       },
@@ -176,50 +207,63 @@ class _FeedMeMainPageState extends State<FeedMeMainPage> {
   }
 
   Future<Widget> thanksMessage() async {
-    if (userLocation.getLatLng() == null) {
-      await userLocation.getUserLocation();
+    if (!await userLocation.canLocateUserLocation()) {
+      return thanksMessage();
     }
-    while (calculateDistance(
-                userLocation.getLatLng(), markers.elementAt(0).position) *
-            1000 >
-        20) {
-      await userLocation.getUserLocation();
+    while (calculateDistance(userLocation.currentLocation!,
+                    markers.elementAt(0).position) *
+                1000 >
+            20 &&
+        following &&
+        commonData.step == Pages.FeedMeMainPage.index) {
+      return thanksMessage();
     }
     return AlertDialog(
-      title: Text("Did you got it?"),
+      backgroundColor: appTheme.themeData.cardColor,
+      title: Text(
+        appLanguage.words['FeedMeMainFinishingDialogOne']!,
+        style: appTheme.themeData.primaryTextTheme.headline3,
+      ),
       content: Text(
-          'it seems that you are ${num.parse((calculateDistance(userLocation.getLatLng(), markers[0].position) * 1000).toStringAsFixed(2))} Meter away from.'),
+        appLanguage.words['FeedMeMainFinishingDialogTwo']! +
+            ' ${num.parse((calculateDistance(userLocation.currentLocation!, markers[0].position) * 1000).toStringAsFixed(2))} ' +
+            appLanguage.words['FeedMeMainFinishingDialogThree']!,
+        style: appTheme.themeData.primaryTextTheme.headline4,
+        textDirection: appLanguage.textDirection,
+      ),
       actions: [
         TextButton(
-            child: Text("Yes i got it!"),
+            child: Text(appLanguage.words['FeedMeMainFinishingDialogFour']!),
             onPressed: () {
               setState(() async {
-                // Toast.show(
-                //     'Thank You for making the world a better place!', context,
-                //     duration: 7, backgroundColor: Colors.green);
                 await markerApiCaller.delete(markers[0].markerId.value);
                 following = !following;
-                Navigator.popUntil(
-                    context, (Route<dynamic> route) => route is PageRoute);
-                Navigator.pushNamed(context, "Background");
+                commonData.back();
+                return CoolAlert.show(
+                    context: context,
+                    type: CoolAlertType.success,
+                    lottieAsset: 'assets/animations/6951-success.json',
+                    text: appLanguage.words['FeedMeMainFinishingDialogFive']!,
+                    confirmBtnColor: Color(0xff1c9691),
+                    title: '');
               });
             }),
         TextButton(
           child: Text(
-            "it's not found!",
+            appLanguage.words['FeedMeMainFinishingDialogSix']!,
             style: TextStyle(color: Colors.red),
           ),
-          onPressed: () {
-            setState(() async {
-              // Toast.show(
-              //     'Sorry for wasting your time, but consider that it has gone to its place, Thank you!',
-              //     context,
-              //     duration: 7,
-              //     backgroundColor: Colors.green);
-              await markerApiCaller.delete(markers[0].markerId.value);
-              following = !following;
-              Navigator.popAndPushNamed(context, 'FeedMe');
-            });
+          onPressed: () async {
+            await markerApiCaller.delete(markers[0].markerId.value);
+            following = !following;
+            commonData.back();
+            return CoolAlert.show(
+                context: context,
+                type: CoolAlertType.success,
+                lottieAsset: 'assets/animations/6951-success.json',
+                text: appLanguage.words['FeedMeMainFinishingDialogSeven']!,
+                confirmBtnColor: Color(0xff1c9691),
+                title: '');
           },
         )
       ],
@@ -228,96 +272,135 @@ class _FeedMeMainPageState extends State<FeedMeMainPage> {
 
   @override
   Widget build(BuildContext context) {
+    w = MediaQuery.of(context).size.width;
+    h = MediaQuery.of(context).size.height;
+    commonData = Provider.of<CommonData>(context);
+    appTheme = Provider.of<AppTheme>(context);
+    appLanguage = Provider.of<AppLanguage>(context);
     return Scaffold(
-        // appBar: AppBar(title: Text('Volunteering'),actions: <Widget>[
-        //   ],),
-        body: Stack(
-      children: <Widget>[
-        Container(
-          child: showGoogleMap(),
-        ),
-        Align(
-          alignment: Alignment.topLeft,
-          child: IconButton(
-            icon: Icon(Icons.info, color: Colors.black, size: 30),
-            onPressed: () async {
-              return showDialog<void>(
-                context: context,
-                barrierDismissible: true,
-                // false = user must tap button, true = tap outside dialog
-                builder: (BuildContext dialogContext) {
-                  return AlertDialog(
-                    title: Text(
-                      appLanguage.words['VolunteerInfoTitle']!,
-                      textDirection: appLanguage.textDirection,
-                    ),
-                    content: SingleChildScrollView(
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            appLanguage.words['VolunteerInfoOne']!,
-                            style: TextStyle(color: Colors.green),
-                            textDirection: appLanguage.textDirection,
-                          ),
-                          Text(
-                            appLanguage.words['VolunteerInfoTwo']!,
-                            style: TextStyle(color: Colors.blue),
-                            textDirection: appLanguage.textDirection,
-                          ),
-                          Text(
-                            appLanguage.words['VolunteerInfoThree']!,
-                            style: TextStyle(color: Colors.blueAccent),
-                            textDirection: appLanguage.textDirection,
-                          ),
-                          Text(
-                            appLanguage.words['VolunteerInfoFour']!,
-                            style: TextStyle(color: Colors.orange),
-                            textDirection: appLanguage.textDirection,
-                          ),
-                          Text(
-                            appLanguage.words['VolunteerInfoFive']!,
-                            style: TextStyle(color: Colors.red),
-                            textDirection: appLanguage.textDirection,
-                          ),
-                        ],
+        backgroundColor: appTheme.themeData.primaryColor,
+        appBar: AppBar(
+          backgroundColor: appTheme.themeData.primaryColor,
+          title: Text(appLanguage.words['FeedMeMainTitle']!,
+              style: appTheme.themeData.primaryTextTheme.headline2),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.info, color: appTheme.themeData.iconTheme.color),
+              onPressed: () async {
+                return showDialog<void>(
+                  context: context,
+                  barrierDismissible: true,
+                  // false = user must tap button, true = tap outside dialog
+                  builder: (BuildContext dialogContext) {
+                    return AlertDialog(
+                      backgroundColor: appTheme.themeData.cardColor,
+                      title: Text(
+                        appLanguage.words['VolunteerInfoTitle']!,
+                        style: appTheme.themeData.primaryTextTheme.headline4!
+                            .apply(fontSizeFactor: 2.0),
+                        textAlign: TextAlign.center,
+                        textDirection: appLanguage.textDirection,
                       ),
-                    ),
-                    actions: <Widget>[
-                      TextButton(
-                        child: Text('I Got it'),
-                        onPressed: () {
-                          Navigator.of(dialogContext)
-                              .pop(); // Dismiss alert dialog
-                        },
+                      content: SingleChildScrollView(
+                        child: Column(
+                          children: <Widget>[
+                            Text(
+                              appLanguage.words['VolunteerInfoOne']!,
+                              style: appTheme
+                                  .themeData.primaryTextTheme.headline4!
+                                  .apply(color: Colors.green),
+                              textAlign: TextAlign.center,
+                              textDirection: appLanguage.textDirection,
+                            ),
+                            Text(
+                              appLanguage.words['VolunteerInfoTwo']!,
+                              style: appTheme
+                                  .themeData.primaryTextTheme.headline4!
+                                  .apply(color: Colors.blue),
+                              textAlign: TextAlign.center,
+                              textDirection: appLanguage.textDirection,
+                            ),
+                            Text(
+                              appLanguage.words['VolunteerInfoThree']!,
+                              style: appTheme
+                                  .themeData.primaryTextTheme.headline4!
+                                  .apply(color: Colors.blueAccent),
+                              textAlign: TextAlign.center,
+                              textDirection: appLanguage.textDirection,
+                            ),
+                            Text(
+                              appLanguage.words['VolunteerInfoFour']!,
+                              style: appTheme
+                                  .themeData.primaryTextTheme.headline4!
+                                  .apply(color: Colors.orange),
+                              textAlign: TextAlign.center,
+                              textDirection: appLanguage.textDirection,
+                            ),
+                            Text(
+                              appLanguage.words['VolunteerInfoFive']!,
+                              style: appTheme
+                                  .themeData.primaryTextTheme.headline4!
+                                  .apply(color: Colors.red),
+                              textAlign: TextAlign.center,
+                              textDirection: appLanguage.textDirection,
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  );
-                },
-              );
-            },
-          ),
-        ),
-        following
-            ? Align(
-                alignment: Alignment.topRight,
-                child: ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      following = !following;
-                      markers.clear();
-                    });
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text(appLanguage.words['InfoOkButton']!),
+                          onPressed: () {
+                            Navigator.of(dialogContext)
+                                .pop(); // Dismiss alert dialog
+                          },
+                        ),
+                      ],
+                    );
                   },
-                  child: Text('Cancel'),
-                ),
-              )
-            : Container(),
-        following
-            ? Align(
-                alignment: Alignment.center,
-                child: getAcquiringWidget(),
-              )
-            : Container(),
-      ],
-    ));
+                );
+              },
+            )
+          ],
+          elevation: 0.0,
+        ),
+        body: Container(
+          height: h,
+          width: w,
+          child: Stack(
+            children: <Widget>[
+              Container(
+                child: showGoogleMap(),
+              ),
+              following
+                  ? Align(
+                      alignment: Alignment.topRight,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.red)),
+                        onPressed: () {
+                          setState(() {
+                            following = !following;
+                            markers.clear();
+                          });
+                        },
+                        child: Text(
+                          appLanguage.words['FeedMeMainCancelButton']!,
+                          style: appTheme.themeData.primaryTextTheme.headline4!
+                              .apply(color: Colors.white),
+                        ),
+                      ),
+                    )
+                  : Container(),
+              following
+                  ? Align(
+                      alignment: Alignment.center,
+                      child: getAcquiringWidget(),
+                    )
+                  : Container(),
+            ],
+          ),
+        ));
   }
 }
