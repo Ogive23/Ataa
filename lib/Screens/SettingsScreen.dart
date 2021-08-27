@@ -5,20 +5,25 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatelessWidget {
+  static late double w, h;
   final SessionManager sessionManager = new SessionManager();
   static late AppTheme appTheme;
   static late AppLanguage appLanguage;
   @override
   Widget build(BuildContext context) {
+    w = MediaQuery.of(context).size.width;
+    h = MediaQuery.of(context).size.height;
     appTheme = Provider.of<AppTheme>(context);
     appLanguage = Provider.of<AppLanguage>(context);
     return Scaffold(
+      backgroundColor: appTheme.themeData.primaryColor,
       appBar: AppBar(
+        backgroundColor: appTheme.themeData.primaryColor,
+        elevation: 0.0,
         title: Text(
           appLanguage.words['SettingsTitle']!,
-          style: appTheme.themeData.textTheme.title,
+          style: appTheme.themeData.primaryTextTheme.headline2,
         ),
-        backgroundColor: appTheme.themeData.appBarTheme.color,
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -32,10 +37,15 @@ class SettingsScreen extends StatelessWidget {
                   return AboutDialog(
                     applicationName: 'FeedMe',
                     applicationVersion: '1.0.0',
+                    //ToDo: Make it feed me icon
+                    applicationIcon: Image.asset(
+                      'assets/images/ogive_version_2.png',
+                      width: w / 20,
+                    ),
                     children: <Widget>[
                       Text('Animations rights reserved to Lottie'),
                       Text('Fonts rights reserved to Google Fonts'),
-                      Text('OGIVE ©2020')
+                      Text('OGIVE ©${DateTime.now().year}')
                     ],
                   );
                 },
@@ -47,104 +57,59 @@ class SettingsScreen extends StatelessWidget {
       ),
       body: Container(
         alignment: Alignment.center,
-        decoration: BoxDecoration(color: appTheme.themeData.backgroundColor),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-
-              //ToDo: Refactor -> Directionality
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: appLanguage.language == 'En'
-                    ? <Widget>[
-                        Text(appLanguage.words['SettingsDarkMode']!,
-                            style: appTheme.themeData.textTheme.body1),
-                        Switch(
-                          value: appTheme.isDark,
-                          activeColor: appTheme.themeData.toggleableActiveColor,
-                          onChanged: (value) {
-                            sessionManager.createPreferredTheme(value);
-                            appTheme.changeTheme(value, context);
-                          },
-                        ),
-                      ]
-                    : [
-                        Switch(
-                          value: appTheme.isDark,
-                          activeColor: appTheme.themeData.toggleableActiveColor,
-                          onChanged: (value) {
-                            sessionManager.createPreferredTheme(value);
-                            appTheme.changeTheme(value, context);
-                          },
-                        ),
-                        Text(appLanguage.words['SettingsDarkMode']!,
-                            style: appTheme.themeData.textTheme.body1),
-                      ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: appLanguage.language == 'En'
-                    ? <Widget>[
-                        Text(appLanguage.words['SettingsLanguage']!,
-                            style: appTheme.themeData.textTheme.body1),
-                        DropdownButton(
-                            items: [
-                              DropdownMenuItem(
-                                child: Text(
-                                  'العربية',
-                                  style: appTheme.themeData.textTheme.body1,
-                                ),
-                                value: 'Ar',
-                              ),
-                              DropdownMenuItem(
-                                child: Text(
-                                  'En',
-                                  style: appTheme.themeData.textTheme.body1,
-                                ),
-                                value: 'En',
-                              )
-                            ],
-                            value: appLanguage.language,
-                            dropdownColor: Colors.amber,
-                            icon: Icon(Icons.language),
-                            // style: appTheme.themeData.textTheme.body1,
-                            onChanged: (String? value) {
-                              sessionManager.createPreferredLanguage(value!);
-                              appLanguage.changeLanguage(value);
-                            }),
-                      ]
-                    : <Widget>[
-                        DropdownButton(
-                            items: [
-                              DropdownMenuItem(
-                                child: Text(
-                                  'العربية',
-                                  style: appTheme.themeData.textTheme.body1,
-                                ),
-                                value: 'Ar',
-                              ),
-                              DropdownMenuItem(
-                                child: Text(
-                                  'En',
-                                  style: appTheme.themeData.textTheme.body1,
-                                ),
-                                value: 'En',
-                              )
-                            ],
-                            value: appLanguage.language,
-                            dropdownColor: Colors.amber,
-                            icon: Icon(Icons.language),
-                            // style: appTheme.themeData.textTheme.body1,
-                            onChanged: (String? value) {
-                              sessionManager.createPreferredLanguage(value!);
-                              appLanguage.changeLanguage(value);
-                            }),
-                        Text(appLanguage.words['SettingsLanguage']!,
-                            style: appTheme.themeData.textTheme.body1),
-                      ],
-              )
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                Text(appLanguage.words['SettingsDarkMode']!,
+                    textAlign: TextAlign.center,
+                    textDirection: appLanguage.textDirection,
+                    style: appTheme.themeData.primaryTextTheme.headline4),
+                Switch(
+                  value: appTheme.isDark,
+                  activeColor: appTheme.themeData.toggleableActiveColor,
+                  onChanged: (value) {
+                    sessionManager.createPreferredTheme(value);
+                    appTheme.changeTheme(value, context);
+                  },
+                ),
+              ]),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                Text(appLanguage.words['SettingsLanguage']!,
+                    textAlign: TextAlign.center,
+                    textDirection: appLanguage.textDirection,
+                    style: appTheme.themeData.primaryTextTheme.headline4),
+                DropdownButton(
+                    items: [
+                      DropdownMenuItem(
+                        child: Text('العربية',
+                            textAlign: TextAlign.center,
+                            textDirection: appLanguage.textDirection,
+                            style: appTheme
+                                .themeData.primaryTextTheme.headline4!
+                                .apply(fontSizeFactor: 0.7)),
+                        value: 'Ar',
+                      ),
+                      DropdownMenuItem(
+                        child: Text('English',
+                            textAlign: TextAlign.center,
+                            textDirection: appLanguage.textDirection,
+                            style: appTheme
+                                .themeData.primaryTextTheme.headline4!
+                                .apply(fontSizeFactor: 0.7)),
+                        value: 'En',
+                      )
+                    ],
+                    value: appLanguage.language,
+                    dropdownColor: appTheme.themeData.cardColor,
+                    // style: appTheme.themeData.textTheme.body1,
+                    onChanged: (String? value) {
+                      sessionManager.createPreferredLanguage(value!);
+                      appLanguage.changeLanguage(value);
+                    }),
+              ])
             ],
           ),
         ),

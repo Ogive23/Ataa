@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:feedme/Session/session_manager.dart';
+import 'package:feedme/Shared%20Data/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:math';
@@ -14,6 +15,7 @@ class _SplashScreen extends State<SplashScreen>
   late SessionManager sessionManager;
   late AnimationController _animationController;
   late Animation<Color> _colorAnimation;
+  late AppTheme appTheme;
   double value = 0.0;
   double opacity = 0;
   String quote = "";
@@ -48,12 +50,11 @@ class _SplashScreen extends State<SplashScreen>
   }
 
   getHomePage() {
-
     if (!sessionManager.notFirstTime()) return 'WelcomeScreen';
-    if (sessionManager.isLoggedIn()){
-      sessionManager.loadSession();
+    // if (sessionManager.isLoggedIn()) {
+    //   sessionManager.loadSession();
       return 'MainScreen';
-    }
+    // }
     return 'LoginScreen';
   }
 
@@ -72,7 +73,7 @@ class _SplashScreen extends State<SplashScreen>
                   {
                     setState(() {
                       // value += 0.02;
-                      value+=0.2;
+                      value += 0.2;
                     })
                   }
               });
@@ -95,12 +96,13 @@ class _SplashScreen extends State<SplashScreen>
 
   navigate() {
     sessionManager.sharedPreferences == null
-        ? Future.delayed(Duration(seconds: 5),navigate())
+        ? Future.delayed(Duration(seconds: 5), navigate())
         : Navigator.popAndPushNamed(context, getHomePage());
   }
 
   @override
   Widget build(BuildContext context) {
+    appTheme = new AppTheme(false, context);
     return Material(
       child: AnimatedContainer(
           alignment: Alignment.center,
@@ -126,10 +128,14 @@ class _SplashScreen extends State<SplashScreen>
                   padding: EdgeInsets.only(bottom: 20),
                   child: Text(
                     '$quote',
-                    // style: GoogleFonts.quando(
-                    //   color: Colors.white,
-                    //   fontSize: 16.0,
-                    // ),
+                    style: appTheme.nonStaticGetTextStyle(
+                        1.0,
+                        Colors.white,
+                        appTheme.mediumTextSize(context),
+                        FontWeight.normal,
+                        1.0,
+                        TextDecoration.none,
+                        'OpenSans'),
                     textAlign: TextAlign.center,
                   ),
                 ),

@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../../GeneralInfo.dart';
 
 class HomeScreen extends StatelessWidget {
+  static late double w, h;
   static late CommonData commonData;
   static late AppTheme appTheme;
   static late AppLanguage appLanguage;
@@ -22,8 +23,38 @@ class HomeScreen extends StatelessWidget {
   //       horizontalCenterOffset: 0.0,
   //     );
   // }
+  void loadGradientColors() {
+    if (appTheme.isDark) {
+      gradientColors = [
+        Colors.black,
+        Colors.grey[800]!,
+        Colors.grey[700]!,
+        Colors.grey[600]!,
+        Colors.grey[500]!,
+        Colors.grey[400]!,
+        Colors.grey[300]!,
+        Colors.grey[200]!,
+        Colors.grey[100]!,
+      ];
+      return;
+    }
+    gradientColors = [
+      Colors.blue[900]!,
+      Colors.blue[800]!,
+      Colors.blue[700]!,
+      Colors.blue[600]!,
+      Colors.blue[500]!,
+      Colors.blue[400]!,
+      Colors.blue[300]!,
+      Colors.blue[200]!,
+      Colors.blue[100]!,
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
+    w = MediaQuery.of(context).size.width;
+    h = MediaQuery.of(context).size.height;
     commonData = Provider.of<CommonData>(context);
     appTheme = Provider.of<AppTheme>(context);
     appLanguage = Provider.of<AppLanguage>(context);
@@ -33,6 +64,7 @@ class HomeScreen extends StatelessWidget {
     //     print("InterstitialAd event is $event");
     //   },
     // );
+    loadGradientColors();
     return GestureDetector(
         onTap: () {
           commonData.changeStep(Pages.IntroPage.index);
@@ -42,71 +74,46 @@ class HomeScreen extends StatelessWidget {
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           alignment: Alignment.center,
+          padding: EdgeInsets.symmetric(horizontal: w/25),
           decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-            Colors.blue[900]!,
-            Colors.blue[800]!,
-            Colors.blue[700]!,
-            Colors.blue[600]!,
-            Colors.blue[500]!,
-            Colors.blue[400]!,
-            Colors.blue[300]!,
-            Colors.blue[200]!,
-            Colors.blue[100]!,
-          ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
+              gradient: LinearGradient(
+                  colors: gradientColors,
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter)),
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height / 10, bottom: 20),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      appLanguage.words['HomeTitle']!,
-                      style: TextStyle(
-                        color: appTheme.themeData.backgroundColor,
-                        fontSize: 70,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: 'OpenSans',
-                        letterSpacing: 1.4,
-                        shadows: [
-                          Shadow(
-                              color: appTheme.themeData.accentColor,
-                              offset: Offset.fromDirection(1, 3))
-                        ],
-                      ),
-                    ),
+                Text(
+                  appLanguage.words['HomeTitle']!,
+                  style: appTheme.themeData.primaryTextTheme.headline1!.apply(
+                    shadows: [
+                      Shadow(
+                          color: appTheme.themeData.accentColor,
+                          offset: Offset.fromDirection(1, 3))
+                    ],
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 20, bottom: 30),
+                  padding: EdgeInsets.symmetric(vertical: h / 25),
                   child: Image.asset(
                     'assets/images/food.png',
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(left: 30, right: 30),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      appLanguage.words['HomeBody']!,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w300),
-                      textDirection: appLanguage.language == 'En'
-                          ? TextDirection.ltr
-                          : TextDirection.rtl,
-                    ),
-                  ),
+                Text(
+                  appLanguage.words['HomeBody']!,
+                  style: appTheme.themeData.primaryTextTheme.headline4!.apply(color: Colors.white),
+                  textAlign: TextAlign.center,
+                  textDirection: appLanguage.textDirection,
                 ),
                 Padding(
-                    padding: EdgeInsets.only(top: 10),
+                    padding: EdgeInsets.only(top: h/50),
                     child: Text(
                       appLanguage.words['HomeSubtitle']!,
+                      style: appTheme.themeData.primaryTextTheme.subtitle1,
+                      textAlign: TextAlign.center,
+                      textDirection: appLanguage.textDirection,
                     )),
               ],
             ),

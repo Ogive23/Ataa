@@ -98,7 +98,7 @@ class CustomTextField extends StatelessWidget {
                   .apply(color: Colors.red),
               errorMaxLines: 2,
               labelStyle: appTheme.themeData.primaryTextTheme.bodyText1,
-              hintStyle: appTheme.themeData.primaryTextTheme.subtitle2,
+              hintStyle: appTheme.themeData.primaryTextTheme.subtitle1,
               helperText: helperText,
               helperStyle: helperStyle,
               icon: selectedIcon != null

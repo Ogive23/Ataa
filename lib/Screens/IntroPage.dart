@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:feedme/CustomWidgets/CustomSpacing.dart';
 import 'package:feedme/Session/session_manager.dart';
 import 'package:feedme/Shared%20Data/app_language.dart';
 import 'package:feedme/Shared%20Data/app_theme.dart';
@@ -9,19 +10,22 @@ import 'package:provider/provider.dart';
 import '../GeneralInfo.dart';
 
 class IntroPage extends StatelessWidget {
+  static late double w, h;
   static late CommonData commonData;
   static late AppTheme appTheme;
   static late AppLanguage appLanguage;
   final SessionManager sessionManager = new SessionManager();
   @override
   Widget build(BuildContext context) {
+    w = MediaQuery.of(context).size.width;
+    h = MediaQuery.of(context).size.height;
     commonData = Provider.of<CommonData>(context);
     appTheme = Provider.of<AppTheme>(context);
     appLanguage = Provider.of<AppLanguage>(context);
     return Scaffold(
         body: Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
+      height: h,
+      width: w,
       alignment: Alignment.center,
       decoration: BoxDecoration(
           image: DecorationImage(
@@ -34,7 +38,9 @@ class IntroPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Card(
-                margin: EdgeInsets.only(right: 20, left: 20),
+                margin: EdgeInsets.symmetric(
+                  horizontal: w / 20,
+                ),
                 color: Colors.transparent.withOpacity(0.1),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -45,95 +51,103 @@ class IntroPage extends StatelessWidget {
                           alignment: Alignment.center,
                           children: <Widget>[
                             Container(
+                              padding: EdgeInsets.symmetric(vertical: h / 70),
                               child: Column(
                                 children: <Widget>[
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 3),
-                                    child: Text(
-                                      'Hey, you have',
-                                      //   style: GoogleFonts.catamaran(
-                                      //       fontSize: 20,
-                                      //       color: Colors.white.withOpacity(0.7)),
-                                    ),
+                                  Text(
+                                    appLanguage.words['AchievementCenterOne']!,
+                                    style: appTheme
+                                        .themeData.primaryTextTheme.headline4,
+                                    textAlign: TextAlign.center,
+                                    textDirection: appLanguage.textDirection,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Column(
+                                        children: <Widget>[
+                                          Text(
+                                            '123',
+                                            style: appTheme.themeData
+                                                .primaryTextTheme.headline4,
+                                            textAlign: TextAlign.center,
+                                            textDirection:
+                                                appLanguage.textDirection,
+                                          ),
+                                          Text(
+                                              appLanguage.words['AchievementCenterTwo']!,
+                                              style: appTheme.themeData
+                                                  .primaryTextTheme.headline4!
+                                                  .apply(fontSizeFactor: 0.5),
+                                              textAlign: TextAlign.center,
+                                              textDirection:
+                                                  appLanguage.textDirection)
+                                        ],
+                                      ),
+                                      Text(
+                                        appLanguage.words['AchievementCenterThree']!,
+                                        style: appTheme.themeData
+                                            .primaryTextTheme.headline4!
+                                            .apply(fontSizeFactor: 1.5),
+                                        textAlign: TextAlign.center,
+                                        textDirection:
+                                            appLanguage.textDirection,
+                                      ),
+                                      Column(
+                                        children: <Widget>[
+                                          Text(
+                                            '123',
+                                            style: appTheme.themeData
+                                                .primaryTextTheme.headline4,
+                                            textAlign: TextAlign.center,
+                                            textDirection:
+                                                appLanguage.textDirection,
+                                          ),
+                                          Text(
+                                            appLanguage.words['AchievementCenterThree']!,
+
+                                            style: appTheme.themeData
+                                                .primaryTextTheme.headline4!
+                                                .apply(fontSizeFactor: 0.5),
+                                            textAlign: TextAlign.center,
+                                            textDirection:
+                                                appLanguage.textDirection,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    appLanguage.words['AchievementCenterFive']!,
+                                    style: appTheme
+                                        .themeData.primaryTextTheme.headline4,
+                                    textAlign: TextAlign.center,
+                                    textDirection: appLanguage.textDirection,
                                   ),
                                   Padding(
-                                    padding:
-                                        EdgeInsets.only(left: 30, right: 30),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        Column(
-                                          children: <Widget>[
-                                            Text(
-                                              '123',
-                                              // style: GoogleFonts.anton(
-                                              //   fontSize: 25,
-                                              //   color: Colors.white
-                                              //       .withOpacity(0.5),
-                                              // ),
-                                            ),
-                                            Text(
-                                              'Markers published',
-                                              // style: GoogleFonts.catamaran(
-                                              //     fontSize: 12,
-                                              //     color: Colors.white
-                                              //         .withOpacity(0.7)),
-                                            )
-                                          ],
-                                        ),
-                                        Text(
-                                          '&',
-                                          // style: GoogleFonts.catamaran(
-                                          //     fontSize: 40,
-                                          //     color: Colors.white
-                                          //         .withOpacity(0.7)),
-                                        ),
-                                        Column(
-                                          children: <Widget>[
-                                            Text(
-                                              '123',
-                                              // style: GoogleFonts.anton(
-                                              //   fontSize: 25,
-                                              //   color: Colors.white
-                                              //       .withOpacity(0.5),
-                                              // ),
-                                            ),
-                                            Text(
-                                              'Markers collected',
-                                              // style: GoogleFonts.catamaran(
-                                              //     fontSize: 12,
-                                              //     color: Colors.white
-                                              //         .withOpacity(0.7)),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: w / 50),
+                                    child: Directionality(
+                                      textDirection: TextDirection.ltr,
+                                      child: LinearProgressIndicator(
+                                        value: 0.3,
+                                        backgroundColor:
+                                            Colors.white.withOpacity(0.7),
+                                      ),
                                     ),
                                   ),
                                   Text(
-                                    'Your progress',
-                                    textAlign: TextAlign.left,
-                                    // style: GoogleFonts.catamaran(
-                                    //     fontSize: 18, color: Colors.white),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                        top: 6, bottom: 2, left: 5, right: 5),
-                                    child: LinearProgressIndicator(
-                                      value: 0.3,
-                                      backgroundColor:
-                                          Colors.white.withOpacity(0.7),
-                                    ),
-                                  ),
-                                  Text(
-                                    '62 Markers left to your prize.',
-                                    textAlign: TextAlign.left,
-                                    // style: GoogleFonts.catamaran(
-                                    //     fontSize: 12,
-                                    //     color: Colors.white.withOpacity(0.7)),
+                                    appLanguage.words['AchievementCenterSix']!,
+                                    style: appTheme
+                                        .themeData.primaryTextTheme.headline4!
+                                        .apply(
+                                            fontSizeFactor: 0.7,
+                                            heightFactor: 1.5),
+                                    textAlign: TextAlign.center,
+                                    textDirection: appLanguage.textDirection,
                                   ),
                                 ],
                               ),
@@ -146,82 +160,72 @@ class IntroPage extends StatelessWidget {
                                       .words['FeedMeIntroAchievementCenter']!,
                                   textAlign: TextAlign.center,
                                   textDirection: appLanguage.textDirection,
-                                  style: TextStyle(
-                                      color: Colors.amber[100], fontSize: 24.0),
+                                  style: appTheme
+                                      .themeData.primaryTextTheme.headline2!
+                                      .apply(color: Colors.amber[100]),
                                 ))
                           ],
                         )))),
-            SizedBox(
-              height: 30,
+            CustomSpacing(
+              value: 10,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                ButtonTheme(
-                  buttonColor: Colors.amber,
-                  hoverColor: Colors.blueAccent,
-                  splashColor: Colors.redAccent,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  child: ElevatedButton.icon(
-                    style: ButtonStyle(
-                      elevation: MaterialStateProperty.all<double>(10.0)
-                    ),
-                    onPressed: () {
-                      commonData.changeStep(Pages.MarkerCreationPage.index);
-                    },
-                    icon: Icon(
-                      Icons.flag,
-                      color: appTheme.themeData.backgroundColor,
-                    ),
-                    label: Text(
-                      appLanguage.words['FeedMeIntroFirstButton']!,
-                      // style: GoogleFonts.aBeeZee(
-                      //     fontSize: 15,
-                      //     fontWeight: FontWeight.w600,
-                      //     color: appTheme.themeData.accentColor),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 40,
-                ),
-                ButtonTheme(
-                  buttonColor: Colors.amber,
-                  hoverColor: Colors.blueAccent,
-                  splashColor: Colors.redAccent,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      commonData.changeStep(Pages.FeedMeMainPage.index);
-                    },
-                    icon: Icon(
-                      Icons.flash_on,
-                      color: Colors.redAccent,
-                    ),
-                    label: Text(
-                      appLanguage.words['FeedMeIntroSecondButton']!,
-                      // style: GoogleFonts.aBeeZee(
-                      //     fontSize: 15,
-                      //     fontWeight: FontWeight.w600,
-                      //     color: appTheme.themeData.accentColor)
-                    ),
-                  ),
-                ),
-              ],
+            ElevatedButton.icon(
+              style: ButtonStyle(
+                  elevation: MaterialStateProperty.all<double>(10.0),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.amber),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(10))))),
+              onPressed: () {
+                commonData.changeStep(Pages.FeedMeMainPage.index);
+              },
+              icon: Icon(
+                Icons.flash_on,
+                color: Colors.redAccent,
+              ),
+              label: Text(
+                appLanguage.words['FeedMeIntroSecondButton']!,
+                textAlign: TextAlign.center,
+                textDirection: appLanguage.textDirection,
+                style: appTheme.themeData.primaryTextTheme.headline5!
+                    .apply(color: Colors.white),
+              ),
             ),
-            SizedBox(
-              height: 30,
+            ElevatedButton.icon(
+              style: ButtonStyle(
+                  elevation: MaterialStateProperty.all<double>(10.0),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(10))))),
+              onPressed: () {
+                commonData.changeStep(Pages.MarkerCreationPage.index);
+              },
+              icon: Icon(
+                Icons.flag,
+                color: Colors.white,
+              ),
+              label: Text(
+                appLanguage.words['FeedMeIntroFirstButton']!,
+                textAlign: TextAlign.center,
+                textDirection: appLanguage.textDirection,
+                style: appTheme.themeData.primaryTextTheme.headline5!
+                    .apply(color: Colors.white),
+              ),
+            ),
+            CustomSpacing(
+              value: 40,
             ),
             Text(
               appLanguage.words['FeedMeIntroWord']!,
               textAlign: TextAlign.center,
               textDirection: appLanguage.textDirection,
-              // style: GoogleFonts.aBeeZee(
-              //     fontSize: 25,
-              //     fontWeight: FontWeight.w600,
-              //     color: Colors.white)
+              style: appTheme.themeData.primaryTextTheme.headline4!
+                  .apply(color: Colors.white),
             ),
           ],
         ),
