@@ -78,7 +78,6 @@ class MainScreen extends StatelessWidget {
             create: (context) => commonData,
           ),
         ],
-        child: Directionality(
-            textDirection: TextDirection.rtl, child: BackgroundScreen()));
+        child: BackgroundScreen());
   }
 }

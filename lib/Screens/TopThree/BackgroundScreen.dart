@@ -57,44 +57,51 @@ class _BackgroundScreenState extends State<BackgroundScreen> {
   Widget build(BuildContext context) {
     commonData = Provider.of<CommonData>(context);
     appTheme = Provider.of<AppTheme>(context);
+    appLanguage = Provider.of<AppLanguage>(context);
     return WillPopScope(
       onWillPop: () => _onWillPop(context),
-      child: Scaffold(
-        body: pageOptions[commonData.step],
-        bottomNavigationBar: new Theme(
-          data: Theme.of(context).copyWith(
-            canvasColor: Colors.white,
-          ),
-          child: commonData.step > Pages.SettingsScreen.index
-              ? SizedBox()
-              : BottomNavigationBar(
-                  backgroundColor: appTheme.themeData.primaryColor,
-                  selectedItemColor:
-                      appTheme.themeData.toggleButtonsTheme.selectedColor,
-                  unselectedItemColor:
-                      appTheme.themeData.toggleButtonsTheme.disabledColor,
-                  onTap: (value) => commonData.changeStep(value),
-                  currentIndex: commonData.step,
-                  elevation: 0.0,
-                  items: [
-                    BottomNavigationBarItem(
-                        icon: Icon(Icons.people),
-                        label: appLanguage.words['bottomNavigationItemFirst']!),
-                    BottomNavigationBarItem(
-                        icon: Icon(Icons.home),
-                        label:
-                            appLanguage.words['bottomNavigationItemSecond']!),
-                    BottomNavigationBarItem(
-                        icon: Icon(Icons.settings),
-                        label: appLanguage.words['bottomNavigationItemThird']!),
-                  ],
-                  unselectedLabelStyle:
-                      appTheme.themeData.primaryTextTheme.subtitle1,
-                  selectedLabelStyle:
-                      appTheme.themeData.primaryTextTheme.headline4,
-                ),
-        ),
-      ),
+      child: Directionality(
+          textDirection: appLanguage.textDirection,
+          child: Scaffold(
+            body: pageOptions[commonData.step],
+            bottomNavigationBar: new Theme(
+              data: Theme.of(context).copyWith(
+                canvasColor: Colors.white,
+              ),
+              child: commonData.step > Pages.SettingsScreen.index
+                  ? SizedBox()
+                  : BottomNavigationBar(
+                      backgroundColor: appTheme.themeData.primaryColor,
+                      selectedItemColor:
+                          appTheme.themeData.toggleButtonsTheme.selectedColor,
+                      unselectedItemColor:
+                          appTheme.themeData.toggleButtonsTheme.disabledColor,
+                      onTap: (value) => commonData.changeStep(value),
+                      currentIndex: commonData.step,
+                      elevation: 0.0,
+                      selectedFontSize: appTheme
+                          .themeData.primaryTextTheme.headline4!.fontSize!,
+                      items: [
+                        BottomNavigationBarItem(
+                            icon: Icon(Icons.people),
+                            label: appLanguage
+                                .words['bottomNavigationItemFirst']!),
+                        BottomNavigationBarItem(
+                            icon: Icon(Icons.home),
+                            label: appLanguage
+                                .words['bottomNavigationItemSecond']!),
+                        BottomNavigationBarItem(
+                            icon: Icon(Icons.settings),
+                            label: appLanguage
+                                .words['bottomNavigationItemThird']!),
+                      ],
+                      unselectedLabelStyle:
+                          appTheme.themeData.primaryTextTheme.subtitle1,
+                      selectedLabelStyle:
+                          appTheme.themeData.primaryTextTheme.headline4,
+                    ),
+            ),
+          )),
     );
   }
 }
