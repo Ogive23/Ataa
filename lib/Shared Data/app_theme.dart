@@ -81,7 +81,9 @@ class AppTheme extends ChangeNotifier {
               1.0,
               TextDecoration.none,
               "Delius"),
-          headline4: getTextStyle(
+          headline4: getTextStyle(1.0, Colors.white, largeTextSize(context),
+              FontWeight.normal, 1.0, TextDecoration.none, "Delius"),
+          headline5: getTextStyle(
               1.0,
               Color.fromRGBO(38, 92, 126, 1.0),
               mediumTextSize(context),
@@ -89,8 +91,6 @@ class AppTheme extends ChangeNotifier {
               1.0,
               TextDecoration.none,
               "Delius"),
-          headline5: getTextStyle(1.0, Colors.white, mediumTextSize(context),
-              FontWeight.normal, 1.0, TextDecoration.none, "Delius"),
           bodyText1: getTextStyle(
               1.0,
               Color.fromRGBO(247, 148, 29, 1.0),
@@ -125,6 +125,9 @@ class AppTheme extends ChangeNotifier {
                 "OpenSans"),
             iconTheme: IconThemeData(color: Color.fromRGBO(247, 148, 29, 1.0))),
         cardColor: Color.fromRGBO(45, 56, 60, 1.0),
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
         toggleableActiveColor: Colors.green,
         toggleButtonsTheme: ToggleButtonsThemeData(
             disabledColor: Colors.grey, selectedColor: Colors.amber),
@@ -161,7 +164,9 @@ class AppTheme extends ChangeNotifier {
               1.0,
               TextDecoration.none,
               "Delius"),
-          headline4: getTextStyle(
+          headline4: getTextStyle(1.0, Colors.black, largeTextSize(context),
+              FontWeight.normal, 1.0, TextDecoration.none, "Delius"),
+          headline5: getTextStyle(
               1.0,
               Color.fromRGBO(38, 92, 126, 1.0),
               mediumTextSize(context),
@@ -169,8 +174,6 @@ class AppTheme extends ChangeNotifier {
               1.0,
               TextDecoration.none,
               "Delius"),
-          headline5: getTextStyle(1.0, Colors.black, mediumTextSize(context),
-              FontWeight.normal, 1.0, TextDecoration.none, "Delius"),
           bodyText1: getTextStyle(
               1.0,
               Colors.amber[300],
@@ -205,7 +208,7 @@ class AppTheme extends ChangeNotifier {
                 "OpenSans"),
             iconTheme: IconThemeData(color: Colors.amber[300])),
         iconTheme: IconThemeData(
-          color: Colors.white,
+          color: Colors.black,
         ),
         cardColor: Colors.white,
         toggleableActiveColor: Colors.green,
