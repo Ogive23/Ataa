@@ -23,6 +23,5 @@ final pageOptions = [
   IntroPage(),
   AtaaMainPage(),
   MarkerCreationPage(),
-  // ProfileScreen(),
   StayInTouchPage()
 ];

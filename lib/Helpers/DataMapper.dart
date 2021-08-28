@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ataa_lite/Models/User.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'Helper.dart';
@@ -39,24 +38,5 @@ class DataMapper {
       ));
     });
     return returnedMarkers;
-  }
-  User getUserFromJson(String url, Map<String, dynamic> info) {
-    return User(
-        helper.getAppropriateText(info['user']['id']),
-        helper.getAppropriateText(info['user']['name'].toString()),
-        helper.getAppropriateText(info['user']['user_name'].toString()),
-        helper.getAppropriateText(info['user']['email'].toString()),
-        helper.getAppropriateText(info['user']['gender'].toString()),
-        helper.getAppropriateText(info['user']['phone_number'].toString()),
-        helper.getAppropriateText(info['user']['address'].toString()),
-        info['user']['email_verified_at'] != null ? true : false,
-        info['token'],
-        info['profile']['image'] != null
-            ? url + info['profile']['image']
-            : 'N/A',
-        info['profile']['cover'] != null
-            ? url + info['profile']['cover']
-            : 'N/A',
-        helper.getAppropriateText(info['profile']['bio'].toString()));
   }
 }

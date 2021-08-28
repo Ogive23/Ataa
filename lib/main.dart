@@ -8,7 +8,6 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
-import 'Screens/RegistrationScreens/login_screen.dart';
 import 'Screens/TopThree/BackgroundScreen.dart';
 import 'Screens/splash_screen.dart';
 import 'Screens/first_time_screens.dart';
@@ -51,7 +50,6 @@ class AtaaMain extends StatelessWidget {
         "SplashScreen": (BuildContext context) => SplashScreen(),
         "WelcomeScreen": (BuildContext context) => WelcomeScreen(),
         "MainScreen": (BuildContext context) => MainScreen(),
-        "LoginScreen": (BuildContext context) => LoginScreen(),
       },
     );
   }
