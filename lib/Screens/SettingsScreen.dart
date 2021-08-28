@@ -39,7 +39,7 @@ class SettingsScreen extends StatelessWidget {
                     applicationVersion: '1.0.0',
                     //ToDo: Make it Ataa icon
                     applicationIcon: Image.asset(
-                      'assets/images/ogive_version_2.png',
+                      'assets/images/Ataa.png',
                       width: w / 20,
                     ),
                     children: <Widget>[
