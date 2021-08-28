@@ -1,7 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ogive.ataa">
+    package="com.ogive.ataa_lite">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
    <application
-        android:label="Ataa"
+        android:label="Ataa Lite"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
@@ -53,7 +56,4 @@
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCR_aFqmJMJyM8h95wzJfi1BjsCzb9hngo"/>
     </application>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 </manifest>

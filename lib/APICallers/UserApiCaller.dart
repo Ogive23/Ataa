@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:ataa/Helpers/DataMapper.dart';
-import 'package:ataa/Helpers/ResponseHandler.dart';
+import 'package:ataa_lite/Helpers/DataMapper.dart';
+import 'package:ataa_lite/Helpers/ResponseHandler.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;

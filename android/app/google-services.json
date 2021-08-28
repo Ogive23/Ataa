@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:156379197848:android:5ca096dbc131911e21bbed",
+        "mobilesdk_app_id": "1:156379197848:android:4d6208c6518dbf5e21bbed",
         "android_client_info": {
-          "package_name": "com.ogive.ataa"
+          "package_name": "com.ogive.ataa_lite"
         }
       },
       "oauth_client": [

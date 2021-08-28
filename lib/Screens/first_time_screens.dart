@@ -1,5 +1,5 @@
-import 'package:ataa/Session/session_manager.dart';
-import 'package:ataa/Shared%20Data/app_theme.dart';
+import 'package:ataa_lite/Session/session_manager.dart';
+import 'package:ataa_lite/Shared%20Data/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 

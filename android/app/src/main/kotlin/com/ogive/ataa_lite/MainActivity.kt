@@ -1,4 +1,4 @@
-package com.ogive.ataa
+package com.ogive.ataa_lite
 
 import io.flutter.embedding.android.FlutterActivity
 

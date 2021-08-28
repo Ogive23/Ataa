@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ataa/Helpers/DataMapper.dart';
+import 'package:ataa_lite/Helpers/DataMapper.dart';
 
 class MarkerApiCaller {
   late FirebaseFirestore firestore;

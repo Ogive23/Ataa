@@ -1,4 +1,4 @@
-import 'package:ataa/Shared%20Data/app_theme.dart';
+import 'package:ataa_lite/Shared%20Data/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
