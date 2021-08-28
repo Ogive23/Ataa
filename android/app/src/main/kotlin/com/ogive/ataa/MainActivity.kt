@@ -1,4 +1,4 @@
-package com.ogive.feedme
+package com.ogive.ataa
 
 import io.flutter.embedding.android.FlutterActivity
 

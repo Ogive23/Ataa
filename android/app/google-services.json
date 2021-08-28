@@ -1,34 +1,33 @@
 {
   "project_info": {
-    "project_number": "45168288106",
-    "firebase_url": "https://feedme-ee76c.firebaseio.com",
-    "project_id": "feedme-ee76c",
-    "storage_bucket": "feedme-ee76c.appspot.com"
+    "project_number": "156379197848",
+    "project_id": "ataa-5b64e",
+    "storage_bucket": "ataa-5b64e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:45168288106:android:11db37f00dcb398ac0c513",
+        "mobilesdk_app_id": "1:156379197848:android:5ca096dbc131911e21bbed",
         "android_client_info": {
-          "package_name": "com.ogive.feedme"
+          "package_name": "com.ogive.ataa"
         }
       },
       "oauth_client": [
         {
-          "client_id": "45168288106-o5oriko28d1v3jskkhofeid80p09h0ea.apps.googleusercontent.com",
+          "client_id": "156379197848-0a5pk23232qvj798bkoo3eqorf327jlc.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA_27yJ1gltrQKhmc3BT-wEwv_cL97Nads"
+          "current_key": "AIzaSyCG-DbyvRvHWezdCcQmitSv27gURPVprDE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "45168288106-o5oriko28d1v3jskkhofeid80p09h0ea.apps.googleusercontent.com",
+              "client_id": "156379197848-0a5pk23232qvj798bkoo3eqorf327jlc.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

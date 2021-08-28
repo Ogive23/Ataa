@@ -1,6 +1,6 @@
-# feedme
+# Ataa
 
-Feedme is a non profit app that helps people to get their over needs food to anyone that maybe can't find any food to eat.
+Ataa is a non profit app that helps people to get their over needs food to anyone that maybe can't find any food to eat.
 
 ## Getting Started
 
