@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:cool_alert/cool_alert.dart';
-import 'package:feedme/APICallers/MarkerApiCaller.dart';
-import 'package:feedme/CustomWidgets/ErrorMessage.dart';
-import 'package:feedme/GeneralInfo.dart';
-import 'package:feedme/Models/UserLocation.dart';
-import 'package:feedme/Session/session_manager.dart';
-import 'package:feedme/Shared%20Data/app_theme.dart';
-import 'package:feedme/Shared%20Data/common_data.dart';
+import 'package:ataa/APICallers/MarkerApiCaller.dart';
+import 'package:ataa/CustomWidgets/ErrorMessage.dart';
+import 'package:ataa/GeneralInfo.dart';
+import 'package:ataa/Models/UserLocation.dart';
+import 'package:ataa/Session/session_manager.dart';
+import 'package:ataa/Shared%20Data/app_theme.dart';
+import 'package:ataa/Shared%20Data/common_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -14,14 +14,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'dart:math';
 import 'package:vector_math/vector_math.dart' as math;
-import 'package:feedme/Shared%20Data/app_language.dart';
+import 'package:ataa/Shared%20Data/app_language.dart';
 
-class FeedMeMainPage extends StatefulWidget {
+class AtaaMainPage extends StatefulWidget {
   @override
-  _FeedMeMainPageState createState() => _FeedMeMainPageState();
+  _AtaaMainPageState createState() => _AtaaMainPageState();
 }
 
-class _FeedMeMainPageState extends State<FeedMeMainPage> {
+class _AtaaMainPageState extends State<AtaaMainPage> {
   static late double w, h;
   static late CommonData commonData;
   static late AppLanguage appLanguage;
@@ -73,7 +73,7 @@ class _FeedMeMainPageState extends State<FeedMeMainPage> {
           ),
           content: Text(
             '${(calculateDistance(userLocation.currentLocation!, markers[index].position) * 1000).toStringAsFixed(2)} ' +
-                appLanguage.words['FeedMeMainAcquiringDialogOne']! +
+                appLanguage.words['AtaaMainAcquiringDialogOne']! +
                 '\n${markers[index].infoWindow.snippet}',
             style: appTheme.themeData.primaryTextTheme.headline4,
             textDirection: appLanguage.textDirection,
@@ -81,7 +81,7 @@ class _FeedMeMainPageState extends State<FeedMeMainPage> {
           actions: [
             TextButton(
               child: Text(
-                appLanguage.words['FeedMeMainAcquiringActionOne']!,
+                appLanguage.words['AtaaMainAcquiringActionOne']!,
                 style: appTheme.themeData.primaryTextTheme.headline4!
                     .apply(color: Colors.green),
               ),
@@ -97,7 +97,7 @@ class _FeedMeMainPageState extends State<FeedMeMainPage> {
             ),
             TextButton(
               child: Text(
-                appLanguage.words['FeedMeMainAcquiringActionTwo']!,
+                appLanguage.words['AtaaMainAcquiringActionTwo']!,
                 style: appTheme.themeData.primaryTextTheme.headline4!
                     .apply(color: Colors.red),
               ),
@@ -152,13 +152,13 @@ class _FeedMeMainPageState extends State<FeedMeMainPage> {
           return Container(
             alignment: Alignment.center,
             child: ErrorMessage(
-                message: appLanguage.words['FeedMeMainAcquiringErrorOne']!),
+                message: appLanguage.words['AtaaMainAcquiringErrorOne']!),
           );
         } else if (snapshot.error != null) {
           return Container(
             alignment: Alignment.center,
             child: ErrorMessage(
-                message: appLanguage.words['FeedMeMainAcquiringErrorTwo']!),
+                message: appLanguage.words['AtaaMainAcquiringErrorTwo']!),
           );
         } else {
           return Container(
@@ -187,7 +187,7 @@ class _FeedMeMainPageState extends State<FeedMeMainPage> {
         } else if (snapshot.error != null) {
           return Container(
             alignment: Alignment.center,
-            child: ErrorMessage(message: appLanguage.words['FeedMeMainError']!),
+            child: ErrorMessage(message: appLanguage.words['AtaaMainError']!),
           );
         } else {
           return Container(
@@ -215,25 +215,25 @@ class _FeedMeMainPageState extends State<FeedMeMainPage> {
                 1000 >
             20 &&
         following &&
-        commonData.step == Pages.FeedMeMainPage.index) {
+        commonData.step == Pages.AtaaMainPage.index) {
       return thanksMessage();
     }
     return AlertDialog(
       backgroundColor: appTheme.themeData.cardColor,
       title: Text(
-        appLanguage.words['FeedMeMainFinishingDialogOne']!,
+        appLanguage.words['AtaaMainFinishingDialogOne']!,
         style: appTheme.themeData.primaryTextTheme.headline3,
       ),
       content: Text(
-        appLanguage.words['FeedMeMainFinishingDialogTwo']! +
+        appLanguage.words['AtaaMainFinishingDialogTwo']! +
             ' ${num.parse((calculateDistance(userLocation.currentLocation!, markers[0].position) * 1000).toStringAsFixed(2))} ' +
-            appLanguage.words['FeedMeMainFinishingDialogThree']!,
+            appLanguage.words['AtaaMainFinishingDialogThree']!,
         style: appTheme.themeData.primaryTextTheme.headline4,
         textDirection: appLanguage.textDirection,
       ),
       actions: [
         TextButton(
-            child: Text(appLanguage.words['FeedMeMainFinishingDialogFour']!),
+            child: Text(appLanguage.words['AtaaMainFinishingDialogFour']!),
             onPressed: () {
               setState(() async {
                 await markerApiCaller.delete(markers[0].markerId.value);
@@ -243,14 +243,14 @@ class _FeedMeMainPageState extends State<FeedMeMainPage> {
                     context: context,
                     type: CoolAlertType.success,
                     lottieAsset: 'assets/animations/6951-success.json',
-                    text: appLanguage.words['FeedMeMainFinishingDialogFive']!,
+                    text: appLanguage.words['AtaaMainFinishingDialogFive']!,
                     confirmBtnColor: Color(0xff1c9691),
                     title: '');
               });
             }),
         TextButton(
           child: Text(
-            appLanguage.words['FeedMeMainFinishingDialogSix']!,
+            appLanguage.words['AtaaMainFinishingDialogSix']!,
             style: TextStyle(color: Colors.red),
           ),
           onPressed: () async {
@@ -261,7 +261,7 @@ class _FeedMeMainPageState extends State<FeedMeMainPage> {
                 context: context,
                 type: CoolAlertType.success,
                 lottieAsset: 'assets/animations/6951-success.json',
-                text: appLanguage.words['FeedMeMainFinishingDialogSeven']!,
+                text: appLanguage.words['AtaaMainFinishingDialogSeven']!,
                 confirmBtnColor: Color(0xff1c9691),
                 title: '');
           },
@@ -281,7 +281,7 @@ class _FeedMeMainPageState extends State<FeedMeMainPage> {
         backgroundColor: appTheme.themeData.primaryColor,
         appBar: AppBar(
           backgroundColor: appTheme.themeData.primaryColor,
-          title: Text(appLanguage.words['FeedMeMainTitle']!,
+          title: Text(appLanguage.words['AtaaMainTitle']!,
               style: appTheme.themeData.primaryTextTheme.headline2),
           actions: [
             IconButton(
@@ -386,7 +386,7 @@ class _FeedMeMainPageState extends State<FeedMeMainPage> {
                           });
                         },
                         child: Text(
-                          appLanguage.words['FeedMeMainCancelButton']!,
+                          appLanguage.words['AtaaMainCancelButton']!,
                           style: appTheme.themeData.primaryTextTheme.headline4!
                               .apply(color: Colors.white),
                         ),

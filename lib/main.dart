@@ -33,15 +33,15 @@ Future<void> main() async {
       errorAndStacktrace.last,
     );
   }).sendPort);
-  runApp(FeedMeMain());
+  runApp(AtaaMain());
 }
 
-class FeedMeMain extends StatelessWidget {
+class AtaaMain extends StatelessWidget {
   final FirebaseAnalytics analytics = FirebaseAnalytics();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'FeedMe',
+      title: 'Ataa',
       debugShowCheckedModeBanner: false,
       navigatorObservers: [
         FirebaseAnalyticsObserver(analytics: analytics),

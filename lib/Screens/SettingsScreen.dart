@@ -1,6 +1,6 @@
-import 'package:feedme/Session/session_manager.dart';
-import 'package:feedme/Shared%20Data/app_language.dart';
-import 'package:feedme/Shared%20Data/app_theme.dart';
+import 'package:ataa/Session/session_manager.dart';
+import 'package:ataa/Shared%20Data/app_language.dart';
+import 'package:ataa/Shared%20Data/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -35,9 +35,9 @@ class SettingsScreen extends StatelessWidget {
                 context: context,
                 builder: (context) {
                   return AboutDialog(
-                    applicationName: 'FeedMe',
+                    applicationName: 'Ataa',
                     applicationVersion: '1.0.0',
-                    //ToDo: Make it feed me icon
+                    //ToDo: Make it Ataa icon
                     applicationIcon: Image.asset(
                       'assets/images/ogive_version_2.png',
                       width: w / 20,

@@ -1,4 +1,4 @@
-import 'Screens/FeedMeMainPage.dart';
+import 'Screens/AtaaMainPage.dart';
 import 'Screens/TopThree/HomeScreen.dart';
 import 'Screens/IntroPage.dart';
 import 'Screens/MarkerCreationPage.dart';
@@ -10,7 +10,7 @@ enum Pages {
   HomeScreen,
   SettingsScreen,
   IntroPage,
-  FeedMeMainPage,
+  AtaaMainPage,
   MarkerCreationPage,
   ProfileScreen,
   StayInTouchScreen,
@@ -21,7 +21,7 @@ final pageOptions = [
   HomeScreen(),
   SettingsScreen(),
   IntroPage(),
-  FeedMeMainPage(),
+  AtaaMainPage(),
   MarkerCreationPage(),
   // ProfileScreen(),
   StayInTouchPage()

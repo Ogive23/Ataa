@@ -1,9 +1,9 @@
 import 'dart:ui';
-import 'package:feedme/CustomWidgets/CustomSpacing.dart';
-import 'package:feedme/Session/session_manager.dart';
-import 'package:feedme/Shared%20Data/app_language.dart';
-import 'package:feedme/Shared%20Data/app_theme.dart';
-import 'package:feedme/Shared%20Data/common_data.dart';
+import 'package:ataa/CustomWidgets/CustomSpacing.dart';
+import 'package:ataa/Session/session_manager.dart';
+import 'package:ataa/Shared%20Data/app_language.dart';
+import 'package:ataa/Shared%20Data/app_theme.dart';
+import 'package:ataa/Shared%20Data/common_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -157,7 +157,7 @@ class IntroPage extends StatelessWidget {
                                     ImageFilter.blur(sigmaX: 1.5, sigmaY: 1.5),
                                 child: Text(
                                   appLanguage
-                                      .words['FeedMeIntroAchievementCenter']!,
+                                      .words['AtaaIntroAchievementCenter']!,
                                   textAlign: TextAlign.center,
                                   textDirection: appLanguage.textDirection,
                                   style: appTheme
@@ -179,14 +179,14 @@ class IntroPage extends StatelessWidget {
                           borderRadius:
                               BorderRadius.all(Radius.circular(10))))),
               onPressed: () {
-                commonData.changeStep(Pages.FeedMeMainPage.index);
+                commonData.changeStep(Pages.AtaaMainPage.index);
               },
               icon: Icon(
                 Icons.flash_on,
                 color: Colors.redAccent,
               ),
               label: Text(
-                appLanguage.words['FeedMeIntroSecondButton']!,
+                appLanguage.words['AtaaIntroSecondButton']!,
                 textAlign: TextAlign.center,
                 textDirection: appLanguage.textDirection,
                 style: appTheme.themeData.primaryTextTheme.headline5!
@@ -210,7 +210,7 @@ class IntroPage extends StatelessWidget {
                 color: Colors.white,
               ),
               label: Text(
-                appLanguage.words['FeedMeIntroFirstButton']!,
+                appLanguage.words['AtaaIntroFirstButton']!,
                 textAlign: TextAlign.center,
                 textDirection: appLanguage.textDirection,
                 style: appTheme.themeData.primaryTextTheme.headline5!
@@ -221,7 +221,7 @@ class IntroPage extends StatelessWidget {
               value: 40,
             ),
             Text(
-              appLanguage.words['FeedMeIntroWord']!,
+              appLanguage.words['AtaaIntroWord']!,
               textAlign: TextAlign.center,
               textDirection: appLanguage.textDirection,
               style: appTheme.themeData.primaryTextTheme.headline4!

@@ -1,5 +1,5 @@
-import 'package:feedme/Session/session_manager.dart';
-import 'package:feedme/Shared%20Data/app_theme.dart';
+import 'package:ataa/Session/session_manager.dart';
+import 'package:ataa/Shared%20Data/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -27,7 +27,7 @@ class WelcomeScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 30),
                 Text(
-                  'Welcome To FeedMe App!',
+                  'Welcome To Ataa App!',
                   style: appTheme.nonStaticGetTextStyle(
                       1.0,
                       Colors.black,
