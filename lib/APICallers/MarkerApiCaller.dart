@@ -1,14 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
 import 'package:ataa/Helpers/DataMapper.dart';
+import '../Helpers/ResponseHandler.dart';
+import '../Session/session_manager.dart';
+import 'TokenApiCaller.dart';
 
 class MarkerApiCaller {
-  late FirebaseFirestore firestore;
-  late CollectionReference markers;
   DataMapper factory = new DataMapper();
-  void initialize() {
-    firestore = FirebaseFirestore.instance;
-    markers = FirebaseFirestore.instance.collection('markers');
-  }
 
   Future<bool> create(latitude, longitude, String description, int priority,
       String type, double quantity) async {

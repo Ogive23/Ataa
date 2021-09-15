@@ -116,7 +116,6 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
     if (!await userLocation.canLocateUserLocation()) {
       return null;
     }
-    markerApiCaller.initialize();
     if (!following) markers = await markerApiCaller.getAll();
     for (int i = 0; i < markers.length; i++) {
       markers[i] = markers.elementAt(i).copyWith(onTapParam: () {

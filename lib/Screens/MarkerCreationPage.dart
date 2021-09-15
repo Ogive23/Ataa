@@ -368,7 +368,6 @@ class _MarkerCreationPageState extends State<MarkerCreationPage> {
                             confirmBtnColor: Color(0xff1c9691),
                             title: '');
                       MarkerApiCaller markerApiCaller = new MarkerApiCaller();
-                      markerApiCaller.initialize();
                       bool status = await markerApiCaller.create(
                         userLocation.currentLocation!.latitude,
                         userLocation.currentLocation!.longitude,

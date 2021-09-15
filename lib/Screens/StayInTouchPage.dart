@@ -2,10 +2,10 @@ import 'package:ataa/CustomWidgets/CustomCard.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import '../../Session/session_manager.dart';
-import '../../Shared Data/app_language.dart';
-import '../../Shared Data/app_theme.dart';
-import '../../Shared Data/common_data.dart';
+import '../Session/session_manager.dart';
+import '../Shared Data/app_language.dart';
+import '../Shared Data/app_theme.dart';
+import '../Shared Data/common_data.dart';
 
 class StayInTouchPage extends StatelessWidget {
   static late double w, h;

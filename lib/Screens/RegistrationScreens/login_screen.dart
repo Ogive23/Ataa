@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     )),
                 Text(
-                    'أرتقِ عبر العطاء',
+                  'أرتقِ عبر العطاء',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: appTheme.mediumTextSize(context),
@@ -232,8 +232,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       style: appTheme.nonStaticGetTextStyle(
                                           1.0,
                                           Colors.white,
-                                          appTheme
-                                              .mediumTextSize(context),
+                                          appTheme.mediumTextSize(context),
                                           FontWeight.normal,
                                           1.0,
                                           TextDecoration.none,

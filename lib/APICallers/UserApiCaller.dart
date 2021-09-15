@@ -6,7 +6,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../Session/session_manager.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'TokenApiCaller.dart';
 
 class UserApiCaller {
@@ -14,17 +13,11 @@ class UserApiCaller {
   SessionManager sessionManager = new SessionManager();
   DataMapper dataMapper = new DataMapper();
   TokenApiCaller tokenApiCaller = new TokenApiCaller();
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
-  CollectionReference urls = FirebaseFirestore.instance.collection('URLs');
-  String url = "http://192.168.1.4:8000";
+  String url = "http://192.168.1.190:8000";
 
   Future<Map<String, dynamic>> login(String email, String password) async {
-    // if (sessionManager.accessTokenExpired()) {
-    //   await tokenApiCaller.refreshAccessToken(sessionManager.user.id,sessionManager.oauthToken);
-    // }
     var headers = {
       "Content-Type": "application/json",
-      // 'Authorization': 'Bearer ${sessionManager.oauthToken}',
     };
     var body = {"email": email, "password": password};
     try {
@@ -41,7 +34,7 @@ class UserApiCaller {
       //ToDo:move this "/storage/" to backend and make it full link
       return {
         "Err_Flag": responseToJson['Err_Flag'],
-        "Values": dataMapper.getUserFromJson(url, responseToJson['data'])
+        "User": dataMapper.getUserFromJson(url, responseToJson['data']),
         "AccessToken": responseToJson['data']['token'],
         "ExpiryDate": responseToJson['data']['expiryDate'],
       };
@@ -138,13 +131,14 @@ class UserApiCaller {
     } on TimeoutException {
       return responseHandler.timeOutPrinter();
     } on SocketException {
-      return responseHandler.errorPrinter("برجاء التأكد من خدمة الإنترنت لديك");
+      return responseHandler.errorPrinter(language, "InternetError");
     } catch (e) {
       print('e = $e');
       return responseHandler.errorPrinter(language, "SomethingWentWrong");
     }
     // }
   }
+
   Future<Map<String, dynamic>> changeCoverPicture(
       String userId, File image) async {
     // QuerySnapshot snapshot = await urls.get();
