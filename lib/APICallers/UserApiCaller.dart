@@ -48,10 +48,10 @@ class UserApiCaller {
     } on TimeoutException {
       return responseHandler.timeOutPrinter();
     } on SocketException {
-      return responseHandler.errorPrinter("برجاء التأكد من خدمة الإنترنت لديك");
+      return responseHandler.errorPrinter("En", "InternetError");
     } catch (e) {
       print('e = $e');
-      return responseHandler.errorPrinter('حدث خطأ ما');
+      return responseHandler.errorPrinter("En", 'SomethingWentWrong');
     }
   }
 
@@ -83,10 +83,10 @@ class UserApiCaller {
     } on TimeoutException {
       return responseHandler.timeOutPrinter();
     } on SocketException {
-      return responseHandler.errorPrinter("برجاء التأكد من خدمة الإنترنت لديك");
+      return responseHandler.errorPrinter(language, "InternetError");
     } catch (e) {
       print('e = $e');
-      return responseHandler.errorPrinter('حدث خطأ ما');
+      return responseHandler.errorPrinter(language, "SomethingWentWrong");
     }
     // }
   }
@@ -133,7 +133,7 @@ class UserApiCaller {
         var responseToJson = jsonDecode(e.response.toString());
         return responseToJson;
       } else {
-        return responseHandler.errorPrinter('حدث خطأ ما.');
+        return responseHandler.errorPrinter(language, "SomethingWentWrong");
       }
     } on TimeoutException {
       return responseHandler.timeOutPrinter();
@@ -141,7 +141,7 @@ class UserApiCaller {
       return responseHandler.errorPrinter("برجاء التأكد من خدمة الإنترنت لديك");
     } catch (e) {
       print('e = $e');
-      return responseHandler.errorPrinter('حدث خطأ ما');
+      return responseHandler.errorPrinter(language, "SomethingWentWrong");
     }
     // }
   }
@@ -187,15 +187,15 @@ class UserApiCaller {
         var responseToJson = jsonDecode(e.response.toString());
         return responseToJson;
       } else {
-        return responseHandler.errorPrinter('حدث خطأ ما.');
+        return responseHandler.errorPrinter(language, "SomethingWentWrong");
       }
     } on TimeoutException {
       return responseHandler.timeOutPrinter();
     } on SocketException {
-      return responseHandler.errorPrinter("برجاء التأكد من خدمة الإنترنت لديك");
+      return responseHandler.errorPrinter(language, "InternetError");
     } catch (e) {
       print('e = $e');
-      return responseHandler.errorPrinter('حدث خطأ ما');
+      return responseHandler.errorPrinter(language, "SomethingWentWrong");
     }
     // }
   }
@@ -230,10 +230,10 @@ class UserApiCaller {
     } on TimeoutException {
       return responseHandler.timeOutPrinter();
     } on SocketException {
-      return responseHandler.errorPrinter("برجاء التأكد من خدمة الإنترنت لديك");
+      return responseHandler.errorPrinter(language, "InternetError");
     } catch (e) {
       print('e = $e');
-      return responseHandler.errorPrinter('حدث خطأ ما');
+      return responseHandler.errorPrinter(language, "SomethingWentWrong");
     }
     // }
   }
