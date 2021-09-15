@@ -368,7 +368,9 @@ class _MarkerCreationPageState extends State<MarkerCreationPage> {
                             confirmBtnColor: Color(0xff1c9691),
                             title: '');
                       MarkerApiCaller markerApiCaller = new MarkerApiCaller();
-                      bool status = await markerApiCaller.create(
+                      Map<String, dynamic> status =
+                          await markerApiCaller.create(
+                        appLanguage.language,
                         userLocation.currentLocation!.latitude,
                         userLocation.currentLocation!.longitude,
                         description.value.text,
@@ -376,7 +378,15 @@ class _MarkerCreationPageState extends State<MarkerCreationPage> {
                         type,
                         quantity,
                       );
-                      if (status) {
+                      if (status['Err_Flag']) {
+                        return CoolAlert.show(
+                            context: context,
+                            type: CoolAlertType.error,
+                            lottieAsset: 'assets/animations/38213-error.json',
+                            text: status['Err_Desc'],
+                            confirmBtnColor: Color(0xff1c9691),
+                            title: '');
+                      } else {
                         commonData.back();
                         return CoolAlert.show(
                             context: context,
@@ -386,21 +396,9 @@ class _MarkerCreationPageState extends State<MarkerCreationPage> {
                                 appLanguage.words['MarkerCreationSuccessText'],
                             confirmBtnColor: Color(0xff1c9691),
                             title: '');
-                      } else {
-                        commonData.back();
-                        return CoolAlert.show(
-                            context: context,
-                            type: CoolAlertType.error,
-                            lottieAsset: 'assets/animations/38213-error.json',
-                            text: appLanguage.words['MarkerCreationFailText'],
-                            confirmBtnColor: Color(0xff1c9691),
-                            title: '');
                       }
                     },
                   ),
-                  SizedBox(
-                    height: 10,
-                  )
                 ],
               ))),
         ));
