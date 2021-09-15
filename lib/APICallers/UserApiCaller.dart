@@ -42,6 +42,8 @@ class UserApiCaller {
       return {
         "Err_Flag": responseToJson['Err_Flag'],
         "Values": dataMapper.getUserFromJson(url, responseToJson['data'])
+        "AccessToken": responseToJson['data']['token'],
+        "ExpiryDate": responseToJson['data']['expiryDate'],
       };
     } on TimeoutException {
       return responseHandler.timeOutPrinter();

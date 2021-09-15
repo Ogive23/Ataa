@@ -4,7 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SessionManager {
   late SharedPreferences? sharedPreferences;
   late User? user;
-  late DateTime? accessTokenExpireDate;
+  late String? accessToken;
+  late DateTime? expiryDate;
   SessionManager._privateConstructor();
 
   static final SessionManager _instance = SessionManager._privateConstructor();
@@ -15,20 +16,23 @@ class SessionManager {
   getSessionManager() async {
     sharedPreferences = await SharedPreferences.getInstance();
   }
-  createSession(User user, DateTime accessTokenExpiryDate) {
+
+  createSession(User user, String accessToken, DateTime expiryDate) {
     this.user = user;
+    this.accessToken = accessToken;
+    this.expiryDate = expiryDate;
     print(user.toList());
     sharedPreferences!.setStringList('user', user.toList());
-    sharedPreferences!.setString(
-        'accessTokenExpireDate', accessTokenExpiryDate.toString());
+    sharedPreferences!.setString('accessToken', accessToken.toString());
+    sharedPreferences!.setString('expiryDate', expiryDate.toString());
   }
 
   loadSession() {
-    accessTokenExpireDate =
-        DateTime.parse(sharedPreferences!.getString('accessTokenExpireDate')!);
-    if (accessTokenExpireDate!.isBefore(DateTime.now())) {
+    expiryDate = DateTime.parse(sharedPreferences!.getString('expiryDate')!);
+    if (expiryDate!.isBefore(DateTime.now())) {
       logout();
     }
+    accessToken = sharedPreferences!.getString('accessToken')!;
     List<String> userData = sharedPreferences!.getStringList('user')!;
     user = new User(
         userData[0],
@@ -45,12 +49,22 @@ class SessionManager {
         userData[10],
         userData[11]);
   }
+
   bool isLoggedIn() {
     return sharedPreferences!.containsKey('user');
   }
+
   bool accessTokenExpired() {
-    return accessTokenExpireDate!.isBefore(DateTime.now());
+    return expiryDate!.isBefore(DateTime.now());
   }
+
+  refreshAccessToken(String accessToken, DateTime expiryDate) {
+    this.accessToken = accessToken;
+    this.expiryDate = expiryDate;
+    sharedPreferences!.setString('accessToken', accessToken.toString());
+    sharedPreferences!.setString('expiryDate', expiryDate.toString());
+  }
+
   bool notFirstTime() {
     return sharedPreferences!.containsKey('notFirstTime'); //true if there
   }
@@ -67,18 +81,20 @@ class SessionManager {
     return sharedPreferences!.get('theme') == 'true' ? true : false;
   }
 
-  createPreferredLanguage(String lang){
+  createPreferredLanguage(String lang) {
     sharedPreferences!.setString('lang', lang);
   }
 
-  String? loadPreferredLanguage(){
+  String? loadPreferredLanguage() {
     return sharedPreferences!.getString('lang');
   }
 
   logout() {
     this.user = null;
-    this.accessTokenExpireDate = null;
-    sharedPreferences!.remove('accessTokenExpireDate');
+    this.accessToken = null;
+    this.expiryDate = null;
+    sharedPreferences!.remove('expiryDate');
+    sharedPreferences!.remove('accessToken');
     sharedPreferences!.remove('user');
   }
 }
