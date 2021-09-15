@@ -64,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
               color: Color.fromRGBO(39, 49, 56, 1.0),
               image: DecorationImage(
                   image: AssetImage(
-                    'assets/images/2018_12_05_4268-Edit.jpg',
+                    'assets/images/hand-giving-food-bowl-needy-person_23-2148733818.jpg',
                   ),
                   fit: BoxFit.cover,
                   colorFilter: ColorFilter.mode(
