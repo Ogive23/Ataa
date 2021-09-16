@@ -16,6 +16,9 @@ import 'dart:math';
 import 'package:vector_math/vector_math.dart' as math;
 import 'package:ataa/Shared%20Data/app_language.dart';
 
+import '../Helpers/DataMapper.dart';
+import '../Helpers/DataMapper.dart';
+
 class AtaaMainPage extends StatefulWidget {
   @override
   _AtaaMainPageState createState() => _AtaaMainPageState();
@@ -111,48 +114,59 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
     );
   }
 
-  Future<GoogleMap?> getGoogleMap() async {
+  Future<Map<String, dynamic>> getGoogleMap() async {
     Completer<GoogleMapController> _controller = Completer();
     if (!await userLocation.canLocateUserLocation()) {
-      return null;
+      return {
+        "Err_Flag": true,
+        "Err_Desc": appLanguage.words['AtaaMainAcquiringErrorOne']!
+      };
     }
-    if (!following) markers = await markerApiCaller.getAll();
+    if (!following) {
+      Map<String, dynamic> status =
+          await markerApiCaller.getAll(appLanguage.language);
+      if (status['Err_Flag']) return status;
+      DataMapper dataMapper = new DataMapper();
+      markers = dataMapper.getMarkersFromJson(status['data']);
+    }
     for (int i = 0; i < markers.length; i++) {
       markers[i] = markers.elementAt(i).copyWith(onTapParam: () {
         onMarkerTapped(markers.elementAt(i).markerId);
       });
     }
-    return googleMap = GoogleMap(
-      mapType: MapType.normal,
-      initialCameraPosition: CameraPosition(
-          target: LatLng(userLocation.currentLocation!.latitude,
-              userLocation.currentLocation!.longitude),
-          zoom: 18),
-      markers: Set<Marker>.of(markers),
-      onMapCreated: (GoogleMapController controller) {
-        _controller.complete(controller);
-      },
-      myLocationEnabled: true,
-      zoomGesturesEnabled: true,
-      tiltGesturesEnabled: true,
-      mapToolbarEnabled: true,
-    );
+    return {
+      "Err_Flag": false,
+      "Value": googleMap = GoogleMap(
+        mapType: MapType.normal,
+        initialCameraPosition: CameraPosition(
+            target: LatLng(userLocation.currentLocation!.latitude,
+                userLocation.currentLocation!.longitude),
+            zoom: 18),
+        markers: Set<Marker>.of(markers),
+        onMapCreated: (GoogleMapController controller) {
+          _controller.complete(controller);
+        },
+        myLocationEnabled: true,
+        zoomGesturesEnabled: true,
+        tiltGesturesEnabled: true,
+        mapToolbarEnabled: true,
+      )
+    };
   }
 
   Widget showGoogleMap() {
-    return FutureBuilder<GoogleMap?>(
+    return FutureBuilder<Map<String, dynamic>>(
       future: getGoogleMap(),
-      builder: (BuildContext context, AsyncSnapshot<GoogleMap?> snapshot) {
+      builder:
+          (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.data != null) {
+          if (snapshot.data!['Err_Flag'])
+            return Container(
+              alignment: Alignment.center,
+              child: ErrorMessage(message: snapshot.data!['Err_Desc']),
+            );
           return googleMap;
-        } else if (snapshot.connectionState == ConnectionState.done &&
-            snapshot.data == null) {
-          return Container(
-            alignment: Alignment.center,
-            child: ErrorMessage(
-                message: appLanguage.words['AtaaMainAcquiringErrorOne']!),
-          );
         } else if (snapshot.error != null) {
           return Container(
             alignment: Alignment.center,
@@ -166,7 +180,7 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
               title: Text(appLanguage.words['loading']!),
               actions: [
                 CupertinoActivityIndicator(
-                  radius: 50,
+                  radius: w/10,
                 )
               ],
             ),
@@ -235,7 +249,8 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
             child: Text(appLanguage.words['AtaaMainFinishingDialogFour']!),
             onPressed: () {
               setState(() async {
-                await markerApiCaller.delete(markers[0].markerId.value);
+                await markerApiCaller.delete(
+                    appLanguage.language, markers[0].markerId.value);
                 following = !following;
                 commonData.back();
                 return CoolAlert.show(
@@ -253,7 +268,8 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
             style: TextStyle(color: Colors.red),
           ),
           onPressed: () async {
-            await markerApiCaller.delete(markers[0].markerId.value);
+            await markerApiCaller.delete(
+                appLanguage.language, markers[0].markerId.value);
             following = !following;
             commonData.back();
             return CoolAlert.show(

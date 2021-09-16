@@ -21,24 +21,25 @@ class DataMapper {
     }
   }
 
-  List<Marker> getMarkersFromSnapshot(QuerySnapshot snapShot) {
+  List<Marker> getMarkersFromJson(List<Map<String, dynamic>> list) {
 //  MarkerIcon markerOption = new MarkerIcon();      ///for custom marker icon
     List<Marker> returnedMarkers = <Marker>[];
-    snapShot.docs.forEach((marker) {
+    list.forEach((marker) {
       returnedMarkers.add(Marker(
-        markerId: new MarkerId(marker.id.toString()),
-        position: LatLng(double.parse(marker.get('latitude').toString()),
-            double.parse(marker.get('longitude').toString())),
+        markerId: new MarkerId(marker['id'].toString()),
+        position: LatLng(double.parse(marker['latitude'].toString()),
+            double.parse(marker['longitude'].toString())),
 //      icon: markerOption.getIcon(),
-        icon: getMarkerColor(marker.get('priority').toString()),
+        icon: getMarkerColor(marker['priority'].toString()),
         infoWindow: InfoWindow(
-            title: marker.get('type').toString(),
-            snippet: marker.get('description').toString() +
-                ' \nQuantity = ${double.parse(marker.get('quantity').toString()).toInt()} bags'),
+            title: marker['type'].toString(),
+            snippet: marker['description'].toString() +
+                ' \nQuantity = ${double.parse(marker['quantity'].toString()).toInt()} bags'),
       ));
     });
     return returnedMarkers;
   }
+
   User getUserFromJson(String url, Map<String, dynamic> info) {
     return User(
         helper.getAppropriateText(info['user']['id']),
