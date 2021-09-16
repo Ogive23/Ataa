@@ -48,7 +48,8 @@ class UserApiCaller {
     }
   }
 
-  Future<Map<String, dynamic>> getAchievements(String? id) async {
+  Future<Map<String, dynamic>> getAchievements(
+      String language, String? id) async {
     // QuerySnapshot snapshot = await urls.get();
     // for(int index = 0; index < snapshot.size; index++){
     //   String url = snapshot.docs[index]['url'];
@@ -85,7 +86,7 @@ class UserApiCaller {
   }
 
   Future<Map<String, dynamic>> changeProfilePicture(
-      String userId, File image) async {
+      String language, String userId, File image) async {
     // QuerySnapshot snapshot = await urls.get();
     // for(int index = 0; index < snapshot.size; index++){
     //   String url = snapshot.docs[index]['url'];
@@ -140,7 +141,7 @@ class UserApiCaller {
   }
 
   Future<Map<String, dynamic>> changeCoverPicture(
-      String userId, File image) async {
+      String language, String userId, File image) async {
     // QuerySnapshot snapshot = await urls.get();
     // for(int index = 0; index < snapshot.size; index++){
     //   String url = snapshot.docs[index]['url'];
@@ -159,7 +160,7 @@ class UserApiCaller {
     try {
       var response = await Dio()
           .post(url + "/api/profile/$userId/cover",
-          data: formData, options: Options(headers: headers))
+              data: formData, options: Options(headers: headers))
           .catchError((error) {
         throw error;
       }).timeout(Duration(seconds: 120));
@@ -194,7 +195,8 @@ class UserApiCaller {
     // }
   }
 
-  changeUserInformation(String userId,String bio, String address, String phoneNumber) async {
+  changeUserInformation(String language, String userId, String bio,
+      String address, String phoneNumber) async {
     // QuerySnapshot snapshot = await urls.get();
     // for(int index = 0; index < snapshot.size; index++){
     //   String url = snapshot.docs[index]['url'];
@@ -215,7 +217,7 @@ class UserApiCaller {
     try {
       var response = await http
           .post(Uri.parse(url + "/api/profile/$userId/information"),
-          headers: headers, body: jsonEncode(body))
+              headers: headers, body: jsonEncode(body))
           .catchError((error) {
         throw error;
       }).timeout(Duration(seconds: 120));
