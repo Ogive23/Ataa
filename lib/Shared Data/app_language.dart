@@ -48,8 +48,6 @@ class AppLanguage extends ChangeNotifier {
             'AchievementCenterTwo': 'Markers published',
             'AchievementCenterThree': '&',
             'AchievementCenterFour': 'Markers collected',
-            'AchievementCenterFive': 'Your progress',
-            'AchievementCenterSix': '62 Markers left to your prize.',
             'MarkerCreationTitle': 'Food Sharing',
             'MarkerCreationSubtitle':
                 'Remember That\n\nYou Don\'t Only Share It With The Poor\nSo Share the best you have.',
@@ -150,8 +148,6 @@ class AppLanguage extends ChangeNotifier {
             'AchievementCenterTwo': 'طعام مشارك',
             'AchievementCenterThree': '&',
             'AchievementCenterFour': 'طعام تم توصيله',
-            'AchievementCenterFive': 'معدل وصولك',
-            'AchievementCenterSix': '62 مشاركة أخري تبقت للحصول علي الجائزة',
             'MarkerCreationTitle': 'مشاركة الطعام',
             'MarkerCreationSubtitle':
                 'تذكر ذلك\n\nأنت لا تشارك طعامك مع الفقراء فقط\n.فشارك أفضل ما تملك',

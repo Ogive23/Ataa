@@ -44,9 +44,9 @@ class SessionManager {
         userData[6],
         //ToDo: Review
         userData[7] == "true" ? true : false,
+        userData[8],
         userData[9],
-        userData[10],
-        userData[11]);
+        userData[10]);
   }
 
   bool isLoggedIn() {
