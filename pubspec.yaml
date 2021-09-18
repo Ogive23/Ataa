@@ -27,6 +27,7 @@ dependencies:
   firebase_analytics: ^8.3.0
   firebase_crashlytics: ^2.2.0
   google_mobile_ads: ^0.13.3
+  animated_text_kit: ^4.2.1
 #  cloud_firestore: ^2.5.0
   cool_alert: ^1.1.0
   dio: ^4.0.0
