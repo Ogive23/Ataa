@@ -78,7 +78,8 @@ class IntroPage extends StatelessWidget {
                                                 appLanguage.textDirection,
                                           ),
                                           Text(
-                                              appLanguage.words['AchievementCenterTwo']!,
+                                              appLanguage.words[
+                                                  'AchievementCenterTwo']!,
                                               style: appTheme.themeData
                                                   .primaryTextTheme.headline4!
                                                   .apply(fontSizeFactor: 0.5),
@@ -88,7 +89,8 @@ class IntroPage extends StatelessWidget {
                                         ],
                                       ),
                                       Text(
-                                        appLanguage.words['AchievementCenterThree']!,
+                                        appLanguage
+                                            .words['AchievementCenterThree']!,
                                         style: appTheme.themeData
                                             .primaryTextTheme.headline4!
                                             .apply(fontSizeFactor: 1.5),
@@ -107,8 +109,8 @@ class IntroPage extends StatelessWidget {
                                                 appLanguage.textDirection,
                                           ),
                                           Text(
-                                            appLanguage.words['AchievementCenterThree']!,
-
+                                            appLanguage.words[
+                                                'AchievementCenterFour']!,
                                             style: appTheme.themeData
                                                 .primaryTextTheme.headline4!
                                                 .apply(fontSizeFactor: 0.5),
@@ -120,50 +122,55 @@ class IntroPage extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  Text(
-                                    appLanguage.words['AchievementCenterFive']!,
+                                  CustomSpacing(value: 50),
+                                  Text.rich(
+                                    TextSpan(
+                                        text: 'Your Current Level is ',
+                                        children: [
+                                          TextSpan(
+                                            text: '11',
+                                            style: appTheme.themeData
+                                                .primaryTextTheme.headline4!
+                                                .apply(color: Colors.green),
+                                          )
+                                        ]),
                                     style: appTheme
                                         .themeData.primaryTextTheme.headline4,
                                     textAlign: TextAlign.center,
                                     textDirection: appLanguage.textDirection,
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: w / 50),
-                                    child: Directionality(
-                                      textDirection: TextDirection.ltr,
-                                      child: LinearProgressIndicator(
-                                        value: 0.3,
-                                        backgroundColor:
-                                            Colors.white.withOpacity(0.7),
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    appLanguage.words['AchievementCenterSix']!,
+                                  CustomSpacing(value: 50),
+                                  Text.rich(
+                                    TextSpan(text: 'Known as ', children: [
+                                      TextSpan(
+                                        text: 'Super Volunteer',
+                                        style: appTheme.themeData
+                                            .primaryTextTheme.headline4!
+                                            .apply(color: Colors.green),
+                                      )
+                                    ]),
                                     style: appTheme
-                                        .themeData.primaryTextTheme.headline4!
-                                        .apply(
-                                            fontSizeFactor: 0.7,
-                                            heightFactor: 1.5),
+                                        .themeData.primaryTextTheme.headline4,
                                     textAlign: TextAlign.center,
                                     textDirection: appLanguage.textDirection,
+                                  ),
+                                  CustomSpacing(value: 50),
+                                  GestureDetector(
+                                    onTap: () {
+
+                                    },
+                                    child: Text(
+                                      'Head to Achievement Center',
+                                      style: appTheme
+                                          .themeData.primaryTextTheme.headline5!
+                                          .apply(color: Colors.blue[300]),
+                                      textAlign: TextAlign.center,
+                                      textDirection: appLanguage.textDirection,
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
-                            BackdropFilter(
-                                filter:
-                                    ImageFilter.blur(sigmaX: 1.5, sigmaY: 1.5),
-                                child: Text(
-                                  appLanguage
-                                      .words['AtaaIntroAchievementCenter']!,
-                                  textAlign: TextAlign.center,
-                                  textDirection: appLanguage.textDirection,
-                                  style: appTheme
-                                      .themeData.primaryTextTheme.headline2!
-                                      .apply(color: Colors.amber[100]),
-                                ))
                           ],
                         )))),
             CustomSpacing(

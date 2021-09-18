@@ -1,7 +1,13 @@
+import 'dart:ui';
+
+import 'package:ataa/CustomWidgets/CustomLoadingText.dart';
+import 'package:ataa/CustomWidgets/CustomSpacing.dart';
+import 'package:ataa/Session/session_manager.dart';
 import 'package:ataa/Shared%20Data/app_language.dart';
 import 'package:ataa/Shared%20Data/app_theme.dart';
 import 'package:ataa/Shared%20Data/common_data.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import '../../GeneralInfo.dart';
@@ -10,8 +16,8 @@ class HomeScreen extends StatelessWidget {
   static late double w, h;
   static late CommonData commonData;
   static late AppTheme appTheme;
-  static late AppLanguage appLanguage;
-  static late List<Color> gradientColors;
+  static late AppLanguage appLanguage;static late List<Color> gradientColors;
+  SessionManager sessionManager = new SessionManager();
 
   void loadInterstitial() {
     InterstitialAd.load(
@@ -29,7 +35,6 @@ class HomeScreen extends StatelessWidget {
           },
         ));
   }
-
   void loadGradientColors() {
     if (appTheme.isDark) {
       gradientColors = [
@@ -58,6 +63,44 @@ class HomeScreen extends StatelessWidget {
     ];
   }
 
+  // Future<Map<String, dynamic>> getAtaaRecords() async {
+  //   await Future.delayed(Duration(seconds: 5));
+  //   return {'Err_Flag': false};
+  // }
+  //
+  // Widget showAtaaRecords() {
+  //   return FutureBuilder<Map<String, dynamic>>(
+  //     future: getAtaaRecords(),
+  //     builder:
+  //         (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+  //       if (snapshot.connectionState == ConnectionState.done &&
+  //           snapshot.data != null) {
+  //         if (snapshot.data!['Err_Flag'])
+  //           return Container(
+  //             alignment: Alignment.center,
+  //             child: ErrorMessage(message: snapshot.data!['Err_Desc']),
+  //           );
+  //         return Column(
+  //           children: [
+  //
+  //           ],
+  //         );
+  //       } else if (snapshot.error != null) {
+  //         return Container(
+  //           alignment: Alignment.center,
+  //           child:
+  //               Text('حدث خطأ أثناء تحميل الإنجازات برجاء المحاولة مرة أخري.'),
+  //         );
+  //       } else {
+  //         return Container(
+  //             alignment: Alignment.center,
+  //             child:
+  //                 CustomLoadingText(text: 'جاري تحميل الإنجازات الخاصة بنا'));
+  //       }
+  //     },
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
     w = MediaQuery.of(context).size.width;
@@ -66,7 +109,86 @@ class HomeScreen extends StatelessWidget {
     appTheme = Provider.of<AppTheme>(context);
     appLanguage = Provider.of<AppLanguage>(context);
     loadGradientColors();
-    return GestureDetector(
+    return Scaffold(
+      backgroundColor: appTheme.themeData.primaryColor,
+      appBar: AppBar(
+        backgroundColor: appTheme.themeData.primaryColor,
+        title: Image.asset(
+          'assets/images/Ataa.png',
+          height: h / 15,
+        ),
+        leading: GestureDetector(
+          onTap: () => commonData.changeStep(Pages.ProfileScreen.index),
+          child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: w / 100),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.white, width: 3),
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: Offset(0, 1), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: PopupMenuButton(
+                  child: CircleAvatar(
+                    radius: h / 50,
+                    backgroundColor: Colors.transparent,
+                    child: ClipOval(
+                      child: sessionManager.user!.profileImage != 'N/A'
+                          ? Image.network(
+                              sessionManager.user!.profileImage!,
+                              fit: BoxFit.contain,
+                              width: w / 5,
+                              height: h / 20,
+                            )
+                          : Image.asset(
+                              'assets/images/user.png',
+                              fit: BoxFit.cover,
+                              width: w / 5,
+                              height: h / 20,
+                            ),
+                    ),
+                  ),
+                  onSelected: (value) {
+                    if (value == 'Profile')
+                      return commonData.changeStep(Pages.ProfileScreen.index);
+                    else if (value == 'Logout') {
+                      sessionManager.logout();
+                      Navigator.popUntil(context, (route) => false);
+                      Navigator.pushNamed(context, "MainScreen");
+                      return;
+                    }
+                  },
+                  itemBuilder: (context) {
+                    return [
+                      PopupMenuItem(
+                        child: Text(
+                          'الملف الشخصي',
+                          style: appTheme.themeData.primaryTextTheme.headline4,
+                        ),
+                        value: 'Profile',
+                      ),
+                      PopupMenuItem(
+                        child: Text(
+                          'تسجيل الخروج',
+                          style: appTheme.themeData.primaryTextTheme.headline4,
+                        ),
+                        value: 'Logout',
+                      ),
+                    ];
+                  },
+                ),
+              )),
+        ),
+        centerTitle: true,
+        elevation: 0.0,
+      ),
+      body: GestureDetector(
         onTap: () {
           commonData.changeStep(Pages.IntroPage.index);
           loadInterstitial();
@@ -75,50 +197,52 @@ class HomeScreen extends StatelessWidget {
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           alignment: Alignment.center,
-          padding: EdgeInsets.symmetric(horizontal: w/25),
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: gradientColors,
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter)),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  appLanguage.words['HomeTitle']!,
-                  style: appTheme.themeData.primaryTextTheme.headline1!.apply(
-                    shadows: [
-                      Shadow(
-                          color: appTheme.themeData.accentColor,
-                          offset: Offset.fromDirection(1, 3))
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: h / 25),
-                  child: Image.asset(
-                    'assets/images/food.png',
-                  ),
-                ),
-                Text(
-                  appLanguage.words['HomeBody']!,
-                  style: appTheme.themeData.primaryTextTheme.headline4!.apply(color: Colors.white),
-                  textAlign: TextAlign.center,
-                  textDirection: appLanguage.textDirection,
-                ),
-                Padding(
-                    padding: EdgeInsets.only(top: h/50),
-                    child: Text(
-                      appLanguage.words['HomeSubtitle']!,
-                      style: appTheme.themeData.primaryTextTheme.subtitle1,
-                      textAlign: TextAlign.center,
-                      textDirection: appLanguage.textDirection,
-                    )),
-              ],
-            ),
+            color: appTheme.themeData.primaryColor,
+            image: DecorationImage(image: AssetImage('assets/images/567-5673790_love-food-hate-waste-01-giving-food-clip.png',))
           ),
-        ));
+          padding: EdgeInsets.symmetric(vertical: h / 10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Column(
+                children: [
+                  Text(
+                    'Ataa Helps about 500 Poor/Day to find their main source of food.',
+                    textAlign: TextAlign.center,
+                    style: appTheme.themeData.primaryTextTheme.headline4,
+                  ),
+                  CustomSpacing(value: 100),
+                  Text(
+                    'With more than about 40 volunteers.',
+                    style: appTheme.themeData.primaryTextTheme.headline4,
+                    textAlign: TextAlign.center,
+                  ), CustomSpacing(value: 100),
+                  Text(
+                    'It\'s worth to keep going.',
+                    style: appTheme.themeData.primaryTextTheme.headline5,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+              // Padding(
+              //   padding: EdgeInsets.symmetric(vertical: h / 25),
+              //   child: Image.asset(
+              //
+              //     height: h/3,
+              //     width: w,
+              //   ),
+              // ),
+              Text(
+                appLanguage.words['HomeSubtitle']!,
+                style: appTheme.themeData.primaryTextTheme.headline5,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

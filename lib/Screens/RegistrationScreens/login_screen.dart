@@ -37,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
     print(status['Values']);
     //ToDo: Access Token Duration
     sessionManager.createSession(
-        status['Values'], status['AccessToken'], DateTime.parse(status['ExpiryDate']));
+        status['User'], status['AccessToken'], DateTime.parse(status['ExpiryDate']));
     print('thing ${sessionManager.sharedPreferences}');
     Navigator.popUntil(context, (route) => false);
     Navigator.pushNamed(context, 'MainScreen');
@@ -64,9 +64,10 @@ class _LoginScreenState extends State<LoginScreen> {
               color: Color.fromRGBO(39, 49, 56, 1.0),
               image: DecorationImage(
                   image: AssetImage(
-                    'assets/images/hand-giving-food-bowl-needy-person_23-2148733818.jpg',
+                    'assets/images/hand-giving-food-bowl-needy-person_23-2148733818.png',
                   ),
                   fit: BoxFit.cover,
+                  // scale: 0.66,
                   colorFilter: ColorFilter.mode(
                       Colors.black.withOpacity(0.3), BlendMode.darken),
                   alignment: Alignment.center),
