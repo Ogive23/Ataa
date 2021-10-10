@@ -13,7 +13,7 @@ class UserApiCaller {
   SessionManager sessionManager = new SessionManager();
   DataMapper dataMapper = new DataMapper();
   TokenApiCaller tokenApiCaller = new TokenApiCaller();
-  String url = "http://192.168.1.190:8000";
+  String url = "http://192.168.1.6:8000";
 
   Future<Map<String, dynamic>> login(String email, String password) async {
     var headers = {
@@ -49,7 +49,12 @@ class UserApiCaller {
   }
 
   Future<Map<String, dynamic>> getAchievements(
-      String language, String? id) async {
+      String language) async {
+    Map<String, dynamic> status;
+    if (sessionManager.accessTokenExpired()) {
+      status = await tokenApiCaller.refreshAccessToken(language);
+      if (status['Err_Flag']) return status;
+    }
     // QuerySnapshot snapshot = await urls.get();
     // for(int index = 0; index < snapshot.size; index++){
     //   String url = snapshot.docs[index]['url'];
@@ -61,18 +66,18 @@ class UserApiCaller {
       // 'Authorization': 'Bearer ${sessionManager.oauthToken}',
     };
     try {
-      print(url + "/api/ahed/ahedachievement/$id");
+      print(url + "/api/ataa/achievement/${sessionManager.user!.id}");
       var response = await http
-          .get(Uri.parse(url + "/api/ahed/ahedachievement/$id"),
+          .get(Uri.parse(url + "/api/ataa/achievement/${sessionManager.user!.id}"),
               headers: headers)
           .catchError((error) {
         throw error;
       }).timeout(Duration(seconds: 120));
-      var responseToJson = jsonDecode(response.body);
+      Map<String,dynamic> responseToJson = jsonDecode(response.body);
       if (responseToJson['Err_Flag']) return responseToJson;
       return {
         "Err_Flag": responseToJson['Err_Flag'],
-        "Values": responseToJson['data']
+        "Values": dataMapper.getAchievementsFromJson(responseToJson['data'])
       };
     } on TimeoutException {
       return responseHandler.timeOutPrinter();

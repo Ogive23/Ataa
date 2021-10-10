@@ -9,12 +9,11 @@ import '../Session/session_manager.dart';
 import '../Session/session_manager.dart';
 
 class TokenApiCaller {
-  String url = "http://192.168.1.190:8000";
+  String url = "http://192.168.1.6:8000";
   ResponseHandler responseHandler = new ResponseHandler();
   SessionManager sessionManager = new SessionManager();
 
-  Future<Map<String, dynamic>> refreshAccessToken(
-      String language) async {
+  Future<Map<String, dynamic>> refreshAccessToken(String language) async {
     var headers = {
       "Content-Type": "application/json",
     };
@@ -29,7 +28,8 @@ class TokenApiCaller {
       }).timeout(Duration(seconds: 120));
       var responseToJson = jsonDecode(response.body);
       if (responseToJson['Err_Flag']) return responseToJson;
-      sessionManager.refreshAccessToken(responseToJson['data']['accessToken'],responseToJson['data']['expiryDate']);
+      sessionManager.refreshAccessToken(responseToJson['data']['accessToken'],
+          responseToJson['data']['expiryDate']);
       return {
         "Err_Flag": responseToJson['Err_Flag'],
         "AccessToken": responseToJson['data']['accessToken'],

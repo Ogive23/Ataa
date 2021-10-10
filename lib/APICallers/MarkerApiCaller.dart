@@ -8,11 +8,12 @@ import '../Session/session_manager.dart';
 import 'TokenApiCaller.dart';
 
 class MarkerApiCaller {
-  DataMapper factory = new DataMapper();
+  // DataMapper dataMapper = new DataMapper();
   ResponseHandler responseHandler = new ResponseHandler();
   SessionManager sessionManager = new SessionManager();
+
   TokenApiCaller tokenApiCaller = new TokenApiCaller();
-  String url = "http://192.168.1.190:8000";
+  String url = "http://192.168.1.6:8000";
 
   Future<Map<String, dynamic>> create(
       String language,
@@ -34,9 +35,10 @@ class MarkerApiCaller {
     };
 
     var body = {
+      "language": language,
       "createdBy": sessionManager.user!.id,
-      "latitude": latitude.toString(),
-      "longitude": longitude.toString(),
+      "latitude": latitude,
+      "longitude": longitude,
       "type": type,
       "description": description,
       "quantity": quantity,

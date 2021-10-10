@@ -58,4 +58,6 @@ class DataMapper {
             : 'N/A',
         helper.getAppropriateText(info['profile']['bio'].toString()));
   }
+
+  getAchievementsFromJson(Map<String,dynamic> data) {}
 }
