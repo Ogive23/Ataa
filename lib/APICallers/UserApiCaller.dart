@@ -31,7 +31,6 @@ class UserApiCaller {
       var responseToJson = jsonDecode(response.body);
       print(responseToJson);
       if (responseToJson['Err_Flag']) return responseToJson;
-      //ToDo:move this "/storage/" to backend and make it full link
       return {
         "Err_Flag": responseToJson['Err_Flag'],
         "User": dataMapper.getUserFromJson(url, responseToJson['data']),
@@ -48,32 +47,27 @@ class UserApiCaller {
     }
   }
 
-  Future<Map<String, dynamic>> getAchievements(
-      String language) async {
+  Future<Map<String, dynamic>> getAchievements(String language) async {
     Map<String, dynamic> status;
     if (sessionManager.accessTokenExpired()) {
       status = await tokenApiCaller.refreshAccessToken(language);
       if (status['Err_Flag']) return status;
     }
-    // QuerySnapshot snapshot = await urls.get();
-    // for(int index = 0; index < snapshot.size; index++){
-    //   String url = snapshot.docs[index]['url'];
-    // if (sessionManager.accessTokenExpired()) {
-    //   await tokenApiCaller.refreshAccessToken(sessionManager.user.id,sessionManager.oauthToken);
-    // }
     var headers = {
       "Content-Type": "application/json",
-      // 'Authorization': 'Bearer ${sessionManager.oauthToken}',
+      'Authorization': 'Bearer ${sessionManager.accessToken}',
     };
     try {
       print(url + "/api/ataa/achievement/${sessionManager.user!.id}");
       var response = await http
-          .get(Uri.parse(url + "/api/ataa/achievement/${sessionManager.user!.id}"),
+          .get(
+              Uri.parse(
+                  url + "/api/ataa/achievement/${sessionManager.user!.id}"),
               headers: headers)
           .catchError((error) {
         throw error;
       }).timeout(Duration(seconds: 120));
-      Map<String,dynamic> responseToJson = jsonDecode(response.body);
+      Map<String, dynamic> responseToJson = jsonDecode(response.body);
       if (responseToJson['Err_Flag']) return responseToJson;
       return {
         "Err_Flag": responseToJson['Err_Flag'],
@@ -87,20 +81,18 @@ class UserApiCaller {
       print('e = $e');
       return responseHandler.errorPrinter(language, "SomethingWentWrong");
     }
-    // }
   }
 
   Future<Map<String, dynamic>> changeProfilePicture(
       String language, String userId, File image) async {
-    // QuerySnapshot snapshot = await urls.get();
-    // for(int index = 0; index < snapshot.size; index++){
-    //   String url = snapshot.docs[index]['url'];
-    // if (sessionManager.accessTokenExpired()) {
-    //   await tokenApiCaller.refreshAccessToken(sessionManager.user.id,sessionManager.oauthToken);
-    // }
+    Map<String, dynamic> status;
+    if (sessionManager.accessTokenExpired()) {
+      status = await tokenApiCaller.refreshAccessToken(language);
+      if (status['Err_Flag']) return status;
+    }
     var headers = {
       "Content-Type": "application/json",
-      // 'Authorization': 'Bearer ${sessionManager.oauthToken}',
+      'Authorization': 'Bearer ${sessionManager.accessToken}',
     };
     FormData formData = new FormData.fromMap({
       '_method': 'put',
@@ -142,20 +134,18 @@ class UserApiCaller {
       print('e = $e');
       return responseHandler.errorPrinter(language, "SomethingWentWrong");
     }
-    // }
   }
 
   Future<Map<String, dynamic>> changeCoverPicture(
       String language, String userId, File image) async {
-    // QuerySnapshot snapshot = await urls.get();
-    // for(int index = 0; index < snapshot.size; index++){
-    //   String url = snapshot.docs[index]['url'];
-    // if (sessionManager.accessTokenExpired()) {
-    //   await tokenApiCaller.refreshAccessToken(sessionManager.user.id,sessionManager.oauthToken);
-    // }
+    Map<String, dynamic> status;
+    if (sessionManager.accessTokenExpired()) {
+      status = await tokenApiCaller.refreshAccessToken(language);
+      if (status['Err_Flag']) return status;
+    }
     var headers = {
       "Content-Type": "application/json",
-      // 'Authorization': 'Bearer ${sessionManager.oauthToken}',
+      'Authorization': 'Bearer ${sessionManager.accessToken}',
     };
     FormData formData = new FormData.fromMap({
       '_method': 'put',
@@ -197,20 +187,18 @@ class UserApiCaller {
       print('e = $e');
       return responseHandler.errorPrinter(language, "SomethingWentWrong");
     }
-    // }
   }
 
   changeUserInformation(String language, String userId, String bio,
       String address, String phoneNumber) async {
-    // QuerySnapshot snapshot = await urls.get();
-    // for(int index = 0; index < snapshot.size; index++){
-    //   String url = snapshot.docs[index]['url'];
-    // if (sessionManager.accessTokenExpired()) {
-    //   await tokenApiCaller.refreshAccessToken(sessionManager.user.id,sessionManager.oauthToken);
-    // }
+    Map<String, dynamic> status;
+    if (sessionManager.accessTokenExpired()) {
+      status = await tokenApiCaller.refreshAccessToken(language);
+      if (status['Err_Flag']) return status;
+    }
     var headers = {
       "Content-Type": "application/json",
-      // 'Authorization': 'Bearer ${sessionManager.oauthToken}',
+      'Authorization': 'Bearer ${sessionManager.accessToken}',
     };
     var body = {
       '_method': 'put',
@@ -236,6 +224,5 @@ class UserApiCaller {
       print('e = $e');
       return responseHandler.errorPrinter(language, "SomethingWentWrong");
     }
-    // }
   }
 }
