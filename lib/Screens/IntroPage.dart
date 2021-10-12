@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:ataa/CustomWidgets/CustomSpacing.dart';
+import 'package:ataa/CustomWidgets/UserAchievementContainer.dart';
 import 'package:ataa/Session/session_manager.dart';
 import 'package:ataa/Shared%20Data/app_language.dart';
 import 'package:ataa/Shared%20Data/app_theme.dart';
@@ -44,135 +45,7 @@ class IntroPage extends StatelessWidget {
                 color: Colors.transparent.withOpacity(0.1),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10))),
-                child: ClipRRect(
-                    child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 1.5, sigmaY: 1.5),
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.symmetric(vertical: h / 70),
-                              child: Column(
-                                children: <Widget>[
-                                  Text(
-                                    appLanguage.words['AchievementCenterOne']!,
-                                    style: appTheme
-                                        .themeData.primaryTextTheme.headline4,
-                                    textAlign: TextAlign.center,
-                                    textDirection: appLanguage.textDirection,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      Column(
-                                        children: <Widget>[
-                                          Text(
-                                            '123',
-                                            style: appTheme.themeData
-                                                .primaryTextTheme.headline4,
-                                            textAlign: TextAlign.center,
-                                            textDirection:
-                                                appLanguage.textDirection,
-                                          ),
-                                          Text(
-                                              appLanguage.words[
-                                                  'AchievementCenterTwo']!,
-                                              style: appTheme.themeData
-                                                  .primaryTextTheme.headline4!
-                                                  .apply(fontSizeFactor: 0.5),
-                                              textAlign: TextAlign.center,
-                                              textDirection:
-                                                  appLanguage.textDirection)
-                                        ],
-                                      ),
-                                      Text(
-                                        appLanguage
-                                            .words['AchievementCenterThree']!,
-                                        style: appTheme.themeData
-                                            .primaryTextTheme.headline4!
-                                            .apply(fontSizeFactor: 1.5),
-                                        textAlign: TextAlign.center,
-                                        textDirection:
-                                            appLanguage.textDirection,
-                                      ),
-                                      Column(
-                                        children: <Widget>[
-                                          Text(
-                                            '123',
-                                            style: appTheme.themeData
-                                                .primaryTextTheme.headline4,
-                                            textAlign: TextAlign.center,
-                                            textDirection:
-                                                appLanguage.textDirection,
-                                          ),
-                                          Text(
-                                            appLanguage.words[
-                                                'AchievementCenterFour']!,
-                                            style: appTheme.themeData
-                                                .primaryTextTheme.headline4!
-                                                .apply(fontSizeFactor: 0.5),
-                                            textAlign: TextAlign.center,
-                                            textDirection:
-                                                appLanguage.textDirection,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  CustomSpacing(value: 50),
-                                  Text.rich(
-                                    TextSpan(
-                                        text: 'Your Current Level is ',
-                                        children: [
-                                          TextSpan(
-                                            text: '11',
-                                            style: appTheme.themeData
-                                                .primaryTextTheme.headline4!
-                                                .apply(color: Colors.green),
-                                          )
-                                        ]),
-                                    style: appTheme
-                                        .themeData.primaryTextTheme.headline4,
-                                    textAlign: TextAlign.center,
-                                    textDirection: appLanguage.textDirection,
-                                  ),
-                                  CustomSpacing(value: 50),
-                                  Text.rich(
-                                    TextSpan(text: 'Known as ', children: [
-                                      TextSpan(
-                                        text: 'Super Volunteer',
-                                        style: appTheme.themeData
-                                            .primaryTextTheme.headline4!
-                                            .apply(color: Colors.green),
-                                      )
-                                    ]),
-                                    style: appTheme
-                                        .themeData.primaryTextTheme.headline4,
-                                    textAlign: TextAlign.center,
-                                    textDirection: appLanguage.textDirection,
-                                  ),
-                                  CustomSpacing(value: 50),
-                                  GestureDetector(
-                                    onTap: () {
-
-                                    },
-                                    child: Text(
-                                      'Head to Achievement Center',
-                                      style: appTheme
-                                          .themeData.primaryTextTheme.headline5!
-                                          .apply(color: Colors.blue[300]),
-                                      textAlign: TextAlign.center,
-                                      textDirection: appLanguage.textDirection,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        )))),
+                child: UserAchievementContainer()),
             CustomSpacing(
               value: 10,
             ),
