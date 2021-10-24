@@ -1,13 +1,11 @@
 import 'dart:ui';
 
-import 'package:ataa/CustomWidgets/CustomLoadingText.dart';
 import 'package:ataa/CustomWidgets/CustomSpacing.dart';
 import 'package:ataa/Session/session_manager.dart';
 import 'package:ataa/Shared%20Data/app_language.dart';
 import 'package:ataa/Shared%20Data/app_theme.dart';
 import 'package:ataa/Shared%20Data/common_data.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import '../../GeneralInfo.dart';
@@ -191,7 +189,7 @@ class HomeScreen extends StatelessWidget {
       body: GestureDetector(
         onTap: () {
           commonData.changeStep(Pages.IntroPage.index);
-          loadInterstitial();
+          // loadInterstitial();
         },
         child: Container(
           height: MediaQuery.of(context).size.height,
