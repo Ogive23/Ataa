@@ -13,7 +13,7 @@ class UserApiCaller {
   SessionManager sessionManager = new SessionManager();
   DataMapper dataMapper = new DataMapper();
   TokenApiCaller tokenApiCaller = new TokenApiCaller();
-  String url = "http://192.168.1.6:8000";
+  String url = "http://192.168.1.190:8000";
 
   Future<Map<String, dynamic>> login(String email, String password) async {
     var headers = {
@@ -62,17 +62,14 @@ class UserApiCaller {
       var response = await http
           .get(
               Uri.parse(
-                  url + "/api/ataa/achievement/${sessionManager.user!.id}"),
+                  url + "/api/ataa/achievement/${sessionManager.user!.id}?requesterId=${sessionManager.user!.id}"),
               headers: headers)
           .catchError((error) {
         throw error;
       }).timeout(Duration(seconds: 120));
       Map<String, dynamic> responseToJson = jsonDecode(response.body);
-      if (responseToJson['Err_Flag']) return responseToJson;
-      return {
-        "Err_Flag": responseToJson['Err_Flag'],
-        "Values": dataMapper.getAchievementsFromJson(responseToJson['data'])
-      };
+      print(responseToJson);
+      return responseToJson;
     } on TimeoutException {
       return responseHandler.timeOutPrinter();
     } on SocketException {
