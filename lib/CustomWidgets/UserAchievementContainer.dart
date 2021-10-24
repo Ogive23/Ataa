@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:ataa/APICallers/UserApiCaller.dart';
+import 'package:ataa/Shared%20Data/Cache.dart';
 import 'package:ataa/Shared%20Data/app_language.dart';
 import 'package:ataa/Shared%20Data/app_theme.dart';
 import 'package:ataa/Shared%20Data/common_data.dart';
@@ -16,6 +17,13 @@ class UserAchievementContainer extends StatelessWidget {
   static late AppTheme appTheme;
   static late AppLanguage appLanguage;
   final UserApiCaller userApiCaller = new UserApiCaller();
+  final Cache cache = new Cache();
+
+  cacheData(Map<String, dynamic> data) {
+    cache.setData('hasAchievement', true);
+    cache.setData('userAchievement', data);
+    print(cache.data['userAchievement']);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +45,7 @@ class UserAchievementContainer extends StatelessWidget {
                     alignment: Alignment.center,
                     child: ErrorMessage(message: snapshot.data!['Err_Desc']),
                   );
+                cacheData(snapshot.data!);
                 return getSuccessBody(snapshot.data!);
               } else if (snapshot.error != null) {
                 return Container(
