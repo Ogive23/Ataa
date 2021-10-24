@@ -4,14 +4,17 @@ class AppLanguage extends ChangeNotifier {
   late String language;
   late Map<String, String> words;
   late TextDirection textDirection;
+  late Alignment alignment;
   AppLanguage(String language) {
     this.language = language;
     textDirection = initTextDirection(this.language);
+    alignment = initAlignment(this.language);
     words = initWords(this.language);
   }
   changeLanguage(String language) {
     this.language = language;
     textDirection = initTextDirection(this.language);
+    alignment = initAlignment(this.language);
     words = initWords(this.language);
     notifyListeners();
   }
@@ -230,5 +233,9 @@ class AppLanguage extends ChangeNotifier {
 
   TextDirection initTextDirection(String language) {
     return language == 'En' ? TextDirection.ltr : TextDirection.rtl;
+  }
+
+  Alignment initAlignment(String language) {
+    return language == 'En' ? Alignment.topRight : Alignment.topLeft;
   }
 }

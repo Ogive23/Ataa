@@ -1,3 +1,6 @@
+import 'package:ataa/Screens/AchievementScreen.dart';
+import 'package:ataa/Screens/ProfileScreen.dart';
+
 import 'Screens/AtaaMainPage.dart';
 import 'Screens/TopThree/HomeScreen.dart';
 import 'Screens/IntroPage.dart';
@@ -14,6 +17,7 @@ enum Pages {
   MarkerCreationPage,
   ProfileScreen,
   StayInTouchScreen,
+  AchievementScreen
 }
 
 final pageOptions = [
@@ -23,6 +27,7 @@ final pageOptions = [
   IntroPage(),
   AtaaMainPage(),
   MarkerCreationPage(),
-  // ProfileScreen(),
-  StayInTouchPage()
+  ProfileScreen(),
+  StayInTouchPage(),
+  AchievementScreen()
 ];
