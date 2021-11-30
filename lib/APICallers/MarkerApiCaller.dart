@@ -13,7 +13,7 @@ class MarkerApiCaller {
   SessionManager sessionManager = new SessionManager();
 
   TokenApiCaller tokenApiCaller = new TokenApiCaller();
-  String url = "http://192.168.1.190:8000";
+  String url = "http://192.168.1.139:8000";
 
   Future<Map<String, dynamic>> create(
       String language,
@@ -48,7 +48,7 @@ class MarkerApiCaller {
     try {
       print(url + "/api/ataa/markers");
       var response = await http
-          .post(Uri.parse(url + "/api/ahed/markers"),
+          .post(Uri.parse(url + "/api/ataa/markers"),
               headers: headers, body: jsonEncode(body))
           .catchError((error) {
         throw error;
@@ -83,7 +83,7 @@ class MarkerApiCaller {
       var response = await http
           .delete(
               Uri.parse(url +
-                  "/api/ahed/markers/$markerId?userId=${sessionManager.user!.id}&language=$language"),
+                  "/api/ataa/markers/$markerId?userId=${sessionManager.user!.id}&language=$language"),
               headers: headers)
           .catchError((error) {
         throw error;
@@ -113,7 +113,7 @@ class MarkerApiCaller {
     };
     try {
       var response = await http
-          .get(Uri.parse(url + "/api/ataa/markers"), headers: headers)
+          .get(Uri.parse(url + "/api/ataa/markers/?" + "userId=${sessionManager.user!.id}"), headers: headers)
           .catchError((error) {
         throw error;
       }).timeout(Duration(seconds: 120));
