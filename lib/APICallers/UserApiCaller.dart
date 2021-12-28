@@ -38,7 +38,7 @@ class UserApiCaller {
         "ExpiryDate": responseToJson['data']['expiryDate'],
       };
     } on TimeoutException {
-      return responseHandler.timeOutPrinter();
+      return responseHandler.timeOutPrinter("En");
     } on SocketException {
       return responseHandler.errorPrinter("En", "InternetError");
     } catch (e) {
@@ -71,7 +71,7 @@ class UserApiCaller {
       print(responseToJson);
       return responseToJson;
     } on TimeoutException {
-      return responseHandler.timeOutPrinter();
+      return responseHandler.timeOutPrinter(language);
     } on SocketException {
       return responseHandler.errorPrinter(language, "InternetError");
     } catch (e) {
@@ -124,7 +124,7 @@ class UserApiCaller {
         return responseHandler.errorPrinter(language, "SomethingWentWrong");
       }
     } on TimeoutException {
-      return responseHandler.timeOutPrinter();
+      return responseHandler.timeOutPrinter(language);
     } on SocketException {
       return responseHandler.errorPrinter(language, "InternetError");
     } catch (e) {
@@ -177,7 +177,7 @@ class UserApiCaller {
         return responseHandler.errorPrinter(language, "SomethingWentWrong");
       }
     } on TimeoutException {
-      return responseHandler.timeOutPrinter();
+      return responseHandler.timeOutPrinter(language);
     } on SocketException {
       return responseHandler.errorPrinter(language, "InternetError");
     } catch (e) {
@@ -214,7 +214,7 @@ class UserApiCaller {
       print(response);
       return jsonDecode(response.body);
     } on TimeoutException {
-      return responseHandler.timeOutPrinter();
+      return responseHandler.timeOutPrinter(language);
     } on SocketException {
       return responseHandler.errorPrinter(language, "InternetError");
     } catch (e) {

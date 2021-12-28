@@ -33,7 +33,7 @@ class TokenApiCaller {
         "ExpiryDate": responseToJson['data']['expiryDate'],
       };
     } on TimeoutException {
-      return responseHandler.timeOutPrinter();
+      return responseHandler.timeOutPrinter(language);
     } on SocketException {
       return responseHandler.errorPrinter(language, "InternetError");
     } catch (e) {

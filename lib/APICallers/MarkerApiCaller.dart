@@ -53,7 +53,7 @@ class MarkerApiCaller {
       var responseToJson = jsonDecode(response.body);
       return responseToJson;
     } on TimeoutException {
-      return responseHandler.timeOutPrinter();
+      return responseHandler.timeOutPrinter(language);
     } on SocketException {
       return responseHandler.errorPrinter(language, "InternetError");
     } catch (e) {
@@ -88,7 +88,7 @@ class MarkerApiCaller {
       var responseToJson = jsonDecode(response.body);
       return responseToJson;
     } on TimeoutException {
-      return responseHandler.timeOutPrinter();
+      return responseHandler.timeOutPrinter(language);
     } on SocketException {
       return responseHandler.errorPrinter(language, "InternetError");
     } catch (e) {
@@ -121,7 +121,7 @@ class MarkerApiCaller {
       print(response);
       return jsonDecode(response.body);
     } on TimeoutException {
-      return responseHandler.timeOutPrinter();
+      return responseHandler.timeOutPrinter(language);
     } on SocketException {
       return responseHandler.errorPrinter(language, "InternetError");
     } catch (e) {

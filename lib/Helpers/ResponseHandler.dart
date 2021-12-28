@@ -1,8 +1,5 @@
 class ResponseHandler {
-  Map<String, dynamic> possibleErrors = {
-    "SomethingWentWrong": "SomethingWentWrong",
-    "SomethingWentWrong": "حدث خطأ ما"
-  };
+  Map<String, dynamic> possibleErrors = {};
   Map<String, dynamic> initiateErrors(language) {
     switch (language) {
       case 'Ar':
@@ -27,7 +24,12 @@ class ResponseHandler {
     return {'Err_Flag': true, 'Err_Desc': possibleErrors[errorMessage]};
   }
 
-  Map<String, dynamic> timeOutPrinter() {
-    return {'Err_Flag': true, 'Err_Desc': 'Server Timeout!'};
+  Map<String, dynamic> timeOutPrinter(language) {
+    switch (language) {
+      case 'Ar':
+        return {'Err_Flag': true, 'Err_Desc': 'أنتهت مدة الإتصال بالخادم'};
+      default:
+        return {'Err_Flag': true, 'Err_Desc': 'Server Timeout'};
+    }
   }
 }
