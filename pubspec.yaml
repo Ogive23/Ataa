@@ -27,6 +27,8 @@ dependencies:
   google_mobile_ads: ^0.13.3
   cool_alert: ^1.1.0
   dio: ^4.0.0
+  cached_network_image: ^3.2.0
+  hive: ^2.0.5
 dev_dependencies:
   flutter_test:
     sdk: flutter

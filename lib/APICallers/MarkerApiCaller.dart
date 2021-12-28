@@ -2,16 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:ataa/Helpers/DataMapper.dart';
 import '../Helpers/ResponseHandler.dart';
-import '../Session/session_manager.dart';
+import '../Session/SessionManager.dart';
 import 'TokenApiCaller.dart';
 
 class MarkerApiCaller {
-  // DataMapper dataMapper = new DataMapper();
   ResponseHandler responseHandler = new ResponseHandler();
   SessionManager sessionManager = new SessionManager();
-
   TokenApiCaller tokenApiCaller = new TokenApiCaller();
   String url = "http://192.168.1.139:8000";
 
@@ -113,7 +110,11 @@ class MarkerApiCaller {
     };
     try {
       var response = await http
-          .get(Uri.parse(url + "/api/ataa/markers/?" + "userId=${sessionManager.user!.id}"), headers: headers)
+          .get(
+              Uri.parse(url +
+                  "/api/ataa/markers/?" +
+                  "userId=${sessionManager.user!.id}"),
+              headers: headers)
           .catchError((error) {
         throw error;
       }).timeout(Duration(seconds: 120));

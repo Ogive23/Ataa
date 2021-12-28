@@ -1,6 +1,6 @@
-import 'package:ataa/Shared%20Data/app_language.dart';
-import 'package:ataa/Shared%20Data/app_theme.dart';
-import 'package:ataa/Shared%20Data/common_data.dart';
+import 'package:ataa/Shared%20Data/AppLanguage.dart';
+import 'package:ataa/Shared%20Data/AppTheme.dart';
+import 'package:ataa/Shared%20Data/CommonData.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';

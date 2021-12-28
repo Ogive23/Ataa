@@ -1,5 +1,5 @@
-import 'package:ataa/Shared%20Data/app_language.dart';
-import 'package:ataa/Shared%20Data/app_theme.dart';
+import 'package:ataa/Shared%20Data/AppLanguage.dart';
+import 'package:ataa/Shared%20Data/AppTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

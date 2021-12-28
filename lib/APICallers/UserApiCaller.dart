@@ -5,7 +5,7 @@ import 'package:ataa/Helpers/ResponseHandler.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../Session/session_manager.dart';
+import '../Session/SessionManager.dart';
 import 'TokenApiCaller.dart';
 
 class UserApiCaller {

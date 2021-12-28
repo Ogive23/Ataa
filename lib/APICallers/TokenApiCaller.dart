@@ -1,12 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import '../Helpers/ResponseHandler.dart';
 import 'package:http/http.dart' as http;
-
-import '../Session/session_manager.dart';
-import '../Session/session_manager.dart';
+import '../Session/SessionManager.dart';
 
 class TokenApiCaller {
   String url = "http://192.168.1.139:8000";

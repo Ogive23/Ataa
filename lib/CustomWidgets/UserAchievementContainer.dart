@@ -1,15 +1,15 @@
 import 'dart:ui';
 import 'package:ataa/APICallers/UserApiCaller.dart';
-import 'package:ataa/Shared%20Data/Cache.dart';
-import 'package:ataa/Shared%20Data/app_language.dart';
-import 'package:ataa/Shared%20Data/app_theme.dart';
-import 'package:ataa/Shared%20Data/common_data.dart';
+import 'package:ataa/Shared%20Data/AppLanguage.dart';
+import 'package:ataa/Shared%20Data/AppTheme.dart';
+import 'package:ataa/Shared%20Data/CommonData.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../GeneralInfo.dart';
 import 'CustomSpacing.dart';
 import 'ErrorMessage.dart';
+import '../Shared Data/MemoryCache.dart';
 
 class UserAchievementContainer extends StatelessWidget {
   static late double w, h;
@@ -17,12 +17,10 @@ class UserAchievementContainer extends StatelessWidget {
   static late AppTheme appTheme;
   static late AppLanguage appLanguage;
   final UserApiCaller userApiCaller = new UserApiCaller();
-  final Cache cache = new Cache();
+  final MemoryCache memoryCache = new MemoryCache();
 
   cacheData(Map<String, dynamic> data) {
-    cache.setData('hasAchievement', true);
-    cache.setData('userAchievement', data);
-    print(cache.data['userAchievement']);
+    memoryCache.setData('userAchievement', data);
   }
 
   @override
@@ -32,8 +30,8 @@ class UserAchievementContainer extends StatelessWidget {
     commonData = Provider.of<CommonData>(context);
     appTheme = Provider.of<AppTheme>(context);
     appLanguage = Provider.of<AppLanguage>(context);
-    return cache.hasData('userAchievement')
-        ? getSuccessBody(cache.getData('userAchievement'))
+    return memoryCache.hasData('userAchievement')
+        ? getSuccessBody(memoryCache.getData('userAchievement'))
         : FutureBuilder<Map<String, dynamic>>(
             future: userApiCaller.getAchievements(appLanguage.language),
             builder: (BuildContext context,

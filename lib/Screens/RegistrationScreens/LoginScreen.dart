@@ -1,7 +1,7 @@
 import 'package:ataa/APICallers/UserApiCaller.dart';
 import 'package:ataa/CustomWidgets/CustomButtonLoading.dart';
-import 'package:ataa/Session/session_manager.dart';
-import 'package:ataa/Shared%20Data/app_theme.dart';
+import 'package:ataa/Session/SessionManager.dart';
+import 'package:ataa/Shared%20Data/AppTheme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

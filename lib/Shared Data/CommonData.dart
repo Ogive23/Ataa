@@ -1,12 +1,9 @@
+import 'package:ataa/GeneralInfo.dart';
 import 'package:flutter/material.dart';
 
 class CommonData extends ChangeNotifier {
-  int step = 1;
-  List<int> previousSteps = [1];
-  bool scaled = false;
-  double xOffset = 0;
-  double yOffset = 0;
-  double scaleFactor = 1;
+  int step = Pages.HomeScreen.index;
+  List<int> previousSteps = [Pages.HomeScreen.index];
 
   changeStep(int step) {
     this.step = step;

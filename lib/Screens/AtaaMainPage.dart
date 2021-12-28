@@ -4,9 +4,9 @@ import 'package:ataa/APICallers/MarkerApiCaller.dart';
 import 'package:ataa/CustomWidgets/ErrorMessage.dart';
 import 'package:ataa/GeneralInfo.dart';
 import 'package:ataa/Models/UserLocation.dart';
-import 'package:ataa/Session/session_manager.dart';
-import 'package:ataa/Shared%20Data/app_theme.dart';
-import 'package:ataa/Shared%20Data/common_data.dart';
+import 'package:ataa/Session/SessionManager.dart';
+import 'package:ataa/Shared%20Data/AppTheme.dart';
+import 'package:ataa/Shared%20Data/CommonData.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -14,9 +14,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'dart:math';
 import 'package:vector_math/vector_math.dart' as math;
-import 'package:ataa/Shared%20Data/app_language.dart';
-
-import '../Helpers/DataMapper.dart';
+import 'package:ataa/Shared%20Data/AppLanguage.dart';
 import '../Helpers/DataMapper.dart';
 
 class AtaaMainPage extends StatefulWidget {

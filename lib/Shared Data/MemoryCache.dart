@@ -1,9 +1,9 @@
-class Cache {
+class MemoryCache {
   Map<String, dynamic> data = new Map<String, dynamic>();
 
-  Cache._privateConstructor();
-  static final Cache _instance = Cache._privateConstructor();
-  factory Cache() {
+  MemoryCache._privateConstructor();
+  static final MemoryCache _instance = MemoryCache._privateConstructor();
+  factory MemoryCache() {
     return _instance;
   }
 
@@ -20,6 +20,6 @@ class Cache {
   }
 
   Map<String, dynamic> getData(String key) {
-    return this.data['userAchievement'];
+    return this.data[key];
   }
 }
