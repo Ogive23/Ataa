@@ -1,27 +1,31 @@
 import 'package:ataa/Shared%20Data/AppLanguage.dart';
 import 'package:ataa/Shared%20Data/AppTheme.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class ErrorMessage extends StatelessWidget {
   final String message;
-  late AppTheme appTheme;
-  late AppLanguage appLanguage;
+  static late AppTheme appTheme;
+  static late AppLanguage appLanguage;
+  static late double h;
   ErrorMessage({required this.message});
 
   @override
   Widget build(BuildContext context) {
     appTheme = Provider.of<AppTheme>(context);
     appLanguage = Provider.of<AppLanguage>(context);
+    h = MediaQuery.of(context).size.height;
     return Container(
         alignment: Alignment.center,
         child: Column(
           children: [
+            Lottie.asset('assets/animations/38213-error.json', height: h / 10),
             Text(
               '$message',
               style: appTheme.nonStaticGetTextStyle(
                   1.0,
-                  Colors.red,
+                  Colors.red[300],
                   appTheme.mediumTextSize(context),
                   FontWeight.normal,
                   1.0,
