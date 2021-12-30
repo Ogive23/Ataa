@@ -41,7 +41,7 @@ class IntroPage extends StatelessWidget {
                 margin: EdgeInsets.symmetric(
                   horizontal: w / 20,
                 ),
-                color: Colors.transparent.withOpacity(0.1),
+                color: appTheme.themeData.primaryColor.withOpacity(0.2),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10))),
                 child: UserAchievementContainer()),
