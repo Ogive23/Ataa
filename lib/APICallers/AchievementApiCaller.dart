@@ -49,4 +49,72 @@ class AchievementApiCaller {
     }
   }
 
+  Future<Map<String, dynamic>> getAtaaPrizes(String language) async {
+    Map<String, dynamic> status;
+    print(sessionManager.accessToken);
+    if (sessionManager.accessTokenExpired()) {
+      status = await tokenApiCaller.refreshAccessToken(language);
+      if (status['Err_Flag']) return status;
+    }
+    var headers = {
+      "Content-Type": "application/json",
+      'Authorization': 'Bearer ${sessionManager.accessToken}',
+    };
+    try {
+      print(url + "/api/admin/ataa/prize/${sessionManager.user!.id}");
+      var response = await http
+          .get(
+              Uri.parse(url +
+                  "/api/admin/ataa/prize?userId=${sessionManager.user!.id}"),
+              headers: headers)
+          .catchError((error) {
+        print(error);
+        throw error;
+      }).timeout(Duration(seconds: 120));
+      Map<String, dynamic> responseToJson = jsonDecode(response.body);
+      print(responseToJson);
+      return responseToJson;
+    } on TimeoutException {
+      return responseHandler.timeOutPrinter(language);
+    } on SocketException {
+      return responseHandler.errorPrinter(language, "InternetError");
+    } catch (e) {
+      print('e = $e');
+      return responseHandler.errorPrinter(language, "SomethingWentWrong");
+    }
+  }
+
+  Future<Map<String, dynamic>> getAtaaBadges(String language) async {
+    Map<String, dynamic> status;
+    if (sessionManager.accessTokenExpired()) {
+      status = await tokenApiCaller.refreshAccessToken(language);
+      if (status['Err_Flag']) return status;
+    }
+    var headers = {
+      "Content-Type": "application/json",
+      'Authorization': 'Bearer ${sessionManager.accessToken}',
+    };
+    try {
+      print(url + "/api/admin/ataa/badge/${sessionManager.user!.id}");
+      var response = await http
+          .get(
+              Uri.parse(url +
+                  "/api/admin/ataa/badge?userId=${sessionManager.user!.id}"),
+              headers: headers)
+          .catchError((error) {
+        print(error);
+        throw error;
+      }).timeout(Duration(seconds: 120));
+      Map<String, dynamic> responseToJson = jsonDecode(response.body);
+      print(responseToJson);
+      return responseToJson;
+    } on TimeoutException {
+      return responseHandler.timeOutPrinter(language);
+    } on SocketException {
+      return responseHandler.errorPrinter(language, "InternetError");
+    } catch (e) {
+      print('e = $e');
+      return responseHandler.errorPrinter(language, "SomethingWentWrong");
+    }
+  }
 }
