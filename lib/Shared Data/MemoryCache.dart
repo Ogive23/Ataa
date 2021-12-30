@@ -11,6 +11,10 @@ class MemoryCache {
     this.data[key] = value;
   }
 
+  void removeData(String key) {
+    this.data.remove(key);
+  }
+
   void clear() {
     this.data = new Map<String, dynamic>();
   }

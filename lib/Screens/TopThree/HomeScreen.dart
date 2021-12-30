@@ -4,6 +4,7 @@ import 'package:ataa/Session/SessionManager.dart';
 import 'package:ataa/Shared%20Data/AppLanguage.dart';
 import 'package:ataa/Shared%20Data/AppTheme.dart';
 import 'package:ataa/Shared%20Data/CommonData.dart';
+import 'package:ataa/Shared%20Data/MemoryCache.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -16,6 +17,7 @@ class HomeScreen extends StatelessWidget {
   static late AppTheme appTheme;
   static late AppLanguage appLanguage;
   final SessionManager sessionManager = new SessionManager();
+  final MemoryCache memoryCache = new MemoryCache();
 
   void loadInterstitial() {
     InterstitialAd.load(
@@ -186,7 +188,8 @@ class HomeScreen extends StatelessWidget {
                                       Navigator.popUntil(
                                           context, (route) => false);
                                       Navigator.pushNamed(
-                                          context, "MainScreen");
+                                          context, "LoginScreen");
+                                      memoryCache.clear();
                                       return;
                                     }
                                   },
