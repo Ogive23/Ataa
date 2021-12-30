@@ -1,7 +1,10 @@
+import 'package:ataa/CustomWidgets/BadgesContainer.dart';
 import 'package:ataa/CustomWidgets/CustomSpacing.dart';
+import 'package:ataa/CustomWidgets/PrizesContainer.dart';
 import 'package:ataa/Shared%20Data/AppLanguage.dart';
 import 'package:ataa/Shared%20Data/AppTheme.dart';
 import 'package:ataa/Shared%20Data/CommonData.dart';
+import 'package:ataa/Shared%20Data/MemoryCache.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,11 +15,11 @@ class AchievementScreen extends StatefulWidget {
 
 class _AchievementScreenState extends State<AchievementScreen>
     with SingleTickerProviderStateMixin {
-  late CommonData commonData;
   late AppTheme appTheme;
   late AppLanguage appLanguage;
   late double w, h;
   late TabController tabController;
+  MemoryCache memoryCache = new MemoryCache();
 
   @override
   void initState() {
@@ -28,7 +31,6 @@ class _AchievementScreenState extends State<AchievementScreen>
   Widget build(BuildContext context) {
     w = MediaQuery.of(context).size.width;
     h = MediaQuery.of(context).size.height;
-    commonData = Provider.of<CommonData>(context);
     appTheme = Provider.of<AppTheme>(context);
     appLanguage = Provider.of<AppLanguage>(context);
     return SafeArea(
@@ -65,11 +67,18 @@ class _AchievementScreenState extends State<AchievementScreen>
                         borderRadius: BorderRadius.circular(30)),
                     padding: EdgeInsets.symmetric(
                         horizontal: w / 50, vertical: h / 200),
-                    child: Text(
-                      'Level 3/15',
-                      style: appTheme.themeData.primaryTextTheme.headline3!
-                          .apply(fontSizeFactor: 0.8),
-                    ),
+                    child: memoryCache.hasData('userAchievement')
+                        ? Text(
+                            'Level ' +
+                                memoryCache
+                                    .getData('userAchievement')['data']
+                                        ['current_level']
+                                    .toString(),
+                            style: appTheme
+                                .themeData.primaryTextTheme.headline3!
+                                .apply(fontSizeFactor: 0.8),
+                          )
+                        : SizedBox(),
                   ),
                   TabBar(
                     tabs: [
@@ -93,49 +102,8 @@ class _AchievementScreenState extends State<AchievementScreen>
             Expanded(
               child: TabBarView(
                 children: [
-                  GridView.count(
-                    crossAxisCount: 2,
-                    addRepaintBoundaries: true,
-                    // childAspectRatio: 0.5,
-                    children: [1, 2, 3, 4, 5, 6, 7, 8]
-                        .map((e) => Card(
-                              shape: Border.all(),
-                              elevation: 1.0,
-                              color: Colors.transparent,
-                              shadowColor: appTheme.themeData.shadowColor,
-                              // margin: EdgeInsets.symmetric(
-                              //     vertical: h / 100, horizontal: w / 50),
-                              child: Container(
-                                height: h / 5,
-                                padding: EdgeInsets.symmetric(
-                                    vertical: h / 100, horizontal: w / 50),
-                                // color: Color.fromRGBO(20, 32, 67, 1.0),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      'Level ' + e.toString(),
-                                      style: appTheme
-                                          .themeData.primaryTextTheme.headline6,
-                                    ),
-                                    Image.asset(
-                                      'assets/images/winner-trophy-cup-prize-award-best-first-achievement-29309.png',
-                                      height: h / 6,
-                                    ),
-                                    Text(
-                                      'Completed',
-                                      style: appTheme
-                                          .themeData.primaryTextTheme.headline3!
-                                          .apply(color: Colors.amber),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ))
-                        .toList(),
-                  ),
-                  Container(
-                    child: Text('Badges'),
-                  ),
+                  PrizesContainer(),
+                  BadgesContainer(),
                 ],
                 controller: tabController,
               ),

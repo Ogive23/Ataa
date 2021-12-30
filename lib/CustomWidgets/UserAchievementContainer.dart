@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:ataa/APICallers/UserApiCaller.dart';
+import 'package:ataa/APICallers/AchievementApiCaller.dart';
 import 'package:ataa/Shared%20Data/AppLanguage.dart';
 import 'package:ataa/Shared%20Data/AppTheme.dart';
 import 'package:ataa/Shared%20Data/CommonData.dart';
@@ -16,7 +16,7 @@ class UserAchievementContainer extends StatelessWidget {
   static late CommonData commonData;
   static late AppTheme appTheme;
   static late AppLanguage appLanguage;
-  final UserApiCaller userApiCaller = new UserApiCaller();
+  final AchievementApiCaller achievementApiCaller = new AchievementApiCaller();
   final MemoryCache memoryCache = new MemoryCache();
 
   cacheData(Map<String, dynamic> data) {
@@ -33,7 +33,7 @@ class UserAchievementContainer extends StatelessWidget {
     return memoryCache.hasData('userAchievement')
         ? getSuccessBody(memoryCache.getData('userAchievement'))
         : FutureBuilder<Map<String, dynamic>>(
-            future: userApiCaller.getAchievements(appLanguage.language),
+            future: achievementApiCaller.getAchievements(appLanguage.language),
             builder: (BuildContext context,
                 AsyncSnapshot<Map<String, dynamic>> snapshot) {
               if (snapshot.connectionState == ConnectionState.done &&
@@ -41,6 +41,7 @@ class UserAchievementContainer extends StatelessWidget {
                 if (snapshot.data!['Err_Flag'])
                   return Container(
                     alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(vertical: h / 100),
                     child: ErrorMessage(message: snapshot.data!['Err_Desc']),
                   );
                 cacheData(snapshot.data!);
@@ -48,6 +49,7 @@ class UserAchievementContainer extends StatelessWidget {
               } else if (snapshot.error != null) {
                 return Container(
                   alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(vertical: h / 100),
                   child: ErrorMessage(
                       message: appLanguage.words['AtaaMainAcquiringErrorTwo']!),
                 );
