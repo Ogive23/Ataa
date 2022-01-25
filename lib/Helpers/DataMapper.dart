@@ -1,6 +1,8 @@
+import 'package:ataa/Models/Prize.dart';
 import 'package:ataa/Models/User.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../Models/Prize.dart';
 import 'Helper.dart';
 
 class DataMapper {
@@ -59,5 +61,22 @@ class DataMapper {
         helper.getAppropriateText(info['profile']['bio'].toString()));
   }
 
-  getAchievementsFromJson(Map<String,dynamic> data) {}
+  getAchievementsFromJson(Map<String, dynamic> data) {}
+
+  List<Prize> getPrizesFromJson(List<Map<String, dynamic>> list) {
+    List<Prize> returnedPrizes = <Prize>[];
+    list.forEach((prize) {
+      returnedPrizes.add(Prize(
+        id: prize['ataaPrizeId'],
+        name: prize['name'],
+        image: prize['image'],
+        requiredMarkersCollected: prize['required_markers_collected'],
+        requiredMarkersPosted: prize['required_markers_posted'],
+        from: prize['from'] != null ? DateTime.parse(prize['from']) : null,
+        to: prize['to'] != null ? DateTime.parse(prize['to']) : null,
+        level: prize['level'],
+      ));
+    });
+    return returnedPrizes;
+  }
 }
