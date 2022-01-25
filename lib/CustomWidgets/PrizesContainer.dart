@@ -1,12 +1,15 @@
 import 'package:ataa/APICallers/AchievementApiCaller.dart';
 import 'package:ataa/CustomWidgets/CustomSpacing.dart';
 import 'package:ataa/CustomWidgets/ErrorMessage.dart';
+import 'package:ataa/Helpers/DataMapper.dart';
 import 'package:ataa/Shared%20Data/AppLanguage.dart';
 import 'package:ataa/Shared%20Data/AppTheme.dart';
 import 'package:ataa/Shared%20Data/MemoryCache.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../Models/Prize.dart';
 
 class PrizesContainer extends StatelessWidget {
   static late double w, h;
@@ -15,8 +18,8 @@ class PrizesContainer extends StatelessWidget {
   final AchievementApiCaller achievementApiCaller = new AchievementApiCaller();
   final MemoryCache memoryCache = new MemoryCache();
 
-  cacheData(Map<String, dynamic> data) {
-    memoryCache.setData('ataaPrizes', data);
+  cacheData(List<Prize> prizes) {
+    memoryCache.setData('ataaPrizes', prizes);
   }
 
   @override
@@ -40,8 +43,11 @@ class PrizesContainer extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: h / 100),
                     child: ErrorMessage(message: snapshot.data!['Err_Desc']),
                   );
-                cacheData(snapshot.data!);
-                return getSuccessBody(snapshot.data!);
+                DataMapper dataMapper = new DataMapper();
+                List<Prize> prizes =
+                    dataMapper.getPrizesFromJson(snapshot.data!['data']);
+                cacheData(prizes);
+                return getSuccessBody(prizes);
               } else if (snapshot.error != null) {
                 return Container(
                   alignment: Alignment.center,
@@ -68,8 +74,8 @@ class PrizesContainer extends StatelessWidget {
           );
   }
 
-  getSuccessBody(Map<String, dynamic> prizes) {
-    switch (prizes['data'].length) {
+  getSuccessBody(List<Prize> prizes) {
+    switch (prizes.length) {
       case 0:
         return Center(
           child: Text(
@@ -82,8 +88,8 @@ class PrizesContainer extends StatelessWidget {
           crossAxisCount: 2,
           addRepaintBoundaries: true,
           // childAspectRatio: 0.5,
-          children: [1, 2, 3, 4, 5, 6, 7, 8]
-              .map((e) => Card(
+          children: prizes
+              .map((prize) => Card(
                     shape: Border.all(),
                     elevation: 1.0,
                     color: Colors.transparent,
@@ -98,7 +104,7 @@ class PrizesContainer extends StatelessWidget {
                       child: Column(
                         children: [
                           Text(
-                            'Level ' + e.toString(),
+                            'Level ' + prize.level.toString(),
                             style:
                                 appTheme.themeData.primaryTextTheme.headline6,
                           ),
