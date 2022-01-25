@@ -23,7 +23,7 @@ class MemoryCache {
     return this.data.containsKey(key);
   }
 
-  Map<String, dynamic> getData(String key) {
+  dynamic getData(String key) {
     return this.data[key];
   }
 }
