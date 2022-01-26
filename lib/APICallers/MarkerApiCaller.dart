@@ -10,7 +10,7 @@ class MarkerApiCaller {
   ResponseHandler responseHandler = new ResponseHandler();
   SessionManager sessionManager = new SessionManager();
   TokenApiCaller tokenApiCaller = new TokenApiCaller();
-  String url = "http://192.168.1.139:8000";
+  String url = "http://192.168.1.155:8000";
 
   Future<Map<String, dynamic>> create(
       String language,

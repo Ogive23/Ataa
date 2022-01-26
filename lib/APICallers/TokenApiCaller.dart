@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import '../Session/SessionManager.dart';
 
 class TokenApiCaller {
-  String url = "http://192.168.1.139:8000";
+  String url = "http://192.168.1.155:8000";
   ResponseHandler responseHandler = new ResponseHandler();
   SessionManager sessionManager = new SessionManager();
 

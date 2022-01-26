@@ -13,7 +13,7 @@ class AchievementApiCaller {
   SessionManager sessionManager = new SessionManager();
   DataMapper dataMapper = new DataMapper();
   TokenApiCaller tokenApiCaller = new TokenApiCaller();
-  String url = "http://192.168.1.136:8000";
+  String url = "http://192.168.1.155:8000";
 
   Future<Map<String, dynamic>> getAchievements(String language) async {
     Map<String, dynamic> status;
@@ -61,11 +61,11 @@ class AchievementApiCaller {
       'Authorization': 'Bearer ${sessionManager.accessToken}',
     };
     try {
-      print(url + "/api/admin/ataa/prize/${sessionManager.user!.id}");
+      print(url + "/api/ataa/prizes/${sessionManager.user!.id}");
       var response = await http
           .get(
               Uri.parse(url +
-                  "/api/admin/ataa/prize?userId=${sessionManager.user!.id}"),
+                  "/api/ataa/prizes?userId=${sessionManager.user!.id}"),
               headers: headers)
           .catchError((error) {
         print(error);
@@ -95,11 +95,11 @@ class AchievementApiCaller {
       'Authorization': 'Bearer ${sessionManager.accessToken}',
     };
     try {
-      print(url + "/api/admin/ataa/badge/${sessionManager.user!.id}");
+      print(url + "/api/ataa/badges/${sessionManager.user!.id}");
       var response = await http
           .get(
               Uri.parse(url +
-                  "/api/admin/ataa/badge?userId=${sessionManager.user!.id}"),
+                  "/api/ataa/badges?userId=${sessionManager.user!.id}"),
               headers: headers)
           .catchError((error) {
         print(error);
