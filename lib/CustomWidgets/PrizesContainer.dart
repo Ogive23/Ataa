@@ -24,6 +24,7 @@ class PrizesContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //ToDo: Remove
     memoryCache.removeData('ataaPrizes');
     w = MediaQuery.of(context).size.width;
     h = MediaQuery.of(context).size.height;
@@ -47,7 +48,8 @@ class PrizesContainer extends StatelessWidget {
                 List<Prize> prizes =
                     dataMapper.getPrizesFromJson(snapshot.data!['data']);
                 cacheData(prizes);
-                return getSuccessBody(prizes);
+                return getSuccessBody(
+                    prizes);
               } else if (snapshot.error != null) {
                 return Container(
                   alignment: Alignment.center,
@@ -113,7 +115,7 @@ class PrizesContainer extends StatelessWidget {
                             height: h / 6,
                           ),
                           Text(
-                            'Completed',
+                            prize.acquired ? 'Acquired' : 'On going',
                             style: appTheme
                                 .themeData.primaryTextTheme.headline3!
                                 .apply(color: Colors.amber),
