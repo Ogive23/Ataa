@@ -1,3 +1,4 @@
+import 'package:ataa/CustomWidgets/CustomSpacing.dart';
 import 'package:ataa/Screens/FirstTimeScreens/PreferredLanguageTakingScreen.dart';
 import 'package:ataa/Session/SessionManager.dart';
 import 'package:ataa/Shared%20Data/AppTheme.dart';
@@ -33,9 +34,10 @@ class PreferredThemeTakingScreen extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   Text(
-                    'Now Tell us which theme do you prefer?',
+                    'Now Tell us which theme do you prefer?\n'
+                    'الآن أخبرنا ما الشكل الذي تفضله؟',
                     style: appTheme.nonStaticGetTextStyle(
-                        1.0,
+                        1.5,
                         Colors.black,
                         appTheme.largeTextSize(context),
                         FontWeight.normal,
@@ -44,9 +46,7 @@ class PreferredThemeTakingScreen extends StatelessWidget {
                         'OpenSans'),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  CustomSpacing(value: 50),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -54,12 +54,13 @@ class PreferredThemeTakingScreen extends StatelessWidget {
                       ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.white),
+                              MaterialStateProperty.all<Color>(Colors.white),
                         ),
                         child: Text(
-                          'White Theme',
+                          'White Theme\n'
+                          'الوضع الأبيض',
                           style: appTheme.nonStaticGetTextStyle(
-                              1.0,
+                              1.5,
                               Colors.black,
                               appTheme.mediumTextSize(context),
                               FontWeight.normal,
@@ -75,12 +76,13 @@ class PreferredThemeTakingScreen extends StatelessWidget {
                       ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.black),
+                              MaterialStateProperty.all<Color>(Colors.black),
                         ),
                         child: Text(
-                          'Black Theme',
+                          'Black Theme\n'
+                          'الوضع المظلم',
                           style: appTheme.nonStaticGetTextStyle(
-                              1.0,
+                              1.5,
                               Colors.white,
                               appTheme.mediumTextSize(context),
                               FontWeight.normal,

@@ -1,3 +1,4 @@
+import 'package:ataa/CustomWidgets/CustomSpacing.dart';
 import 'package:ataa/Session/SessionManager.dart';
 import 'package:ataa/Shared%20Data/AppTheme.dart';
 import 'package:flutter/material.dart';
@@ -39,9 +40,7 @@ class PreferredLanguageTakingScreen extends StatelessWidget {
                         'OpenSans'),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(
-                    height: h/50,
-                  ),
+                  CustomSpacing(value: 50),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
