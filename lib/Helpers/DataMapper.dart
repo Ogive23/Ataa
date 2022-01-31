@@ -2,7 +2,6 @@ import 'package:ataa/GeneralInfo.dart';
 import 'package:ataa/Models/Prize.dart';
 import 'package:ataa/Models/User.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 import '../Models/Prize.dart';
 import '../Models/Badge.dart';
 import 'Helper.dart';
@@ -44,7 +43,7 @@ class DataMapper {
     return returnedMarkers;
   }
 
-  User getUserFromJson(String url, Map<String, dynamic> info) {
+  User getUserFromJson(Map<String, dynamic> info) {
     return User(
         helper.getAppropriateText(info['user']['id']),
         helper.getAppropriateText(info['user']['name'].toString()),
@@ -55,15 +54,13 @@ class DataMapper {
         helper.getAppropriateText(info['user']['address'].toString()),
         info['user']['email_verified_at'] != null ? true : false,
         info['profile']['image'] != null
-            ? url + info['profile']['image']
+            ? BASE_URL + info['profile']['image']
             : 'N/A',
         info['profile']['cover'] != null
-            ? url + info['profile']['cover']
+            ? BASE_URL + info['profile']['cover']
             : 'N/A',
         helper.getAppropriateText(info['profile']['bio'].toString()));
   }
-
-  getAchievementsFromJson(Map<String, dynamic> data) {}
 
   List<Prize> getPrizesFromJson(List<dynamic> list) {
     List<Prize> returnedPrizes = <Prize>[];
@@ -71,13 +68,17 @@ class DataMapper {
       returnedPrizes.add(Prize(
           id: prize['id'].toString(),
           name: prize['name'],
-          image: prize['image'],
+          arabicName: prize['arabic_name'],
+          image: prize['image'] == null
+              ? prize['image']
+              : BASE_URL + prize['image'],
           requiredMarkersCollected: prize['required_markers_collected'],
           requiredMarkersPosted: prize['required_markers_posted'],
           from: prize['from'] != null ? DateTime.parse(prize['from']) : null,
           to: prize['to'] != null ? DateTime.parse(prize['to']) : null,
           level: prize['level'],
-          acquired: prize['acquired'],
+          active: prize['active'] == 0 ? false : true,
+          acquired: prize['acquired'] == 0 ? false : true,
           acquiredAt: prize['acquiredAt'] != null
               ? DateTime.parse(prize['acquiredAt'])
               : null));
