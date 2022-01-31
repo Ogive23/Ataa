@@ -138,6 +138,7 @@ class HomeScreen extends StatelessWidget {
                                   horizontal: w / 50, vertical: h / 100),
                               child: Container(
                                 decoration: BoxDecoration(
+                                  // color: appTheme.themeData.accentColor,
                                   border:
                                       Border.all(color: Colors.white, width: 3),
                                   shape: BoxShape.circle,
@@ -152,9 +153,11 @@ class HomeScreen extends StatelessWidget {
                                   ],
                                 ),
                                 child: PopupMenuButton(
+                                  color: appTheme.themeData.accentColor,
                                   child: CircleAvatar(
                                     radius: h / 50,
-                                    backgroundColor: Colors.transparent,
+                                    backgroundColor: appTheme.themeData.accentColor,
+                                    foregroundColor: appTheme.themeData.accentColor,
                                     child: ClipOval(
                                       child:
                                           sessionManager.user!.profileImage !=

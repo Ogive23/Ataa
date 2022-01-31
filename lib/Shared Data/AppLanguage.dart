@@ -53,7 +53,7 @@ class AppLanguage extends ChangeNotifier {
             'AchievementCenterFour': 'Markers collected',
       'AchievementCenterFive': 'Your Current Level is ',
       'AchievementCenterSix': 'Latest acquired badge was ',
-      'AchievementCenterSeven': 'There is no any badges acquired',
+      'AchievementCenterSeven': 'There is no badges acquired',
       'AchievementCenterEight': 'Head to Your Achievement Center',
             'MarkerCreationTitle': 'Food Sharing',
             'MarkerCreationSubtitle':
