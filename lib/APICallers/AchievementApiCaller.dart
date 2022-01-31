@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:dio/dio.dart';
+import 'package:ataa/GeneralInfo.dart';
 import 'package:ataa/Helpers/DataMapper.dart';
 import 'package:ataa/Helpers/ResponseHandler.dart';
 import 'dart:async';
@@ -13,7 +13,6 @@ class AchievementApiCaller {
   SessionManager sessionManager = new SessionManager();
   DataMapper dataMapper = new DataMapper();
   TokenApiCaller tokenApiCaller = new TokenApiCaller();
-  String url = "http://192.168.1.155:8000";
 
   Future<Map<String, dynamic>> getAchievements(String language) async {
     Map<String, dynamic> status;
@@ -21,15 +20,16 @@ class AchievementApiCaller {
       status = await tokenApiCaller.refreshAccessToken(language);
       if (status['Err_Flag']) return status;
     }
+    print(sessionManager.accessToken);
     var headers = {
       "Content-Type": "application/json",
       'Authorization': 'Bearer ${sessionManager.accessToken}',
     };
     try {
-      print(url + "/api/ataa/achievement/${sessionManager.user!.id}");
+      print(BASE_URL + "/api/ataa/achievement/${sessionManager.user!.id}");
       var response = await http
           .get(
-              Uri.parse(url +
+              Uri.parse(BASE_URL +
                   "/api/ataa/achievement/${sessionManager.user!.id}?requesterId=${sessionManager.user!.id}"),
               headers: headers)
           .catchError((error) {
@@ -61,10 +61,10 @@ class AchievementApiCaller {
       'Authorization': 'Bearer ${sessionManager.accessToken}',
     };
     try {
-      print(url + "/api/ataa/prizes/${sessionManager.user!.id}");
+      print(BASE_URL + "/api/ataa/prizes/${sessionManager.user!.id}");
       var response = await http
           .get(
-              Uri.parse(url +
+              Uri.parse(BASE_URL +
                   "/api/ataa/prizes?userId=${sessionManager.user!.id}"),
               headers: headers)
           .catchError((error) {
@@ -95,10 +95,10 @@ class AchievementApiCaller {
       'Authorization': 'Bearer ${sessionManager.accessToken}',
     };
     try {
-      print(url + "/api/ataa/badges/${sessionManager.user!.id}");
+      print(BASE_URL + "/api/ataa/badges/${sessionManager.user!.id}");
       var response = await http
           .get(
-              Uri.parse(url +
+              Uri.parse(BASE_URL +
                   "/api/ataa/badges?userId=${sessionManager.user!.id}"),
               headers: headers)
           .catchError((error) {

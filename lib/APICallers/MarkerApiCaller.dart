@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:ataa/GeneralInfo.dart';
 import 'package:http/http.dart' as http;
 import '../Helpers/ResponseHandler.dart';
 import '../Session/SessionManager.dart';
@@ -10,7 +11,6 @@ class MarkerApiCaller {
   ResponseHandler responseHandler = new ResponseHandler();
   SessionManager sessionManager = new SessionManager();
   TokenApiCaller tokenApiCaller = new TokenApiCaller();
-  String url = "http://192.168.1.155:8000";
 
   Future<Map<String, dynamic>> create(
       String language,
@@ -43,9 +43,9 @@ class MarkerApiCaller {
     };
 
     try {
-      print(url + "/api/ataa/markers");
+      print(BASE_URL + "/api/ataa/markers");
       var response = await http
-          .post(Uri.parse(url + "/api/ataa/markers"),
+          .post(Uri.parse(BASE_URL + "/api/ataa/markers"),
               headers: headers, body: jsonEncode(body))
           .catchError((error) {
         throw error;
@@ -75,11 +75,11 @@ class MarkerApiCaller {
     };
 
     try {
-      print(url +
+      print(BASE_URL +
           "/api/ataa/markers/$markerId?userId=${sessionManager.user!.id}&language=$language");
       var response = await http
           .delete(
-              Uri.parse(url +
+              Uri.parse(BASE_URL +
                   "/api/ataa/markers/$markerId?userId=${sessionManager.user!.id}&language=$language"),
               headers: headers)
           .catchError((error) {
@@ -111,7 +111,7 @@ class MarkerApiCaller {
     try {
       var response = await http
           .get(
-              Uri.parse(url +
+              Uri.parse(BASE_URL +
                   "/api/ataa/markers/?" +
                   "userId=${sessionManager.user!.id}"),
               headers: headers)

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:ataa/GeneralInfo.dart';
 import 'package:dio/dio.dart';
 import 'package:ataa/Helpers/DataMapper.dart';
 import 'package:ataa/Helpers/ResponseHandler.dart';
@@ -13,7 +14,6 @@ class UserApiCaller {
   SessionManager sessionManager = new SessionManager();
   DataMapper dataMapper = new DataMapper();
   TokenApiCaller tokenApiCaller = new TokenApiCaller();
-  String url = "http://192.168.1.155:8000";
 
   Future<Map<String, dynamic>> login(String email, String password) async {
     var headers = {
@@ -27,7 +27,7 @@ class UserApiCaller {
     };
     try {
       var response = await http
-          .post(Uri.parse(url + "/api/login"),
+          .post(Uri.parse(BASE_URL + "/api/login"),
               headers: headers, body: jsonEncode(body))
           .catchError((error) {
         print(error);
@@ -38,7 +38,7 @@ class UserApiCaller {
       if (responseToJson['Err_Flag']) return responseToJson;
       return {
         "Err_Flag": responseToJson['Err_Flag'],
-        "User": dataMapper.getUserFromJson(url, responseToJson['data']),
+        "User": dataMapper.getUserFromJson(responseToJson['data']),
         "AccessToken": responseToJson['data']['token'],
         "ExpiryDate": responseToJson['data']['expiryDate'],
       };
@@ -70,7 +70,7 @@ class UserApiCaller {
     });
     try {
       var response = await Dio()
-          .post(url + "/api/profile/$userId/picture",
+          .post(BASE_URL + "/api/profile/$userId/picture",
               data: formData, options: Options(headers: headers))
           .catchError((error) {
         throw error;
@@ -123,7 +123,7 @@ class UserApiCaller {
     });
     try {
       var response = await Dio()
-          .post(url + "/api/profile/$userId/cover",
+          .post(BASE_URL + "/api/profile/$userId/cover",
               data: formData, options: Options(headers: headers))
           .catchError((error) {
         throw error;
@@ -178,7 +178,7 @@ class UserApiCaller {
     };
     try {
       var response = await http
-          .post(Uri.parse(url + "/api/profile/$userId/information"),
+          .post(Uri.parse(BASE_URL + "/api/profile/$userId/information"),
               headers: headers, body: jsonEncode(body))
           .catchError((error) {
         throw error;
