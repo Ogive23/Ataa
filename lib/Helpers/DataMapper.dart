@@ -1,8 +1,10 @@
+import 'package:ataa/GeneralInfo.dart';
 import 'package:ataa/Models/Prize.dart';
 import 'package:ataa/Models/User.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../Models/Prize.dart';
+import '../Models/Badge.dart';
 import 'Helper.dart';
 
 class DataMapper {
@@ -81,5 +83,23 @@ class DataMapper {
               : null));
     });
     return returnedPrizes;
+  }
+
+  List<Badge> getBadgesFromJson(List<dynamic> list) {
+    List<Badge> returnedBadges = <Badge>[];
+    list.forEach((badge) {
+      returnedBadges.add(Badge(
+          id: badge['id'].toString(),
+          name: badge['name'],
+          arabicName: badge['arabic_name'],
+          image: BASE_URL + badge['image'],
+          description: badge['description'],
+          active: badge['active'] == 0 ? false : true,
+          acquired: badge['acquired'] == 0 ? false : true,
+          acquiredAt: badge['acquiredAt'] != null
+              ? DateTime.parse(badge['acquiredAt'])
+              : null));
+    });
+    return returnedBadges;
   }
 }
