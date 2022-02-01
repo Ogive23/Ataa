@@ -97,7 +97,7 @@ class MarkerApiCaller {
     }
   }
 
-  Future<Map<String, dynamic>> getAll(String language) async {
+  Future<Map<String, dynamic>> getAll(String language, double latitude, longitude) async {
     Map<String, dynamic> status;
     if (sessionManager.accessTokenExpired()) {
       status = await tokenApiCaller.refreshAccessToken(language);
@@ -108,17 +108,18 @@ class MarkerApiCaller {
       "Content-Type": "application/json",
       'Authorization': 'Bearer ${sessionManager.accessToken}',
     };
+    print(sessionManager.accessToken);
     try {
       var response = await http
           .get(
               Uri.parse(BASE_URL +
                   "/api/ataa/markers/?" +
-                  "userId=${sessionManager.user!.id}"),
+                  "userId=${sessionManager.user!.id}&latitude=$latitude&longitude=$longitude"),
               headers: headers)
           .catchError((error) {
         throw error;
       }).timeout(Duration(seconds: 120));
-      print(response);
+      print(response.body);
       return jsonDecode(response.body);
     } on TimeoutException {
       return responseHandler.timeOutPrinter(language);

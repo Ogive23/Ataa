@@ -27,13 +27,13 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
   static late CommonData commonData;
   static late AppLanguage appLanguage;
   static late AppTheme appTheme;
-  static late GoogleMap googleMap;
   final UserLocation userLocation = new UserLocation();
-  late List<Marker> markers;
+  List<Marker> markers = [];
   bool following = false;
-  static late Marker chosenMarker;
   SessionManager sessionManager = new SessionManager();
   final MarkerApiCaller markerApiCaller = new MarkerApiCaller();
+  GoogleMapController? _controller;
+  LatLng initialLocation = LatLng(29.9832678, 31.2282846);
 
   double calculateDistance(Position userLocation, LatLng endPoint) {
     int radius = 6371; // radius of earth in Km
@@ -49,33 +49,24 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
   }
 
   void onMarkerTapped(MarkerId markerId) {
-    late Marker? tappedMarker;
-    int i = 0;
-    for (; i < markers.length; i++) {
-      if (markerId == markers.elementAt(i).markerId) {
-        tappedMarker = markers.elementAt(i);
-        break;
-      }
-    }
-    if (tappedMarker != null) {
-      showAlertDialog(i);
-    }
+    Marker tappedMarker = markers.firstWhere((marker) => marker.markerId == markerId);
+    showAlertDialog(tappedMarker);
   }
 
-  showAlertDialog(index) {
+  showAlertDialog(Marker tappedMarker) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: appTheme.themeData.cardColor,
           title: Text(
-            "${markers[index].infoWindow.title}",
+            "${tappedMarker.infoWindow.title}",
             style: appTheme.themeData.primaryTextTheme.headline4,
           ),
           content: Text(
-            '${(calculateDistance(userLocation.currentLocation!, markers[index].position) * 1000).toStringAsFixed(2)} ' +
+            '${(calculateDistance(userLocation.currentLocation!, tappedMarker.position) * 1000).toStringAsFixed(2)} ' +
                 appLanguage.words['AtaaMainAcquiringDialogOne']! +
-                '\n${markers[index].infoWindow.snippet}',
+                '\n${tappedMarker.infoWindow.snippet}',
             style: appTheme.themeData.primaryTextTheme.headline4,
             textDirection: appLanguage.textDirection,
           ),
@@ -88,11 +79,10 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
               ),
               onPressed: () {
                 setState(() {
-                  chosenMarker = markers[index];
                   markers.clear();
+                  markers.add(tappedMarker);
+                  following = true;
                 });
-                markers.add(chosenMarker);
-                following = true;
                 Navigator.of(context).pop();
               },
             ),
@@ -112,82 +102,6 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
     );
   }
 
-  Future<Map<String, dynamic>> getGoogleMap() async {
-    Completer<GoogleMapController> _controller = Completer();
-    if (!await userLocation.canLocateUserLocation()) {
-      return {
-        "Err_Flag": true,
-        "Err_Desc": appLanguage.words['AtaaMainAcquiringErrorOne']!
-      };
-    }
-    if (!following) {
-      Map<String, dynamic> status =
-          await markerApiCaller.getAll(appLanguage.language);
-      if (status['Err_Flag']) return status;
-      DataMapper dataMapper = new DataMapper();
-      markers = dataMapper.getMarkersFromJson(status['data']);
-    }
-    for (int i = 0; i < markers.length; i++) {
-      markers[i] = markers.elementAt(i).copyWith(onTapParam: () {
-        onMarkerTapped(markers.elementAt(i).markerId);
-      });
-    }
-    return {
-      "Err_Flag": false,
-      "Value": googleMap = GoogleMap(
-        mapType: MapType.normal,
-        initialCameraPosition: CameraPosition(
-            target: LatLng(userLocation.currentLocation!.latitude,
-                userLocation.currentLocation!.longitude),
-            zoom: 18),
-        markers: Set<Marker>.of(markers),
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-        myLocationEnabled: true,
-        zoomGesturesEnabled: true,
-        tiltGesturesEnabled: true,
-        mapToolbarEnabled: true,
-      )
-    };
-  }
-
-  Widget showGoogleMap() {
-    return FutureBuilder<Map<String, dynamic>>(
-      future: getGoogleMap(),
-      builder:
-          (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done &&
-            snapshot.data != null) {
-          if (snapshot.data!['Err_Flag'])
-            return Container(
-              alignment: Alignment.center,
-              child: ErrorMessage(message: snapshot.data!['Err_Desc']),
-            );
-          return googleMap;
-        } else if (snapshot.error != null) {
-          return Container(
-            alignment: Alignment.center,
-            child: ErrorMessage(
-                message: appLanguage.words['AtaaMainAcquiringErrorTwo']!),
-          );
-        } else {
-          return Container(
-            alignment: Alignment.center,
-            child: CupertinoActionSheet(
-              title: Text(appLanguage.words['loading']!),
-              actions: [
-                CupertinoActivityIndicator(
-                  radius: w/10,
-                )
-              ],
-            ),
-          );
-        }
-      },
-    );
-  }
-
   Widget getAcquiringWidget() {
     return FutureBuilder<Widget>(
       future: thanksMessage(),
@@ -201,17 +115,10 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
             child: ErrorMessage(message: appLanguage.words['AtaaMainError']!),
           );
         } else {
-          return Container(
-            alignment: Alignment.center,
-            child: CupertinoActionSheet(
-              title: Text(appLanguage.words['loading']!),
-              actions: [
-                CupertinoActivityIndicator(
-                  radius: 50,
-                )
-              ],
-            ),
-          );
+          return Center(
+              child: CupertinoActivityIndicator(
+            radius: 50,
+          ));
         }
       },
     );
@@ -281,6 +188,42 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
         )
       ],
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initMarkers();
+  }
+
+  Future<void> initMarkers() async {
+    print('initing');
+    if (await userLocation.canLocateUserLocation()) {
+      initialLocation = LatLng(userLocation.currentLocation!.latitude,
+          userLocation.currentLocation!.longitude);
+      print(initialLocation);
+      if (_controller != null) {
+        await _controller!.animateCamera(CameraUpdate.newCameraPosition(
+            new CameraPosition(target: initialLocation, zoom: 18.00)));
+        Map<String, dynamic> status = await markerApiCaller.getAll(
+            appLanguage.language,
+            userLocation.currentLocation!.latitude,
+            userLocation.currentLocation!.longitude);
+        if (status['Err_Flag'] && !following)
+          return await Future.delayed(
+              Duration(seconds: 5), () => initMarkers());
+        DataMapper dataMapper = new DataMapper();
+        markers = dataMapper.getMarkersFromJson(status['data']);
+        for (int i = 0; i < markers.length; i++) {
+          markers[i] = markers.elementAt(i).copyWith(onTapParam: () {
+            onMarkerTapped(markers.elementAt(i).markerId);
+          });
+        }
+        setState(() {});
+      }
+    }
+    if (mounted && !following)
+      await Future.delayed(Duration(seconds: 5), () => initMarkers());
   }
 
   @override
@@ -382,8 +325,18 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
           width: w,
           child: Stack(
             children: <Widget>[
-              Container(
-                child: showGoogleMap(),
+              GoogleMap(
+                mapType: MapType.normal,
+                initialCameraPosition:
+                    CameraPosition(target: initialLocation, zoom: 18),
+                markers: Set.of(markers),
+                onMapCreated: (GoogleMapController controller) async {
+                  _controller = controller;
+                },
+                myLocationEnabled: true,
+                zoomGesturesEnabled: true,
+                tiltGesturesEnabled: true,
+                mapToolbarEnabled: true,
               ),
               following
                   ? Align(

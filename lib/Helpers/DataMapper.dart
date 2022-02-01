@@ -24,7 +24,7 @@ class DataMapper {
     }
   }
 
-  List<Marker> getMarkersFromJson(List<Map<String, dynamic>> list) {
+  List<Marker> getMarkersFromJson(List<dynamic> list) {
 //  MarkerIcon markerOption = new MarkerIcon();      ///for custom marker icon
     List<Marker> returnedMarkers = <Marker>[];
     list.forEach((marker) {
