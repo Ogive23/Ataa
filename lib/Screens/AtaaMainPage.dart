@@ -331,6 +331,11 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
                     CameraPosition(target: initialLocation, zoom: 18),
                 markers: Set.of(markers),
                 onMapCreated: (GoogleMapController controller) async {
+                  if (appTheme.isDark) {
+                    String value = await DefaultAssetBundle.of(context)
+                        .loadString('assets/dark.json');
+                    controller.setMapStyle(value);
+                  }
                   _controller = controller;
                 },
                 myLocationEnabled: true,
