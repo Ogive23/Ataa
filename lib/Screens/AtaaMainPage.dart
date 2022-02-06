@@ -34,19 +34,7 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
   final MarkerApiCaller markerApiCaller = new MarkerApiCaller();
   GoogleMapController? _controller;
   LatLng initialLocation = LatLng(29.9832678, 31.2282846);
-
-  double calculateDistance(Position userLocation, LatLng endPoint) {
-    int radius = 6371; // radius of earth in Km
-    double dLat = math.radians(endPoint.latitude - userLocation.latitude);
-    double dLon = math.radians(endPoint.longitude - userLocation.longitude);
-    double a = sin(dLat / 2) * sin(dLat / 2) +
-        cos(math.radians(userLocation.latitude)) *
-            cos(math.radians(endPoint.latitude)) *
-            sin(dLon / 2) *
-            sin(dLon / 2);
-    double c = 2 * asin(sqrt(a));
-    return radius * c;
-  }
+  Helper helper = new Helper();
 
   void onMarkerTapped(MarkerId markerId) {
     Marker tappedMarker = markers.firstWhere((marker) => marker.markerId == markerId);
@@ -64,7 +52,7 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
             style: appTheme.themeData.primaryTextTheme.headline4,
           ),
           content: Text(
-            '${(calculateDistance(userLocation.currentLocation!, tappedMarker.position) * 1000).toStringAsFixed(2)} ' +
+            '${(helper.calculateDistance(userLocation.currentLocation!, tappedMarker.position) * 1000).toStringAsFixed(2)} ' +
                 appLanguage.words['AtaaMainAcquiringDialogOne']! +
                 '\n${tappedMarker.infoWindow.snippet}',
             style: appTheme.themeData.primaryTextTheme.headline4,
@@ -128,8 +116,8 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
     if (!await userLocation.canLocateUserLocation()) {
       return thanksMessage();
     }
-    while (calculateDistance(userLocation.currentLocation!,
-                    markers.elementAt(0).position) *
+    while (helper.calculateDistance(userLocation.currentLocation!,
+                    markerData.selectedMarker!.position) *
                 1000 >
             20 &&
         following &&
@@ -144,7 +132,7 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
       ),
       content: Text(
         appLanguage.words['AtaaMainFinishingDialogTwo']! +
-            ' ${num.parse((calculateDistance(userLocation.currentLocation!, markers[0].position) * 1000).toStringAsFixed(2))} ' +
+            ' ${num.parse((helper.calculateDistance(userLocation.currentLocation!, markerData.selectedMarker!.position) * 1000).toStringAsFixed(2))} ' +
             appLanguage.words['AtaaMainFinishingDialogThree']!,
         style: appTheme.themeData.primaryTextTheme.headline4,
         textDirection: appLanguage.textDirection,
