@@ -59,7 +59,8 @@ class DataMapper {
         info['profile']['cover'] != null
             ? BASE_URL + info['profile']['cover']
             : 'N/A',
-        helper.getAppropriateText(info['profile']['bio'].toString()));
+        helper.getAppropriateText(info['profile']['bio'].toString()),
+        info['user']['nationality']);
   }
 
   List<Prize> getPrizesFromJson(List<dynamic> list) {

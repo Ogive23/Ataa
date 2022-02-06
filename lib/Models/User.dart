@@ -10,6 +10,7 @@ class User {
   String? profileImage;
   String? profileCover;
   String? profileBio;
+  String nationality;
 
   User(
       this.id,
@@ -22,7 +23,7 @@ class User {
       this.verified,
       this.profileImage,
       this.profileCover,
-      this.profileBio);
+      this.profileBio,this.nationality);
 
   List<String> toList() {
     return [
@@ -36,7 +37,8 @@ class User {
       this.verified.toString(),
       this.profileImage!,
       this.profileCover!,
-      this.profileBio!
+      this.profileBio!,
+      this.nationality
     ];
   }
 }
