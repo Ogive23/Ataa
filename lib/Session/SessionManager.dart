@@ -46,7 +46,8 @@ class SessionManager {
         userData[7] == "true" ? true : false,
         userData[8],
         userData[9],
-        userData[10]);
+        userData[10],
+        userData[11]);
   }
 
   bool isLoggedIn() {
