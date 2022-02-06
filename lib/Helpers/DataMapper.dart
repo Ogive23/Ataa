@@ -1,6 +1,7 @@
 import 'package:ataa/GeneralInfo.dart';
 import 'package:ataa/Models/Prize.dart';
 import 'package:ataa/Models/User.dart';
+import 'package:ataa/Shared%20Data/MarkerData.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../Models/Prize.dart';
 import '../Models/Badge.dart';
@@ -22,6 +23,23 @@ class DataMapper {
       case '10':
         return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
     }
+  }
+
+  Marker getMarkerFromJson(Map<String, dynamic> data) {
+    print(data['id'].toString());
+    print(data['latitude'].toString());
+    print(data['longitude'].toString());
+    print(data['priority'].toString());
+    return Marker(
+      markerId: new MarkerId(data['id'].toString()),
+      position: LatLng(double.parse(data['latitude'].toString()),
+          double.parse(data['longitude'].toString())),
+      icon: getMarkerColor(data['priority'].toString()),
+      infoWindow: InfoWindow(
+          title: data['type'].toString(),
+          snippet: data['description'].toString() +
+              ' \nQuantity = ${double.parse(data['quantity'].toString()).toInt()} bags'),
+    );
   }
 
   List<Marker> getMarkersFromJson(List<dynamic> list) {

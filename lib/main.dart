@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:isolate';
-
 import 'package:ataa/Screens/FirstTimeScreens/WelcomeScreen.dart';
 import 'package:ataa/Screens/SplashScreen.dart';
+import 'package:ataa/Shared%20Data/MarkerData.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -62,6 +62,7 @@ class MainScreen extends StatelessWidget {
   static late AppTheme appTheme;
   static late AppLanguage appLanguage;
   final CommonData commonData = new CommonData();
+  final MarkerData markerData = new MarkerData();
   @override
   Widget build(BuildContext context) {
     appTheme = new AppTheme(sessionManager.loadPreferredTheme(), context);
@@ -75,6 +76,9 @@ class MainScreen extends StatelessWidget {
       ),
       ChangeNotifierProvider<CommonData>(
         create: (context) => commonData,
+      ),
+      ChangeNotifierProvider<MarkerData>(
+        create: (context) => markerData,
       ),
     ], child: BackgroundScreen());
   }

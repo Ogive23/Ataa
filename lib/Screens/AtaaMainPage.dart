@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'package:ataa/Helpers/Helper.dart';
+import 'package:ataa/Helpers/Pusher.dart';
+import 'package:ataa/Shared%20Data/MarkerData.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:ataa/APICallers/MarkerApiCaller.dart';
 import 'package:ataa/CustomWidgets/ErrorMessage.dart';
@@ -9,11 +12,8 @@ import 'package:ataa/Shared%20Data/AppTheme.dart';
 import 'package:ataa/Shared%20Data/CommonData.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'dart:math';
-import 'package:vector_math/vector_math.dart' as math;
 import 'package:ataa/Shared%20Data/AppLanguage.dart';
 import '../Helpers/DataMapper.dart';
 
@@ -28,16 +28,18 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
   static late AppLanguage appLanguage;
   static late AppTheme appTheme;
   final UserLocation userLocation = new UserLocation();
-  List<Marker> markers = [];
-  bool following = false;
+  static late MarkerData markerData;
+  // bool following = false;
   SessionManager sessionManager = new SessionManager();
   final MarkerApiCaller markerApiCaller = new MarkerApiCaller();
   GoogleMapController? _controller;
   LatLng initialLocation = LatLng(29.9832678, 31.2282846);
+  Pusher pusher = new Pusher();
   Helper helper = new Helper();
 
   void onMarkerTapped(MarkerId markerId) {
-    Marker tappedMarker = markers.firstWhere((marker) => marker.markerId == markerId);
+    Marker tappedMarker =
+        markerData.markers.firstWhere((marker) => marker.markerId == markerId);
     showAlertDialog(tappedMarker);
   }
 
@@ -66,11 +68,7 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
                     .apply(color: Colors.green),
               ),
               onPressed: () {
-                setState(() {
-                  markers.clear();
-                  markers.add(tappedMarker);
-                  following = true;
-                });
+                markerData.setSelectedMarker(tappedMarker);
                 Navigator.of(context).pop();
               },
             ),
@@ -120,7 +118,7 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
                     markerData.selectedMarker!.position) *
                 1000 >
             20 &&
-        following &&
+        markerData.following &&
         commonData.step == Pages.AtaaMainPage.index) {
       return thanksMessage();
     }
@@ -140,20 +138,18 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
       actions: [
         TextButton(
             child: Text(appLanguage.words['AtaaMainFinishingDialogFour']!),
-            onPressed: () {
-              setState(() async {
-                await markerApiCaller.delete(
-                    appLanguage.language, markers[0].markerId.value);
-                following = !following;
-                commonData.back();
-                return CoolAlert.show(
-                    context: context,
-                    type: CoolAlertType.success,
-                    lottieAsset: 'assets/animations/6951-success.json',
-                    text: appLanguage.words['AtaaMainFinishingDialogFive']!,
-                    confirmBtnColor: Color(0xff1c9691),
-                    title: '');
-              });
+            onPressed: () async {
+              await markerApiCaller.delete(appLanguage.language,
+                  markerData.selectedMarker!.markerId.value);
+              markerData.finishFollowing();
+              commonData.back();
+              return CoolAlert.show(
+                  context: context,
+                  type: CoolAlertType.success,
+                  lottieAsset: 'assets/animations/6951-success.json',
+                  text: appLanguage.words['AtaaMainFinishingDialogFive']!,
+                  confirmBtnColor: Color(0xff1c9691),
+                  title: '');
             }),
         TextButton(
           child: Text(
@@ -161,9 +157,9 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
             style: TextStyle(color: Colors.red),
           ),
           onPressed: () async {
-            await markerApiCaller.delete(
-                appLanguage.language, markers[0].markerId.value);
-            following = !following;
+            await markerApiCaller.delete(appLanguage.language,
+                markerData.selectedMarker!.markerId.value);
+            markerData.finishFollowing();
             commonData.back();
             return CoolAlert.show(
                 context: context,
@@ -181,7 +177,11 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
   @override
   void initState() {
     super.initState();
-    initMarkers();
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      markerData = Provider.of<MarkerData>(context, listen: false);
+      initMarkers();
+      pusher.initPusher(markerData: markerData);
+    });
   }
 
   Future<void> initMarkers() async {
@@ -197,21 +197,17 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
             appLanguage.language,
             userLocation.currentLocation!.latitude,
             userLocation.currentLocation!.longitude);
-        if (status['Err_Flag'] && !following)
-          return await Future.delayed(
-              Duration(seconds: 5), () => initMarkers());
         DataMapper dataMapper = new DataMapper();
-        markers = dataMapper.getMarkersFromJson(status['data']);
-        for (int i = 0; i < markers.length; i++) {
-          markers[i] = markers.elementAt(i).copyWith(onTapParam: () {
-            onMarkerTapped(markers.elementAt(i).markerId);
+        markerData.setMarkers(dataMapper.getMarkersFromJson(status['data']));
+        for (int i = 0; i < markerData.markers.length; i++) {
+          markerData.markers[i] =
+              markerData.markers.elementAt(i).copyWith(onTapParam: () {
+            onMarkerTapped(markerData.markers.elementAt(i).markerId);
           });
         }
         setState(() {});
       }
     }
-    if (mounted && !following)
-      await Future.delayed(Duration(seconds: 5), () => initMarkers());
   }
 
   @override
@@ -221,6 +217,7 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
     commonData = Provider.of<CommonData>(context);
     appTheme = Provider.of<AppTheme>(context);
     appLanguage = Provider.of<AppLanguage>(context);
+    markerData = Provider.of<MarkerData>(context);
     return Scaffold(
         backgroundColor: appTheme.themeData.primaryColor,
         appBar: AppBar(
@@ -317,7 +314,7 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
                 mapType: MapType.normal,
                 initialCameraPosition:
                     CameraPosition(target: initialLocation, zoom: 18),
-                markers: Set.of(markers),
+                markers: Set.of(markerData.markers),
                 onMapCreated: (GoogleMapController controller) async {
                   if (appTheme.isDark) {
                     String value = await DefaultAssetBundle.of(context)
@@ -331,7 +328,7 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
                 tiltGesturesEnabled: true,
                 mapToolbarEnabled: true,
               ),
-              following
+              markerData.following
                   ? Align(
                       alignment: Alignment.topRight,
                       child: ElevatedButton(
@@ -339,10 +336,8 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
                             backgroundColor:
                                 MaterialStateProperty.all<Color>(Colors.red)),
                         onPressed: () {
-                          setState(() {
-                            following = !following;
-                            markers.clear();
-                          });
+                          markerData.finishFollowing();
+                          markerData.clear();
                         },
                         child: Text(
                           appLanguage.words['AtaaMainCancelButton']!,
@@ -352,7 +347,7 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
                       ),
                     )
                   : Container(),
-              following
+              markerData.following
                   ? Align(
                       alignment: Alignment.center,
                       child: getAcquiringWidget(),
