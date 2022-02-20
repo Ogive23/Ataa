@@ -1,22 +1,23 @@
+// ignore_for_file: file_names
+
 import 'package:ataa/Shared%20Data/AppTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class PrizeContainerRow extends StatelessWidget {
-  String firstWord;
-  String secondWord;
+  final String firstWord;
+  final String secondWord;
   static late double w, h;
   static late AppTheme appTheme;
-  BuildContext context;
-  PrizeContainerRow(
-      {required this.firstWord,
+  const PrizeContainerRow(
+      {Key? key, required this.firstWord,
       required this.secondWord,
-      required this.context});
+      }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     w = MediaQuery.of(context).size.width;
     h = MediaQuery.of(context).size.height;
-    appTheme = Provider.of<AppTheme>(this.context);
+    appTheme = Provider.of<AppTheme>(context);
     return Row(
       children: [
         SizedBox(

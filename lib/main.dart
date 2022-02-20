@@ -22,7 +22,7 @@ Future<void> main() async {
   MobileAds.instance.initialize();
   await Firebase.initializeApp();
   ErrorWidget.builder = (errorDetails) {
-    return Container(child: Text('حدث خطأ ما'));
+    return const Text('حدث خطأ ما');
   };
   // Pass all uncaught errors from the framework to Crashlytics.
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
@@ -36,6 +36,7 @@ Future<void> main() async {
   runApp(AtaaMain());
 }
 
+// ignore: use_key_in_widget_constructors
 class AtaaMain extends StatelessWidget {
   final FirebaseAnalytics analytics = FirebaseAnalytics();
   @override
@@ -46,27 +47,29 @@ class AtaaMain extends StatelessWidget {
       navigatorObservers: [
         FirebaseAnalyticsObserver(analytics: analytics),
       ],
-      home: SplashScreen(),
+      home: const SplashScreen(),
       routes: <String, WidgetBuilder>{
-        "SplashScreen": (BuildContext context) => SplashScreen(),
-        "WelcomeScreen": (BuildContext context) => WelcomeScreen(),
+        "SplashScreen": (BuildContext context) => const SplashScreen(),
+        "WelcomeScreen": (BuildContext context) => const WelcomeScreen(),
         "MainScreen": (BuildContext context) => MainScreen(),
-        "LoginScreen": (BuildContext context) => LoginScreen(),
+        "LoginScreen": (BuildContext context) => const LoginScreen(),
       },
     );
   }
 }
 
 class MainScreen extends StatelessWidget {
-  final SessionManager sessionManager = new SessionManager();
+  final SessionManager sessionManager = SessionManager();
   static late AppTheme appTheme;
   static late AppLanguage appLanguage;
-  final CommonData commonData = new CommonData();
-  final MarkerData markerData = new MarkerData();
+  final CommonData commonData = CommonData();
+  final MarkerData markerData = MarkerData();
+
+  MainScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    appTheme = new AppTheme(sessionManager.loadPreferredTheme(), context);
-    appLanguage = new AppLanguage(sessionManager.loadPreferredLanguage()!);
+    appTheme = AppTheme(sessionManager.loadPreferredTheme(), context);
+    appLanguage = AppLanguage(sessionManager.loadPreferredLanguage()!);
     return MultiProvider(providers: [
       ChangeNotifierProvider<AppTheme>(
         create: (context) => appTheme,
@@ -80,6 +83,6 @@ class MainScreen extends StatelessWidget {
       ChangeNotifierProvider<MarkerData>(
         create: (context) => markerData,
       ),
-    ], child: BackgroundScreen());
+    ], child: const BackgroundScreen());
   }
 }

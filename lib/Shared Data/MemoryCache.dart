@@ -1,5 +1,7 @@
+// ignore_for_file: file_names
+
 class MemoryCache {
-  Map<String, dynamic> data = new Map<String, dynamic>();
+  Map<String, dynamic> data = <String, dynamic>{};
 
   MemoryCache._privateConstructor();
   static final MemoryCache _instance = MemoryCache._privateConstructor();
@@ -8,22 +10,22 @@ class MemoryCache {
   }
 
   void setData(String key, dynamic value) {
-    this.data[key] = value;
+    data[key] = value;
   }
 
   void removeData(String key) {
-    this.data.remove(key);
+    data.remove(key);
   }
 
   void clear() {
-    this.data = new Map<String, dynamic>();
+    data = <String, dynamic>{};
   }
 
   bool hasData(String key) {
-    return this.data.containsKey(key);
+    return data.containsKey(key);
   }
 
   dynamic getData(String key) {
-    return this.data[key];
+    return data[key];
   }
 }

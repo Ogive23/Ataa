@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -8,9 +10,9 @@ import '../Session/SessionManager.dart';
 import 'TokenApiCaller.dart';
 
 class MarkerApiCaller {
-  ResponseHandler responseHandler = new ResponseHandler();
-  SessionManager sessionManager = new SessionManager();
-  TokenApiCaller tokenApiCaller = new TokenApiCaller();
+  ResponseHandler responseHandler = ResponseHandler();
+  SessionManager sessionManager = SessionManager();
+  TokenApiCaller tokenApiCaller = TokenApiCaller();
 
   Future<Map<String, dynamic>> create(
       String language,
@@ -49,7 +51,7 @@ class MarkerApiCaller {
               headers: headers, body: jsonEncode(body))
           .catchError((error) {
         throw error;
-      }).timeout(Duration(seconds: 120));
+      }).timeout(const Duration(seconds: 120));
       var responseToJson = jsonDecode(response.body);
       return responseToJson;
     } on TimeoutException {
@@ -84,7 +86,7 @@ class MarkerApiCaller {
               headers: headers)
           .catchError((error) {
         throw error;
-      }).timeout(Duration(seconds: 120));
+      }).timeout(const Duration(seconds: 120));
       var responseToJson = jsonDecode(response.body);
       return responseToJson;
     } on TimeoutException {
@@ -118,7 +120,7 @@ class MarkerApiCaller {
               headers: headers)
           .catchError((error) {
         throw error;
-      }).timeout(Duration(seconds: 120));
+      }).timeout(const Duration(seconds: 120));
       print(response.body);
       return jsonDecode(response.body);
     } on TimeoutException {

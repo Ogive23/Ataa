@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'dart:io';
 import 'package:ataa/GeneralInfo.dart';
 import 'package:dio/dio.dart';
@@ -10,10 +12,10 @@ import '../Session/SessionManager.dart';
 import 'TokenApiCaller.dart';
 
 class UserApiCaller {
-  ResponseHandler responseHandler = new ResponseHandler();
-  SessionManager sessionManager = new SessionManager();
-  DataMapper dataMapper = new DataMapper();
-  TokenApiCaller tokenApiCaller = new TokenApiCaller();
+  ResponseHandler responseHandler = ResponseHandler();
+  SessionManager sessionManager = SessionManager();
+  DataMapper dataMapper = DataMapper();
+  TokenApiCaller tokenApiCaller = TokenApiCaller();
 
   Future<Map<String, dynamic>> login(String email, String password) async {
     var headers = {
@@ -32,7 +34,7 @@ class UserApiCaller {
           .catchError((error) {
         print(error);
         throw error;
-      }).timeout(Duration(seconds: 120));
+      }).timeout(const Duration(seconds: 120));
       var responseToJson = jsonDecode(response.body);
       print(responseToJson);
       if (responseToJson['Err_Flag']) return responseToJson;
@@ -63,7 +65,7 @@ class UserApiCaller {
       "Content-Type": "application/json",
       'Authorization': 'Bearer ${sessionManager.accessToken}',
     };
-    FormData formData = new FormData.fromMap({
+    FormData formData = FormData.fromMap({
       '_method': 'put',
       'userId': userId,
       'image': await MultipartFile.fromFile(image.path),
@@ -74,7 +76,7 @@ class UserApiCaller {
               data: formData, options: Options(headers: headers))
           .catchError((error) {
         throw error;
-      }).timeout(Duration(seconds: 120));
+      }).timeout(const Duration(seconds: 120));
       print(response);
       var responseToJson = jsonDecode(response.toString());
       return responseToJson;
@@ -116,7 +118,7 @@ class UserApiCaller {
       "Content-Type": "application/json",
       'Authorization': 'Bearer ${sessionManager.accessToken}',
     };
-    FormData formData = new FormData.fromMap({
+    FormData formData = FormData.fromMap({
       '_method': 'put',
       'userId': userId,
       'image': await MultipartFile.fromFile(image.path),
@@ -127,7 +129,7 @@ class UserApiCaller {
               data: formData, options: Options(headers: headers))
           .catchError((error) {
         throw error;
-      }).timeout(Duration(seconds: 120));
+      }).timeout(const Duration(seconds: 120));
       print(response);
       var responseToJson = jsonDecode(response.toString());
       return responseToJson;
@@ -182,7 +184,7 @@ class UserApiCaller {
               headers: headers, body: jsonEncode(body))
           .catchError((error) {
         throw error;
-      }).timeout(Duration(seconds: 120));
+      }).timeout(const Duration(seconds: 120));
       print(response);
       return jsonDecode(response.body);
     } on TimeoutException {

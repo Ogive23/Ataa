@@ -1,4 +1,5 @@
-import 'dart:ui';
+// ignore_for_file: file_names
+
 import 'package:ataa/CustomWidgets/CustomSpacing.dart';
 import 'package:ataa/CustomWidgets/UserAchievementContainer.dart';
 import 'package:ataa/Session/SessionManager.dart';
@@ -14,7 +15,9 @@ class IntroPage extends StatelessWidget {
   static late CommonData commonData;
   static late AppTheme appTheme;
   static late AppLanguage appLanguage;
-  final SessionManager sessionManager = new SessionManager();
+  final SessionManager sessionManager = SessionManager();
+
+  IntroPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     w = MediaQuery.of(context).size.width;
@@ -27,7 +30,7 @@ class IntroPage extends StatelessWidget {
       height: h,
       width: w,
       alignment: Alignment.center,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           image: DecorationImage(
         image: AssetImage('assets/images/giving.png'),
         fit: BoxFit.cover,
@@ -42,10 +45,10 @@ class IntroPage extends StatelessWidget {
                   horizontal: w / 20,
                 ),
                 color: appTheme.themeData.primaryColor.withOpacity(0.2),
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10))),
                 child: UserAchievementContainer()),
-            CustomSpacing(
+            const CustomSpacing(
               value: 10,
             ),
             ElevatedButton.icon(
@@ -54,13 +57,13 @@ class IntroPage extends StatelessWidget {
                   backgroundColor:
                       MaterialStateProperty.all<Color>(Colors.amber),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
+                      const RoundedRectangleBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(10))))),
               onPressed: () {
                 commonData.changeStep(Pages.AtaaMainPage.index);
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.flash_on,
                 color: Colors.redAccent,
               ),
@@ -78,13 +81,13 @@ class IntroPage extends StatelessWidget {
                   backgroundColor:
                       MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
+                      const RoundedRectangleBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(10))))),
               onPressed: () {
                 commonData.changeStep(Pages.MarkerCreationPage.index);
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.flag,
                 color: Colors.white,
               ),
@@ -96,7 +99,7 @@ class IntroPage extends StatelessWidget {
                     .apply(color: Colors.white),
               ),
             ),
-            CustomSpacing(
+            const CustomSpacing(
               value: 40,
             ),
             Text(

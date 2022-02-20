@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:ataa/APICallers/AchievementApiCaller.dart';
 import 'package:ataa/CustomWidgets/CustomSpacing.dart';
 import 'package:ataa/CustomWidgets/ErrorMessage.dart';
@@ -15,8 +17,10 @@ class BadgesContainer extends StatelessWidget {
   static late double w, h;
   static late AppTheme appTheme;
   static late AppLanguage appLanguage;
-  final AchievementApiCaller achievementApiCaller = new AchievementApiCaller();
-  final MemoryCache memoryCache = new MemoryCache();
+  final AchievementApiCaller achievementApiCaller = AchievementApiCaller();
+  final MemoryCache memoryCache = MemoryCache();
+
+  BadgesContainer({Key? key}) : super(key: key);
 
   cacheData(List<Badge> badges) {
     memoryCache.setData('ataaBadges', badges);
@@ -38,13 +42,14 @@ class BadgesContainer extends StatelessWidget {
                 AsyncSnapshot<Map<String, dynamic>> snapshot) {
               if (snapshot.connectionState == ConnectionState.done &&
                   snapshot.data != null) {
-                if (snapshot.data!['Err_Flag'])
+                if (snapshot.data!['Err_Flag']) {
                   return Container(
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(vertical: h / 100),
                     child: ErrorMessage(message: snapshot.data!['Err_Desc']),
                   );
-                DataMapper dataMapper = new DataMapper();
+                }
+                DataMapper dataMapper = DataMapper();
                 List<Badge> badges =
                     dataMapper.getBadgesFromJson(snapshot.data!['data']);
                 cacheData(badges);
@@ -63,7 +68,7 @@ class BadgesContainer extends StatelessWidget {
                     CupertinoActivityIndicator(
                       radius: w / 10,
                     ),
-                    CustomSpacing(value: 50),
+                    const CustomSpacing(value: 50),
                     Text(
                       'جاري تحميل الشارات',
                       style: appTheme.themeData.primaryTextTheme.headline3,
@@ -153,7 +158,7 @@ class BadgesContainer extends StatelessWidget {
               badge.name,
               style: appTheme.themeData.primaryTextTheme.headline4,
             ),
-            content: Container(
+            content: SizedBox(
               width: double.maxFinite,
               child: SingleChildScrollView(
                 child: Column(
@@ -175,7 +180,7 @@ class BadgesContainer extends StatelessWidget {
                     style: appTheme.themeData.primaryTextTheme.headline4),
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
-                        appTheme.themeData.accentColor)),
+                        appTheme.themeData.colorScheme.secondary)),
                 onPressed: () {
                   Navigator.of(dialogContext).pop();
                 },

@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:ataa/Shared%20Data/AppLanguage.dart';
 import 'package:ataa/Shared%20Data/AppTheme.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +11,7 @@ class ErrorMessage extends StatelessWidget {
   static late AppTheme appTheme;
   static late AppLanguage appLanguage;
   static late double h;
-  ErrorMessage({required this.message});
+  const ErrorMessage({Key? key, required this.message}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class ErrorMessage extends StatelessWidget {
           children: [
             Lottie.asset('assets/animations/38213-error.json', height: h / 10),
             Text(
-              '$message',
+              message,
               style: appTheme.nonStaticGetTextStyle(
                   1.0,
                   Colors.red[300],

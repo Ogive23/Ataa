@@ -1,4 +1,5 @@
-import 'dart:ui';
+// ignore_for_file: file_names
+
 import 'package:ataa/CustomWidgets/CustomSpacing.dart';
 import 'package:ataa/Session/SessionManager.dart';
 import 'package:ataa/Shared%20Data/AppLanguage.dart';
@@ -16,13 +17,15 @@ class HomeScreen extends StatelessWidget {
   static late CommonData commonData;
   static late AppTheme appTheme;
   static late AppLanguage appLanguage;
-  final SessionManager sessionManager = new SessionManager();
-  final MemoryCache memoryCache = new MemoryCache();
+  final SessionManager sessionManager = SessionManager();
+  final MemoryCache memoryCache = MemoryCache();
+
+  HomeScreen({Key? key}) : super(key: key);
 
   void loadInterstitial() {
     InterstitialAd.load(
         adUnitId: InterstitialAd.testAdUnitId,
-        request: AdRequest(),
+        request: const AdRequest(),
         adLoadCallback: InterstitialAdLoadCallback(
           onAdLoaded: (InterstitialAd ad) {
             print('InterstitialAd success to load: $ad');
@@ -83,16 +86,9 @@ class HomeScreen extends StatelessWidget {
     appLanguage = Provider.of<AppLanguage>(context);
     return Scaffold(
       backgroundColor: appTheme.themeData.primaryColor,
-      // appBar: AppBar(
-      //   backgroundColor: appTheme.themeData.primaryColor,
-      //   // title: ,
-      //   leading: ,
-      //   centerTitle: true,
-      //   elevation: 0.0,
-      // ),
       body: Stack(
         children: [
-          Container(
+          SizedBox(
             height: h,
             width: w,
             child: CachedNetworkImage(
@@ -117,7 +113,7 @@ class HomeScreen extends StatelessWidget {
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
               alignment: Alignment.center,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.transparent,
               ),
               padding: EdgeInsets.symmetric(vertical: h / 20),
@@ -125,8 +121,7 @@ class HomeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Container(
-                      child: Stack(
+                  Stack(
                     children: [
                       Align(
                         alignment: Alignment.topLeft,
@@ -147,53 +142,55 @@ class HomeScreen extends StatelessWidget {
                                       color: Colors.grey.withOpacity(0.5),
                                       spreadRadius: 2,
                                       blurRadius: 5,
-                                      offset: Offset(
+                                      offset: const Offset(
                                           0, 1), // changes position of shadow
                                     ),
                                   ],
                                 ),
                                 child: PopupMenuButton(
-                                  color: appTheme.themeData.accentColor,
+                                  color:
+                                      appTheme.themeData.colorScheme.secondary,
                                   child: CircleAvatar(
                                     radius: h / 50,
-                                    backgroundColor: appTheme.themeData.accentColor,
-                                    foregroundColor: appTheme.themeData.accentColor,
+                                    backgroundColor: appTheme
+                                        .themeData.colorScheme.secondary,
+                                    foregroundColor: appTheme
+                                        .themeData.colorScheme.secondary,
                                     child: ClipOval(
-                                      child:
-                                          sessionManager.user!.profileImage !=
-                                                  'N/A'
-                                              ? CachedNetworkImage(
-                                                  imageUrl: sessionManager
-                                                      .user!.profileImage!,
-                                                  placeholder: (context, url) =>
-                                                      CircularProgressIndicator(),
-                                                  errorWidget:
-                                                      (context, url, error) =>
-                                                          Icon(Icons.error),
-                                                  fit: BoxFit.contain,
-                                                  width: w / 5,
-                                                  height: h / 20,
-                                                )
-                                              : Image.asset(
-                                                  'assets/images/user.png',
-                                                  fit: BoxFit.cover,
-                                                  width: w / 5,
-                                                  height: h / 20,
-                                                ),
+                                      child: sessionManager
+                                                  .user!.profileImage !=
+                                              'N/A'
+                                          ? CachedNetworkImage(
+                                              imageUrl: sessionManager
+                                                  .user!.profileImage!,
+                                              placeholder: (context, url) =>
+                                                  const CircularProgressIndicator(),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      const Icon(Icons.error),
+                                              fit: BoxFit.contain,
+                                              width: w / 5,
+                                              height: h / 20,
+                                            )
+                                          : Image.asset(
+                                              'assets/images/user.png',
+                                              fit: BoxFit.cover,
+                                              width: w / 5,
+                                              height: h / 20,
+                                            ),
                                     ),
                                   ),
                                   onSelected: (value) {
-                                    if (value == 'Profile')
-                                      return commonData.changeStep(
+                                    if (value == 'Profile') {
+                                      commonData.changeStep(
                                           Pages.ProfileScreen.index);
-                                    else if (value == 'Logout') {
+                                    } else if (value == 'Logout') {
                                       sessionManager.logout();
                                       Navigator.popUntil(
                                           context, (route) => false);
                                       Navigator.pushNamed(
                                           context, "LoginScreen");
                                       memoryCache.clear();
-                                      return;
                                     }
                                   },
                                   itemBuilder: (context) {
@@ -226,55 +223,49 @@ class HomeScreen extends StatelessWidget {
                         height: h / 15,
                       ))
                     ],
-                  )),
-                  Container(
-                    child: Column(
-                      children: [
-                        CustomSpacing(value: 50),
-                        Container(
-                          child: Column(
-                            children: [
-                              CachedNetworkImage(
-                                imageUrl:
-                                    'https://cdni.iconscout.com/illustration/premium/thumb/two-girls-jumping-out-of-joy-in-autumn-season-2791069-2324024.png',
-                                height: h / 10,
-                              ),
-                              Text(
-                                'Ataa Helps about 500 Human/Day to secure their main source of clean, human & free food.',
-                                textAlign: TextAlign.center,
-                                style: appTheme
-                                    .themeData.primaryTextTheme.headline4,
-                              ),
-                            ],
+                  ),
+                  Column(
+                    children: [
+                      const CustomSpacing(value: 50),
+                      Column(
+                        children: [
+                          CachedNetworkImage(
+                            imageUrl:
+                                'https://cdni.iconscout.com/illustration/premium/thumb/two-girls-jumping-out-of-joy-in-autumn-season-2791069-2324024.png',
+                            height: h / 10,
                           ),
-                        ),
-                        CustomSpacing(value: 50),
-                        Container(
-                          child: Column(
-                            children: [
-                              CachedNetworkImage(
-                                imageUrl:
-                                    'https://blog.forgood.co.za/wp-content/uploads/2018/02/Volunteer.png',
-                                height: h / 10,
-                              ),
-                              Text(
-                                'With more than about 40 volunteers.',
-                                textAlign: TextAlign.center,
-                                style: appTheme
-                                    .themeData.primaryTextTheme.headline4,
-                              ),
-                            ],
+                          Text(
+                            'Ataa Helps about 500 Human/Day to secure their main source of clean, human & free food.',
+                            textAlign: TextAlign.center,
+                            style:
+                                appTheme.themeData.primaryTextTheme.headline4,
                           ),
-                        ),
-                        CustomSpacing(value: 20),
-                        Text(
-                          'It\'s worth to keep going.',
-                          style: appTheme.themeData.primaryTextTheme.headline5,
-                          textAlign: TextAlign.center,
-                        ),
-                        CustomSpacing(value: 20),
-                      ],
-                    ),
+                        ],
+                      ),
+                      const CustomSpacing(value: 50),
+                      Column(
+                        children: [
+                          CachedNetworkImage(
+                            imageUrl:
+                                'https://blog.forgood.co.za/wp-content/uploads/2018/02/Volunteer.png',
+                            height: h / 10,
+                          ),
+                          Text(
+                            'With more than about 40 volunteers.',
+                            textAlign: TextAlign.center,
+                            style:
+                                appTheme.themeData.primaryTextTheme.headline4,
+                          ),
+                        ],
+                      ),
+                      const CustomSpacing(value: 20),
+                      Text(
+                        'It\'s worth to keep going.',
+                        style: appTheme.themeData.primaryTextTheme.headline5,
+                        textAlign: TextAlign.center,
+                      ),
+                      const CustomSpacing(value: 20),
+                    ],
                   ),
                   Text(
                     appLanguage.words['HomeSubtitle']!,

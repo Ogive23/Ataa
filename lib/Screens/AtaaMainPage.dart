@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'dart:async';
 import 'package:ataa/Helpers/Helper.dart';
 import 'package:ataa/Helpers/Pusher.dart';
@@ -18,6 +20,8 @@ import 'package:ataa/Shared%20Data/AppLanguage.dart';
 import '../Helpers/DataMapper.dart';
 
 class AtaaMainPage extends StatefulWidget {
+  const AtaaMainPage({Key? key}) : super(key: key);
+
   @override
   _AtaaMainPageState createState() => _AtaaMainPageState();
 }
@@ -27,15 +31,14 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
   static late CommonData commonData;
   static late AppLanguage appLanguage;
   static late AppTheme appTheme;
-  final UserLocation userLocation = new UserLocation();
+  final UserLocation userLocation = UserLocation();
   static late MarkerData markerData;
-  // bool following = false;
-  SessionManager sessionManager = new SessionManager();
-  final MarkerApiCaller markerApiCaller = new MarkerApiCaller();
+  SessionManager sessionManager = SessionManager();
+  final MarkerApiCaller markerApiCaller = MarkerApiCaller();
   GoogleMapController? _controller;
-  LatLng initialLocation = LatLng(29.9832678, 31.2282846);
-  Pusher pusher = new Pusher();
-  Helper helper = new Helper();
+  LatLng initialLocation = const LatLng(29.9832678, 31.2282846);
+  Pusher pusher = Pusher();
+  Helper helper = Helper();
 
   void onMarkerTapped(MarkerId markerId) {
     Marker tappedMarker =
@@ -101,7 +104,7 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
             child: ErrorMessage(message: appLanguage.words['AtaaMainError']!),
           );
         } else {
-          return Center(
+          return const Center(
               child: CupertinoActivityIndicator(
             radius: 50,
           ));
@@ -148,13 +151,13 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
                   type: CoolAlertType.success,
                   lottieAsset: 'assets/animations/6951-success.json',
                   text: appLanguage.words['AtaaMainFinishingDialogFive']!,
-                  confirmBtnColor: Color(0xff1c9691),
+                  confirmBtnColor: const Color(0xff1c9691),
                   title: '');
             }),
         TextButton(
           child: Text(
             appLanguage.words['AtaaMainFinishingDialogSix']!,
-            style: TextStyle(color: Colors.red),
+            style: const TextStyle(color: Colors.red),
           ),
           onPressed: () async {
             await markerApiCaller.delete(appLanguage.language,
@@ -166,7 +169,7 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
                 type: CoolAlertType.success,
                 lottieAsset: 'assets/animations/6951-success.json',
                 text: appLanguage.words['AtaaMainFinishingDialogSeven']!,
-                confirmBtnColor: Color(0xff1c9691),
+                confirmBtnColor: const Color(0xff1c9691),
                 title: '');
           },
         )
@@ -192,12 +195,12 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
       print(initialLocation);
       if (_controller != null) {
         await _controller!.animateCamera(CameraUpdate.newCameraPosition(
-            new CameraPosition(target: initialLocation, zoom: 18.00)));
+            CameraPosition(target: initialLocation, zoom: 18.00)));
         Map<String, dynamic> status = await markerApiCaller.getAll(
             appLanguage.language,
             userLocation.currentLocation!.latitude,
             userLocation.currentLocation!.longitude);
-        DataMapper dataMapper = new DataMapper();
+        DataMapper dataMapper = DataMapper();
         markerData.setMarkers(dataMapper.getMarkersFromJson(status['data']));
         for (int i = 0; i < markerData.markers.length; i++) {
           markerData.markers[i] =
@@ -305,7 +308,7 @@ class _AtaaMainPageState extends State<AtaaMainPage> {
           ],
           elevation: 0.0,
         ),
-        body: Container(
+        body: SizedBox(
           height: h,
           width: w,
           child: Stack(

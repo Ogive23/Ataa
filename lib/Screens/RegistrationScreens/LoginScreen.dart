@@ -1,20 +1,22 @@
+// ignore_for_file: file_names
+
 import 'package:ataa/APICallers/UserApiCaller.dart';
 import 'package:ataa/CustomWidgets/CustomButtonLoading.dart';
 import 'package:ataa/Session/SessionManager.dart';
 import 'package:ataa/Shared%20Data/AppTheme.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  static final TextEditingController emailController =
-      new TextEditingController();
+  static final TextEditingController emailController = TextEditingController();
   static final TextEditingController passwordController =
-      new TextEditingController();
+      TextEditingController();
   static late double w, h;
   static late AppTheme appTheme;
   String error = '';
@@ -24,20 +26,20 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<dynamic> onSubmit(context) async {
     changeLoadingState();
-    UserApiCaller userApiCaller = new UserApiCaller();
+    UserApiCaller userApiCaller = UserApiCaller();
     Map<String, dynamic> status = await userApiCaller.login(email, password);
     changeLoadingState();
     if (status['Err_Flag']) {
       setState(() {
-        this.error = status['Err_Desc'];
+        error = status['Err_Desc'];
       });
       return;
     }
-    SessionManager sessionManager = new SessionManager();
+    SessionManager sessionManager = SessionManager();
     print(status['Values']);
     //ToDo: Access Token Duration
-    sessionManager.createSession(
-        status['User'], status['AccessToken'], DateTime.parse(status['ExpiryDate']));
+    sessionManager.createSession(status['User'], status['AccessToken'],
+        DateTime.parse(status['ExpiryDate']));
     print('thing ${sessionManager.sharedPreferences}');
     Navigator.popUntil(context, (route) => false);
     Navigator.pushNamed(context, 'MainScreen');
@@ -53,17 +55,17 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     w = MediaQuery.of(context).size.width;
     h = MediaQuery.of(context).size.height;
-    appTheme = new AppTheme(false, context);
+    appTheme = AppTheme(false, context);
     return GestureDetector(
         onTap: () {
-          FocusScope.of(context).requestFocus(new FocusNode());
+          FocusScope.of(context).requestFocus(FocusNode());
         },
         child: Material(
           child: Container(
             decoration: BoxDecoration(
-              color: Color.fromRGBO(39, 49, 56, 1.0),
+              color: const Color.fromRGBO(39, 49, 56, 1.0),
               image: DecorationImage(
-                  image: AssetImage(
+                  image: const AssetImage(
                     'assets/images/hand-giving-food-bowl-needy-person_23-2148733818.png',
                   ),
                   fit: BoxFit.cover,
@@ -80,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Container(
                       height: h / 6,
                       width: h / 6,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         image: DecorationImage(
                           image:
                               AssetImage('assets/images/ogive_version_2.png'),
@@ -111,11 +113,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: EdgeInsets.only(top: h / 100, bottom: h / 100),
                   decoration: BoxDecoration(
                       color: Colors.black.withOpacity(0.5),
-                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                      borderRadius: const BorderRadius.all(Radius.circular(30)),
                       boxShadow: [
                         BoxShadow(
                             color: Colors.grey.withOpacity(0.2),
-                            offset: Offset(0, 2),
+                            offset: const Offset(0, 2),
                             spreadRadius: 5,
                             blurRadius: 10)
                       ]),
@@ -154,21 +156,24 @@ class _LoginScreenState extends State<LoginScreen> {
                                 'OpenSans'),
                             decoration: InputDecoration(
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
+                                  borderSide:
+                                      const BorderSide(color: Colors.white),
                                   borderRadius: BorderRadius.circular(25.7),
                                 ),
                                 enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
+                                  borderSide:
+                                      const BorderSide(color: Colors.white),
                                   borderRadius: BorderRadius.circular(25.7),
                                 ),
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20)),
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.person,
                                   color: Colors.white,
                                 ),
                                 labelText: 'Email',
-                                labelStyle: TextStyle(color: Colors.white)),
+                                labelStyle:
+                                    const TextStyle(color: Colors.white)),
                           )),
                       Padding(
                           padding: EdgeInsets.only(
@@ -188,19 +193,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                 'OpenSans'),
                             decoration: InputDecoration(
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
+                                  borderSide:
+                                      const BorderSide(color: Colors.white),
                                   borderRadius: BorderRadius.circular(25.7),
                                 ),
                                 enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
+                                  borderSide:
+                                      const BorderSide(color: Colors.white),
                                   borderRadius: BorderRadius.circular(25.7),
                                 ),
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.lock,
                                   color: Colors.white,
                                 ),
                                 labelText: 'Password',
-                                labelStyle: TextStyle(color: Colors.white)),
+                                labelStyle:
+                                    const TextStyle(color: Colors.white)),
                           )),
                       SizedBox(
                         height: h / 50,
@@ -225,39 +233,40 @@ class _LoginScreenState extends State<LoginScreen> {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            isLoading
-                                ? CustomButtonLoading()
-                                : ElevatedButton(
-                                    child: Text(
-                                      'Login',
-                                      style: appTheme.nonStaticGetTextStyle(
-                                          1.0,
-                                          Colors.white,
-                                          appTheme.mediumTextSize(context),
-                                          FontWeight.normal,
-                                          1.0,
-                                          TextDecoration.none,
-                                          'OpenSans'),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    style: ButtonStyle(
-                                        minimumSize:
-                                            MaterialStateProperty.all<Size>(
-                                                Size(w / 4, h / 20)),
-                                        backgroundColor: MaterialStateProperty.all<
-                                                Color>(
-                                            Color.fromRGBO(53, 67, 77, 1.0)),
-                                        shape: MaterialStateProperty.all<
-                                                OutlinedBorder>(
-                                            RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10)))),
-                                    onPressed: () {
-                                      onSubmit(context);
-                                    },
-                                  ),
+                            if (isLoading)
+                              const CustomButtonLoading()
+                            else
+                              ElevatedButton(
+                                child: Text(
+                                  'Login',
+                                  style: appTheme.nonStaticGetTextStyle(
+                                      1.0,
+                                      Colors.white,
+                                      appTheme.mediumTextSize(context),
+                                      FontWeight.normal,
+                                      1.0,
+                                      TextDecoration.none,
+                                      'OpenSans'),
+                                  textAlign: TextAlign.center,
+                                ),
+                                style: ButtonStyle(
+                                    minimumSize:
+                                        MaterialStateProperty.all<Size>(
+                                            Size(w / 4, h / 20)),
+                                    backgroundColor: MaterialStateProperty.all<
+                                            Color>(
+                                        const Color.fromRGBO(53, 67, 77, 1.0)),
+                                    shape: MaterialStateProperty.all<
+                                            OutlinedBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)))),
+                                onPressed: () {
+                                  onSubmit(context);
+                                },
+                              ),
                             Padding(
-                              padding: EdgeInsets.only(left: 25),
+                              padding: const EdgeInsets.only(left: 25),
                               child: Text(
                                 'Forgot password?',
                                 style: appTheme.nonStaticGetTextStyle(
@@ -279,7 +288,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       Padding(
-                          padding: EdgeInsets.only(bottom: 20),
+                          padding: const EdgeInsets.only(bottom: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[

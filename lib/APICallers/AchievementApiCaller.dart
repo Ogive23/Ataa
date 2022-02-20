@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'dart:io';
 import 'package:ataa/GeneralInfo.dart';
 import 'package:ataa/Helpers/DataMapper.dart';
@@ -9,10 +11,10 @@ import '../Session/SessionManager.dart';
 import 'TokenApiCaller.dart';
 
 class AchievementApiCaller {
-  ResponseHandler responseHandler = new ResponseHandler();
-  SessionManager sessionManager = new SessionManager();
-  DataMapper dataMapper = new DataMapper();
-  TokenApiCaller tokenApiCaller = new TokenApiCaller();
+  ResponseHandler responseHandler = ResponseHandler();
+  SessionManager sessionManager = SessionManager();
+  DataMapper dataMapper = DataMapper();
+  TokenApiCaller tokenApiCaller = TokenApiCaller();
 
   Future<Map<String, dynamic>> getAchievements(String language) async {
     Map<String, dynamic> status;
@@ -35,7 +37,7 @@ class AchievementApiCaller {
           .catchError((error) {
         print(error);
         throw error;
-      }).timeout(Duration(seconds: 120));
+      }).timeout(const Duration(seconds: 120));
       Map<String, dynamic> responseToJson = jsonDecode(response.body);
       print(responseToJson);
       return responseToJson;
@@ -70,7 +72,7 @@ class AchievementApiCaller {
           .catchError((error) {
         print(error);
         throw error;
-      }).timeout(Duration(seconds: 120));
+      }).timeout(const Duration(seconds: 120));
       Map<String, dynamic> responseToJson = jsonDecode(response.body);
       print(responseToJson);
       return responseToJson;
@@ -104,7 +106,7 @@ class AchievementApiCaller {
           .catchError((error) {
         print(error);
         throw error;
-      }).timeout(Duration(seconds: 120));
+      }).timeout(const Duration(seconds: 120));
       Map<String, dynamic> responseToJson = jsonDecode(response.body);
       print(responseToJson);
       return responseToJson;

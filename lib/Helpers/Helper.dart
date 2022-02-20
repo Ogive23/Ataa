@@ -1,10 +1,12 @@
+// ignore_for_file: file_names
+
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:math';
 import 'package:vector_math/vector_math.dart' as math;
 
-class Helper{
-  bool notNull(dynamic object){
+class Helper {
+  bool notNull(dynamic object) {
     return object != null && object != 'null';
   }
 
@@ -12,9 +14,10 @@ class Helper{
     return notNull(object) ? object.toString() : 'غير متوفر';
   }
 
-  bool isNotAvailable(String text){
+  bool isNotAvailable(String text) {
     return text == 'غير متوفر';
   }
+
   double calculateDistance(Position userLocation, LatLng endPoint) {
     int radius = 6371; // radius of earth in Km
     double dLat = math.radians(endPoint.latitude - userLocation.latitude);
@@ -26,5 +29,9 @@ class Helper{
             sin(dLon / 2);
     double c = 2 * asin(sqrt(a));
     return radius * c;
+  }
+
+  bool positionIsNear(Position first, LatLng second) {
+    return calculateDistance(first, second) < 100;
   }
 }

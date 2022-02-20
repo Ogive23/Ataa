@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:ataa/APICallers/AchievementApiCaller.dart';
 import 'package:ataa/CustomWidgets/CustomSpacing.dart';
 import 'package:ataa/CustomWidgets/ErrorMessage.dart';
@@ -18,8 +20,10 @@ class PrizesContainer extends StatelessWidget {
   static late double w, h;
   static late AppTheme appTheme;
   static late AppLanguage appLanguage;
-  final AchievementApiCaller achievementApiCaller = new AchievementApiCaller();
-  final MemoryCache memoryCache = new MemoryCache();
+  final AchievementApiCaller achievementApiCaller = AchievementApiCaller();
+  final MemoryCache memoryCache = MemoryCache();
+
+  PrizesContainer({Key? key}) : super(key: key);
 
   cacheData(List<Prize> prizes) {
     memoryCache.setData('ataaPrizes', prizes);
@@ -41,13 +45,14 @@ class PrizesContainer extends StatelessWidget {
                 AsyncSnapshot<Map<String, dynamic>> snapshot) {
               if (snapshot.connectionState == ConnectionState.done &&
                   snapshot.data != null) {
-                if (snapshot.data!['Err_Flag'])
+                if (snapshot.data!['Err_Flag']) {
                   return Container(
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(vertical: h / 100),
                     child: ErrorMessage(message: snapshot.data!['Err_Desc']),
                   );
-                DataMapper dataMapper = new DataMapper();
+                }
+                DataMapper dataMapper = DataMapper();
                 List<Prize> prizes =
                     dataMapper.getPrizesFromJson(snapshot.data!['data']);
                 cacheData(prizes);
@@ -66,7 +71,7 @@ class PrizesContainer extends StatelessWidget {
                     CupertinoActivityIndicator(
                       radius: w / 10,
                     ),
-                    CustomSpacing(value: 50),
+                    const CustomSpacing(value: 50),
                     Text(
                       'جاري تحميل الجوائز',
                       style: appTheme.themeData.primaryTextTheme.headline3,
@@ -169,7 +174,7 @@ class PrizesContainer extends StatelessWidget {
               prize.name,
               style: appTheme.themeData.primaryTextTheme.headline4,
             ),
-            content: Container(
+            content: SizedBox(
               width: double.maxFinite,
               child: SingleChildScrollView(
                 child: Column(
@@ -193,40 +198,33 @@ class PrizesContainer extends StatelessWidget {
                     PrizeContainerRow(
                       firstWord: 'Required Markers Collected',
                       secondWord: prize.requiredMarkersCollected.toString(),
-                      context: context,
                     ),
                     PrizeContainerRow(
                       firstWord: 'Required Markers Posted',
                       secondWord: prize.requiredMarkersPosted.toString(),
-                      context: context,
                     ),
                     PrizeContainerRow(
                       firstWord: 'From',
                       secondWord: prize.from != null
                           ? DateFormat('yyyy-MM-dd').format(prize.from!)
                           : 'N/A',
-                      context: context,
                     ),
                     PrizeContainerRow(
                       firstWord: 'To',
                       secondWord: prize.to != null
                           ? DateFormat('yyyy-MM-dd').format(prize.to!)
                           : 'N/A',
-                      context: context,
                     ),
                     PrizeContainerRow(
                       firstWord: 'Status',
                       secondWord: prize.active ? 'Active' : 'Not Active',
-                      context: context,
                     ),
                     PrizeContainerRow(
                       firstWord: 'Acquired',
                       secondWord: prize.acquired
-                          ? 'Acquired' +
-                              ' ' +
+                          ? 'Acquired ' +
                               DateFormat('yyyy-MM-dd').format(prize.acquiredAt!)
                           : 'Not Acquired',
-                      context: context,
                     ),
                   ],
                 ),
@@ -239,7 +237,7 @@ class PrizesContainer extends StatelessWidget {
                     style: appTheme.themeData.primaryTextTheme.headline4),
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
-                        appTheme.themeData.accentColor)),
+                        appTheme.themeData.colorScheme.secondary)),
                 onPressed: () {
                   Navigator.of(dialogContext).pop();
                 },

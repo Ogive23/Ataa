@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -8,8 +10,8 @@ import 'package:http/http.dart' as http;
 import '../Session/SessionManager.dart';
 
 class TokenApiCaller {
-  ResponseHandler responseHandler = new ResponseHandler();
-  SessionManager sessionManager = new SessionManager();
+  ResponseHandler responseHandler = ResponseHandler();
+  SessionManager sessionManager = SessionManager();
 
   Future<Map<String, dynamic>> refreshAccessToken(String language) async {
     var headers = {
@@ -23,7 +25,7 @@ class TokenApiCaller {
               headers: headers, body: jsonEncode(body))
           .catchError((error) {
         throw error;
-      }).timeout(Duration(seconds: 120));
+      }).timeout(const Duration(seconds: 120));
       var responseToJson = jsonDecode(response.body);
       if (responseToJson['Err_Flag']) return responseToJson;
       sessionManager.refreshAccessToken(responseToJson['data']['accessToken'],

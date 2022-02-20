@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'dart:ui';
 import 'package:ataa/APICallers/AchievementApiCaller.dart';
 import 'package:ataa/Shared%20Data/AppLanguage.dart';
@@ -16,8 +18,10 @@ class UserAchievementContainer extends StatelessWidget {
   static late CommonData commonData;
   static late AppTheme appTheme;
   static late AppLanguage appLanguage;
-  final AchievementApiCaller achievementApiCaller = new AchievementApiCaller();
-  final MemoryCache memoryCache = new MemoryCache();
+  final AchievementApiCaller achievementApiCaller = AchievementApiCaller();
+  final MemoryCache memoryCache = MemoryCache();
+
+  UserAchievementContainer({Key? key}) : super(key: key);
 
   cacheData(Map<String, dynamic> data) {
     memoryCache.setData('userAchievement', data);
@@ -38,12 +42,13 @@ class UserAchievementContainer extends StatelessWidget {
                 AsyncSnapshot<Map<String, dynamic>> snapshot) {
               if (snapshot.connectionState == ConnectionState.done &&
                   snapshot.data != null) {
-                if (snapshot.data!['Err_Flag'])
+                if (snapshot.data!['Err_Flag']) {
                   return Container(
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(vertical: h / 100),
                     child: ErrorMessage(message: snapshot.data!['Err_Desc']),
                   );
+                }
                 cacheData(snapshot.data!);
                 return getSuccessBody(snapshot.data!);
               } else if (snapshot.error != null) {
@@ -62,7 +67,7 @@ class UserAchievementContainer extends StatelessWidget {
                         CupertinoActivityIndicator(
                           radius: w / 10,
                         ),
-                        CustomSpacing(value: 50),
+                        const CustomSpacing(value: 50),
                         Text(
                           'جاري تحميل إنجازاتك',
                           style: appTheme.themeData.primaryTextTheme.headline3,
@@ -143,7 +148,7 @@ class UserAchievementContainer extends StatelessWidget {
                           ),
                         ],
                       ),
-                      CustomSpacing(value: 50),
+                      const CustomSpacing(value: 50),
                       Text.rich(
                         TextSpan(
                             text: appLanguage.words['AchievementCenterFive'],
@@ -160,7 +165,7 @@ class UserAchievementContainer extends StatelessWidget {
                         textAlign: TextAlign.center,
                         textDirection: appLanguage.textDirection,
                       ),
-                      CustomSpacing(value: 50),
+                      const CustomSpacing(value: 50),
                       achievements['data']['latest_badge'] != null
                           ? Text.rich(
                               TextSpan(
@@ -186,7 +191,7 @@ class UserAchievementContainer extends StatelessWidget {
                                   .themeData.primaryTextTheme.headline4!
                                   .apply(color: Colors.red[300]),
                             ),
-                      CustomSpacing(value: 50),
+                      const CustomSpacing(value: 50),
                       GestureDetector(
                         onTap: () {
                           commonData.changeStep(Pages.AchievementScreen.index);

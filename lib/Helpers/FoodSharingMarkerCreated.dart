@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'dart:convert';
 
 import 'package:ataa/Helpers/DataMapper.dart';
@@ -11,8 +13,8 @@ class FoodSharingMarkerCreated extends PusherChannel {
 
   @override
   bind(Channel channel, MarkerData markerData) {
-    channel.bind(this.eventName, (PusherEvent? event) {
-      DataMapper dataMapper = new DataMapper();
+    channel.bind(eventName, (PusherEvent? event) {
+      DataMapper dataMapper = DataMapper();
       markerData.addMarker(dataMapper
           .getMarkerFromJson(jsonDecode(event!.data!)['foodSharingMarker']));
     });

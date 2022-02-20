@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 class AppLanguage extends ChangeNotifier {
@@ -5,11 +7,10 @@ class AppLanguage extends ChangeNotifier {
   late Map<String, String> words;
   late TextDirection textDirection;
   late Alignment alignment;
-  AppLanguage(String language) {
-    this.language = language;
-    textDirection = initTextDirection(this.language);
-    alignment = initAlignment(this.language);
-    words = initWords(this.language);
+  AppLanguage(this.language) {
+    textDirection = initTextDirection(language);
+    alignment = initAlignment(language);
+    words = initWords(language);
   }
   changeLanguage(String language) {
     this.language = language;
@@ -63,7 +64,7 @@ class AppLanguage extends ChangeNotifier {
             'MarkerCreationBoth': ' Both of them ',
             'MarkerCreationDescription': 'Description',
             'MarkerCreationDescriptionDetails':
-                'Describe it “E.g. it\s 4 bags of meat & one cup of cooked rice”',
+                'Describe it “E.g. it\'s 4 bags of meat & one cup of cooked rice”',
             'MarkerCreationPriority': 'Priority',
             'MarkerCreationType': 'Type',
             'MarkerCreationQuantity': 'Quantity(Bags)',

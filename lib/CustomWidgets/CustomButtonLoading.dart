@@ -1,9 +1,13 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 class CustomButtonLoading extends StatelessWidget {
   static late double h;
+
+  const CustomButtonLoading({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     h = MediaQuery.of(context).size.height;

@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:ataa/Helpers/Helper.dart';
 import 'package:ataa/Models/UserLocation.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +9,8 @@ class MarkerData extends ChangeNotifier {
   List<Marker> markers = [];
   Marker? selectedMarker;
   bool following = false;
-  Helper helper = new Helper();
-  UserLocation userLocation = new UserLocation();
+  Helper helper = Helper();
+  UserLocation userLocation = UserLocation();
 
   void setMarkers(List<Marker> markers) {
     this.markers = markers;
@@ -16,30 +18,30 @@ class MarkerData extends ChangeNotifier {
   }
 
   void setSelectedMarker(Marker selectedMarker) {
-    this.following = true;
+    following = true;
     this.selectedMarker = selectedMarker;
     notifyListeners();
   }
 
   void finishFollowing() {
-    this.following = false;
+    following = false;
   }
 
   Future<void> addMarker(Marker marker) async {
     if (await userLocation.canLocateUserLocation()) {
-      print(helper.calculateDistance(
-          userLocation.currentLocation!, marker.position));
-      if (helper.calculateDistance(
-              userLocation.currentLocation!, marker.position) <
-          100) this.markers.add(marker);
-      notifyListeners();
+      if (helper.positionIsNear(
+          userLocation.currentLocation!, marker.position)) {
+        markers.add(marker);
+        notifyListeners();
+      }
     }
   }
 
   void deleteMarker(Marker marker) {
-    if (selectedMarker != null && marker.markerId == selectedMarker!.markerId)
+    if (selectedMarker != null && marker.markerId == selectedMarker!.markerId) {
       finishFollowing();
-    this.markers.removeWhere((element) => element.markerId == marker.markerId);
+    }
+    markers.removeWhere((element) => element.markerId == marker.markerId);
     notifyListeners();
   }
 

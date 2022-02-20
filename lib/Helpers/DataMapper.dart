@@ -1,14 +1,15 @@
+// ignore_for_file: file_names
+
 import 'package:ataa/GeneralInfo.dart';
 import 'package:ataa/Models/Prize.dart';
 import 'package:ataa/Models/User.dart';
-import 'package:ataa/Shared%20Data/MarkerData.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../Models/Prize.dart';
 import '../Models/Badge.dart';
 import 'Helper.dart';
 
 class DataMapper {
-  Helper helper = new Helper();
+  Helper helper = Helper();
   getMarkerColor(priority) {
     switch (priority) {
       case '1':
@@ -26,12 +27,8 @@ class DataMapper {
   }
 
   Marker getMarkerFromJson(Map<String, dynamic> data) {
-    print(data['id'].toString());
-    print(data['latitude'].toString());
-    print(data['longitude'].toString());
-    print(data['priority'].toString());
     return Marker(
-      markerId: new MarkerId(data['id'].toString()),
+      markerId: MarkerId(data['id'].toString()),
       position: LatLng(double.parse(data['latitude'].toString()),
           double.parse(data['longitude'].toString())),
       icon: getMarkerColor(data['priority'].toString()),
@@ -45,9 +42,9 @@ class DataMapper {
   List<Marker> getMarkersFromJson(List<dynamic> list) {
 //  MarkerIcon markerOption = new MarkerIcon();      ///for custom marker icon
     List<Marker> returnedMarkers = <Marker>[];
-    list.forEach((marker) {
+    for (var marker in list) {
       returnedMarkers.add(Marker(
-        markerId: new MarkerId(marker['id'].toString()),
+        markerId: MarkerId(marker['id'].toString()),
         position: LatLng(double.parse(marker['latitude'].toString()),
             double.parse(marker['longitude'].toString())),
 //      icon: markerOption.getIcon(),
@@ -57,7 +54,7 @@ class DataMapper {
             snippet: marker['description'].toString() +
                 ' \nQuantity = ${double.parse(marker['quantity'].toString()).toInt()} bags'),
       ));
-    });
+    }
     return returnedMarkers;
   }
 
@@ -83,7 +80,7 @@ class DataMapper {
 
   List<Prize> getPrizesFromJson(List<dynamic> list) {
     List<Prize> returnedPrizes = <Prize>[];
-    list.forEach((prize) {
+    for (var prize in list) {
       returnedPrizes.add(Prize(
           id: prize['id'].toString(),
           name: prize['name'],
@@ -101,13 +98,13 @@ class DataMapper {
           acquiredAt: prize['acquiredAt'] != null
               ? DateTime.parse(prize['acquiredAt'])
               : null));
-    });
+    }
     return returnedPrizes;
   }
 
   List<Badge> getBadgesFromJson(List<dynamic> list) {
     List<Badge> returnedBadges = <Badge>[];
-    list.forEach((badge) {
+    for (var badge in list) {
       returnedBadges.add(Badge(
           id: badge['id'].toString(),
           name: badge['name'],
@@ -119,7 +116,7 @@ class DataMapper {
           acquiredAt: badge['acquiredAt'] != null
               ? DateTime.parse(badge['acquiredAt'])
               : null));
-    });
+    }
     return returnedBadges;
   }
 }

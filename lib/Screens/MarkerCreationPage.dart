@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:cool_alert/cool_alert.dart';
 import 'package:ataa/APICallers/MarkerApiCaller.dart';
 import 'package:ataa/CustomWidgets/CustomSpacing.dart';
@@ -6,14 +8,14 @@ import 'package:ataa/Models/UserLocation.dart';
 import 'package:ataa/Shared%20Data/AppLanguage.dart';
 import 'package:ataa/Shared%20Data/AppTheme.dart';
 import 'package:ataa/Shared%20Data/CommonData.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
 
 class MarkerCreationPage extends StatefulWidget {
+  const MarkerCreationPage({Key? key}) : super(key: key);
+
   @override
   _MarkerCreationPageState createState() => _MarkerCreationPageState();
 }
@@ -24,8 +26,8 @@ class _MarkerCreationPageState extends State<MarkerCreationPage> {
   static late AppLanguage appLanguage;
   static late AppTheme appTheme;
 
-  TextEditingController name = new TextEditingController();
-  TextEditingController description = new TextEditingController();
+  TextEditingController name = TextEditingController();
+  TextEditingController description = TextEditingController();
   late NumberPicker integerNumberPicker;
   late List<DropdownMenuItem<int>> dropDownMenuItems;
   double quantity = 1.0;
@@ -53,7 +55,7 @@ class _MarkerCreationPageState extends State<MarkerCreationPage> {
         ),
         body: GestureDetector(
           onTap: () {
-            FocusScope.of(context).requestFocus(new FocusNode());
+            FocusScope.of(context).requestFocus(FocusNode());
           },
           child: Container(
               alignment: Alignment.center,
@@ -220,14 +222,14 @@ class _MarkerCreationPageState extends State<MarkerCreationPage> {
                     textAlign: TextAlign.center,
                     textDirection: appLanguage.textDirection,
                   ),
-                  CustomSpacing(
+                  const CustomSpacing(
                     value: 50,
                   ),
                   CustomTextField(
                       controller: description,
                       label: appLanguage.words['MarkerCreationDescription']!,
-                      selectedColor: appTheme.themeData.accentColor,
-                      borderColor: appTheme.themeData.accentColor,
+                      selectedColor: appTheme.themeData.colorScheme.secondary,
+                      borderColor: appTheme.themeData.colorScheme.secondary,
                       obscureText: false,
                       keyboardType: TextInputType.multiline,
                       hint: appLanguage
@@ -236,7 +238,7 @@ class _MarkerCreationPageState extends State<MarkerCreationPage> {
                       width: w,
                       maxLines: 3,
                       enableFormatters: false),
-                  CustomSpacing(
+                  const CustomSpacing(
                     value: 100,
                   ),
                   Text(
@@ -246,7 +248,7 @@ class _MarkerCreationPageState extends State<MarkerCreationPage> {
                     textDirection: appLanguage.textDirection,
                     // appTheme.themeData.accentColor, 16.0, 1.5, FontWeight.normal
                   ),
-                  CustomSpacing(
+                  const CustomSpacing(
                     value: 200,
                   ),
                   ToggleButtons(
@@ -254,10 +256,10 @@ class _MarkerCreationPageState extends State<MarkerCreationPage> {
                         appTheme.themeData.primaryTextTheme.subtitle1!.color!,
                     selectedColor: Colors.amber,
                     splashColor: Colors.green,
-                    fillColor: appTheme.themeData.accentColor,
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    borderColor: appTheme.themeData.accentColor,
-                    selectedBorderColor: appTheme.themeData.accentColor,
+                    fillColor: appTheme.themeData.colorScheme.secondary,
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    borderColor: appTheme.themeData.colorScheme.secondary,
+                    selectedBorderColor: appTheme.themeData.colorScheme.secondary,
                     children: List.generate(priorities.length,
                         (index) => Text(priorities[index].toString())),
                     isSelected: chosenPriority,
@@ -269,7 +271,7 @@ class _MarkerCreationPageState extends State<MarkerCreationPage> {
                       });
                     },
                   ),
-                  CustomSpacing(
+                  const CustomSpacing(
                     value: 100,
                   ),
                   Text(
@@ -278,7 +280,7 @@ class _MarkerCreationPageState extends State<MarkerCreationPage> {
                     textAlign: TextAlign.center,
                     textDirection: appLanguage.textDirection,
                   ),
-                  CustomSpacing(
+                  const CustomSpacing(
                     value: 200,
                   ),
                   ToggleButtons(
@@ -286,25 +288,25 @@ class _MarkerCreationPageState extends State<MarkerCreationPage> {
                         appTheme.themeData.primaryTextTheme.subtitle1!.color!,
                     selectedColor: Colors.amber,
                     splashColor: Colors.green,
-                    fillColor: appTheme.themeData.accentColor,
-                    selectedBorderColor: appTheme.themeData.accentColor,
-                    borderColor: appTheme.themeData.accentColor,
+                    fillColor: appTheme.themeData.colorScheme.secondary,
+                    selectedBorderColor: appTheme.themeData.colorScheme.secondary,
+                    borderColor: appTheme.themeData.colorScheme.secondary,
                     children: [
                       Column(
                         children: <Widget>[
-                          Icon(FontAwesomeIcons.hamburger),
+                          const Icon(FontAwesomeIcons.hamburger),
                           Text(appLanguage.words['MarkerCreationFood']!),
                         ],
                       ),
                       Column(
                         children: <Widget>[
-                          Icon(Icons.local_drink),
+                          const Icon(Icons.local_drink),
                           Text(appLanguage.words['MarkerCreationDrink']!),
                         ],
                       ),
                       Column(
                         children: <Widget>[
-                          Icon(Icons.fastfood),
+                          const Icon(Icons.fastfood),
                           Text(appLanguage.words['MarkerCreationBoth']!),
                         ],
                       ),
@@ -318,7 +320,7 @@ class _MarkerCreationPageState extends State<MarkerCreationPage> {
                       });
                     },
                   ),
-                  CustomSpacing(
+                  const CustomSpacing(
                     value: 100,
                   ),
                   Text(
@@ -342,7 +344,7 @@ class _MarkerCreationPageState extends State<MarkerCreationPage> {
                       label: '${quantity.toInt()}',
                       activeColor: Colors.amber,
                       inactiveColor:
-                          appTheme.themeData.accentColor.withOpacity(0.5),
+                          appTheme.themeData.colorScheme.secondary.withOpacity(0.5),
                     ),
                   ),
                   ElevatedButton(
@@ -351,23 +353,24 @@ class _MarkerCreationPageState extends State<MarkerCreationPage> {
                     style: ButtonStyle(
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
+                                const RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(30)))),
                         backgroundColor:
                             MaterialStateProperty.all<Color>(Colors.amber)),
                     onPressed: () async {
-                      UserLocation userLocation = new UserLocation();
-                      if (!await userLocation.canLocateUserLocation())
+                      UserLocation userLocation = UserLocation();
+                      if (!await userLocation.canLocateUserLocation()) {
                         return CoolAlert.show(
                             context: context,
                             type: CoolAlertType.error,
                             lottieAsset: 'assets/animations/38213-error.json',
                             text: appLanguage
                                 .words['MarkerCreationLocationError'],
-                            confirmBtnColor: Color(0xff1c9691),
+                            confirmBtnColor: const Color(0xff1c9691),
                             title: '');
-                      MarkerApiCaller markerApiCaller = new MarkerApiCaller();
+                      }
+                      MarkerApiCaller markerApiCaller = MarkerApiCaller();
                       Map<String, dynamic> status =
                           await markerApiCaller.create(
                         appLanguage.language,
@@ -384,7 +387,7 @@ class _MarkerCreationPageState extends State<MarkerCreationPage> {
                             type: CoolAlertType.error,
                             lottieAsset: 'assets/animations/38213-error.json',
                             text: status['Err_Desc'],
-                            confirmBtnColor: Color(0xff1c9691),
+                            confirmBtnColor: const Color(0xff1c9691),
                             title: '');
                       } else {
                         commonData.back();
@@ -394,7 +397,7 @@ class _MarkerCreationPageState extends State<MarkerCreationPage> {
                             lottieAsset: 'assets/animations/6951-success.json',
                             text:
                                 appLanguage.words['MarkerCreationSuccessText'],
-                            confirmBtnColor: Color(0xff1c9691),
+                            confirmBtnColor: const Color(0xff1c9691),
                             title: '');
                       }
                     },

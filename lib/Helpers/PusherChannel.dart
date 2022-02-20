@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:ataa/Shared%20Data/MarkerData.dart';
 import 'package:pusher_client/pusher_client.dart';
 

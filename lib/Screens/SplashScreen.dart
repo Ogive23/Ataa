@@ -1,13 +1,16 @@
+// ignore_for_file: file_names
+
 import 'dart:async';
 import 'package:ataa/Session/SessionManager.dart';
 import 'package:ataa/Shared%20Data/AppTheme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'dart:math';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
+
   @override
-  _SplashScreen createState() => new _SplashScreen();
+  _SplashScreen createState() => _SplashScreen();
 }
 
 class _SplashScreen extends State<SplashScreen>
@@ -23,7 +26,7 @@ class _SplashScreen extends State<SplashScreen>
   void initState() {
     super.initState();
     _animationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 3));
+        AnimationController(vsync: this, duration: const Duration(seconds: 3));
     _colorAnimation = Tween<Color>(begin: Colors.green, end: Colors.blue)
         .animate(_animationController);
     quote = [
@@ -39,7 +42,7 @@ class _SplashScreen extends State<SplashScreen>
       '“You have not lived today until you have done something for someone who can never repay you.”\n'
           '― John Bunyan'
     ].elementAt(Random().nextInt(5));
-    sessionManager = new SessionManager();
+    sessionManager = SessionManager();
     getSession();
     changeOpacity();
   }
@@ -67,7 +70,7 @@ class _SplashScreen extends State<SplashScreen>
   changeOpacity() {
     if (value < 1.0) {
       Timer.periodic(
-          Duration(seconds: 1),
+          const Duration(seconds: 1),
           (timer) => {
                 if (mounted)
                   {
@@ -78,7 +81,7 @@ class _SplashScreen extends State<SplashScreen>
                   }
               });
       Timer.periodic(
-          Duration(seconds: 3),
+          const Duration(seconds: 3),
           (timer) => {
                 if (mounted)
                   {
@@ -96,27 +99,27 @@ class _SplashScreen extends State<SplashScreen>
 
   navigate() {
     sessionManager.sharedPreferences == null
-        ? Future.delayed(Duration(seconds: 5), navigate())
+        ? Future.delayed(const Duration(seconds: 5), navigate())
         : Navigator.popAndPushNamed(context, getHomePage());
   }
 
   @override
   Widget build(BuildContext context) {
-    appTheme = new AppTheme(false, context);
+    appTheme = AppTheme(false, context);
     return Material(
       child: AnimatedContainer(
           alignment: Alignment.center,
-          padding: EdgeInsets.only(right: 40, left: 40),
-          duration: Duration(seconds: 3),
-          decoration: BoxDecoration(color: Colors.black),
+          padding: const EdgeInsets.only(right: 40, left: 40),
+          duration: const Duration(seconds: 3),
+          decoration: const BoxDecoration(color: Colors.black),
           child: SingleChildScrollView(
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(bottom: 20),
+                  padding: const EdgeInsets.only(bottom: 20),
                   child: AnimatedOpacity(
                     opacity: opacity,
-                    duration: Duration(seconds: 2),
+                    duration: const Duration(seconds: 2),
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width / 3,
                       height: MediaQuery.of(context).size.height / 3,
@@ -125,9 +128,9 @@ class _SplashScreen extends State<SplashScreen>
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(bottom: 20),
+                  padding: const EdgeInsets.only(bottom: 20),
                   child: Text(
-                    '$quote',
+                    quote,
                     style: appTheme.nonStaticGetTextStyle(
                         1.0,
                         Colors.white,
@@ -140,7 +143,7 @@ class _SplashScreen extends State<SplashScreen>
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(bottom: 40),
+                  padding: const EdgeInsets.only(bottom: 40),
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: Column(

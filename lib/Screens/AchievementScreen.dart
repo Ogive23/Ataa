@@ -1,14 +1,17 @@
+// ignore_for_file: file_names
+
 import 'package:ataa/CustomWidgets/BadgesContainer.dart';
 import 'package:ataa/CustomWidgets/CustomSpacing.dart';
 import 'package:ataa/CustomWidgets/PrizesContainer.dart';
 import 'package:ataa/Shared%20Data/AppLanguage.dart';
 import 'package:ataa/Shared%20Data/AppTheme.dart';
-import 'package:ataa/Shared%20Data/CommonData.dart';
 import 'package:ataa/Shared%20Data/MemoryCache.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AchievementScreen extends StatefulWidget {
+  const AchievementScreen({Key? key}) : super(key: key);
+
   @override
   _AchievementScreenState createState() => _AchievementScreenState();
 }
@@ -19,12 +22,12 @@ class _AchievementScreenState extends State<AchievementScreen>
   late AppLanguage appLanguage;
   late double w, h;
   late TabController tabController;
-  MemoryCache memoryCache = new MemoryCache();
+  MemoryCache memoryCache = MemoryCache();
 
   @override
   void initState() {
     super.initState();
-    tabController = new TabController(length: 2, vsync: this);
+    tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -47,20 +50,20 @@ class _AchievementScreenState extends State<AchievementScreen>
                   Colors.deepPurpleAccent.withOpacity(0.5),
                 ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
                 image: DecorationImage(
-                  image: AssetImage('assets/images/1006554.png'),
+                  image: const AssetImage('assets/images/1006554.png'),
                   alignment: appLanguage.alignment,
                 ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomSpacing(value: 25),
+                  const CustomSpacing(value: 25),
                   Text(
                     'My Achievements',
                     style: appTheme.themeData.primaryTextTheme.headline4!
                         .apply(fontSizeFactor: 1.5, fontWeightDelta: 2),
                   ),
-                  CustomSpacing(value: 50),
+                  const CustomSpacing(value: 50),
                   Container(
                     decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.5),
@@ -78,10 +81,10 @@ class _AchievementScreenState extends State<AchievementScreen>
                                 .themeData.primaryTextTheme.headline3!
                                 .apply(fontSizeFactor: 0.8),
                           )
-                        : SizedBox(),
+                        : const SizedBox(),
                   ),
                   TabBar(
-                    tabs: [
+                    tabs: const [
                       Tab(
                         child: Text('Prizes'),
                       ),

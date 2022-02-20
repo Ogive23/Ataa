@@ -1,12 +1,15 @@
+// ignore_for_file: file_names
+
 import 'package:ataa/Shared%20Data/AppLanguage.dart';
 import 'package:ataa/Shared%20Data/AppTheme.dart';
 import 'package:ataa/Shared%20Data/CommonData.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import '../../GeneralInfo.dart';
 
 class BackgroundScreen extends StatefulWidget {
+  const BackgroundScreen({Key? key}) : super(key: key);
+
   @override
   _BackgroundScreenState createState() => _BackgroundScreenState();
 }
@@ -20,28 +23,28 @@ class _BackgroundScreenState extends State<BackgroundScreen> {
     return commonData.lastStep()
         ? (await showDialog(
             context: context,
-            builder: (context) => new AlertDialog(
+            builder: (context) => AlertDialog(
               backgroundColor: appTheme.themeData.cardColor,
               //ToDo: Support English
-              title: new Text(
+              title: Text(
                 appLanguage.words['QuitDialogTitle']!,
                 style: appTheme.themeData.primaryTextTheme.headline5,
               ),
-              content: new Text(
+              content: Text(
                 appLanguage.words['QuitDialogSubtitle']!,
                 style: appTheme.themeData.primaryTextTheme.headline5,
               ),
               actions: <Widget>[
-                new TextButton(
+                TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: new Text(
+                  child: Text(
                     appLanguage.words['QuitActionButtonTwo']!,
                     style: appTheme.themeData.primaryTextTheme.headline5,
                   ),
                 ),
-                new TextButton(
+                TextButton(
                   onPressed: () => Navigator.of(context).pop(true),
-                  child: new Text(
+                  child: Text(
                     appLanguage.words['QuitActionButtonOne']!,
                     style: appTheme.themeData.primaryTextTheme.headline5!
                         .apply(color: Colors.red),
@@ -64,12 +67,12 @@ class _BackgroundScreenState extends State<BackgroundScreen> {
           textDirection: appLanguage.textDirection,
           child: Scaffold(
             body: pageOptions[commonData.step],
-            bottomNavigationBar: new Theme(
+            bottomNavigationBar: Theme(
               data: Theme.of(context).copyWith(
                 canvasColor: Colors.white,
               ),
               child: commonData.step > Pages.SettingsScreen.index
-                  ? SizedBox()
+                  ? const SizedBox()
                   : BottomNavigationBar(
                       backgroundColor: appTheme.themeData.primaryColor,
                       selectedItemColor:
@@ -83,15 +86,15 @@ class _BackgroundScreenState extends State<BackgroundScreen> {
                           .themeData.primaryTextTheme.headline4!.fontSize!,
                       items: [
                         BottomNavigationBarItem(
-                            icon: Icon(Icons.people),
+                            icon: const Icon(Icons.people),
                             label: appLanguage
                                 .words['bottomNavigationItemFirst']!),
                         BottomNavigationBarItem(
-                            icon: Icon(Icons.home),
+                            icon: const Icon(Icons.home),
                             label: appLanguage
                                 .words['bottomNavigationItemSecond']!),
                         BottomNavigationBarItem(
-                            icon: Icon(Icons.settings),
+                            icon: const Icon(Icons.settings),
                             label: appLanguage
                                 .words['bottomNavigationItemThird']!),
                       ],

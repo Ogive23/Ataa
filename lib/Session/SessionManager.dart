@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:ataa/Models/User.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -34,7 +36,7 @@ class SessionManager {
     }
     accessToken = sharedPreferences!.getString('accessToken')!;
     List<String> userData = sharedPreferences!.getStringList('user')!;
-    user = new User(
+    user = User(
         userData[0],
         userData[1],
         userData[2],
@@ -90,9 +92,9 @@ class SessionManager {
   }
 
   logout() {
-    this.user = null;
-    this.accessToken = null;
-    this.expiryDate = null;
+    user = null;
+    accessToken = null;
+    expiryDate = null;
     sharedPreferences!.remove('expiryDate');
     sharedPreferences!.remove('accessToken');
     sharedPreferences!.remove('user');

@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:ataa/CustomWidgets/CustomCard.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -9,10 +11,12 @@ import '../Shared Data/CommonData.dart';
 
 class StayInTouchPage extends StatelessWidget {
   static late double w, h;
-  final SessionManager sessionManager = new SessionManager();
+  final SessionManager sessionManager = SessionManager();
   static late CommonData commonData;
   static late AppTheme appTheme;
   static late AppLanguage appLanguage;
+
+  StayInTouchPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     commonData = Provider.of<CommonData>(context);

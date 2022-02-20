@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:ataa/Shared%20Data/AppTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,20 +11,21 @@ class CustomCard extends StatelessWidget {
   final IconData icon;
   final TextDirection textDirection;
   static late AppTheme appTheme;
-  CustomCard(
-      {required this.title,
+  const CustomCard(
+      {Key? key, required this.title,
       required this.subtitle,
       required this.url,
       required this.icon,
       required this.iconColor,
       required this.kind,
-      required this.textDirection});
+      required this.textDirection}) : super(key: key);
   Future<void> launchURL(String url, kind) async {
     late String protocolURL;
-    if (kind == 'fb')
+    if (kind == 'fb') {
       protocolURL = "fb://page/716275428808273";
-    else if (kind == 'twitter')
-      protocolURL = "twitter:///user?screen_name=\(MahmouedMartin)";
+    } else if (kind == 'twitter') {
+      protocolURL = "twitter:///user?screen_name=(MahmouedMartin)";
+    }
     try {
       bool launched = await launch(protocolURL,
           forceSafariVC: false, universalLinksOnly: false);
@@ -38,7 +41,7 @@ class CustomCard extends StatelessWidget {
   Widget build(BuildContext context) {
     appTheme = Provider.of<AppTheme>(context);
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           gradient:
               LinearGradient(colors: [Colors.blueAccent, Colors.pinkAccent])),
       child: GestureDetector(
@@ -46,7 +49,7 @@ class CustomCard extends StatelessWidget {
           launchURL(url, kind);
         },
         child: Card(
-          color: appTheme.themeData.accentColor,
+          color: appTheme.themeData.colorScheme.secondary,
           elevation: 3,
           child: Column(
             mainAxisSize: MainAxisSize.min,

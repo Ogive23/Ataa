@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:ataa/Helpers/FoodSharingMarkerCollected.dart';
 import 'package:ataa/Helpers/FoodSharingMarkerCreated.dart';
 import 'package:ataa/Helpers/PusherChannel.dart';
@@ -7,7 +9,7 @@ import 'package:pusher_client/pusher_client.dart';
 
 class Pusher {
   PusherOptions options = PusherOptions(cluster: 'eu');
-  SessionManager sessionManager = new SessionManager();
+  SessionManager sessionManager = SessionManager();
   Channel? channel;
 
   late PusherClient pusherClient;
@@ -24,7 +26,7 @@ class Pusher {
 
     pusherClient.onConnectionError((error) {
       Future.delayed(
-          Duration(minutes: 5), () => initPusher(markerData: markerData));
+          const Duration(minutes: 5), () => initPusher(markerData: markerData));
       return;
     });
     initChannels(markerData: markerData);
@@ -33,10 +35,10 @@ class Pusher {
   void initChannels({markerData}) {
     subscribe(pusherClient);
 
-    PusherChannel pusherChannel = new FoodSharingMarkerCreated();
+    PusherChannel pusherChannel = FoodSharingMarkerCreated();
     pusherChannel.bind(channel!, markerData);
 
-    pusherChannel = new FoodSharingMarkerCollected();
+    pusherChannel = FoodSharingMarkerCollected();
     pusherChannel.bind(channel!, markerData);
   }
 

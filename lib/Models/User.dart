@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 class User {
   String id;
   String name;
@@ -27,18 +29,18 @@ class User {
 
   List<String> toList() {
     return [
-      this.id,
-      this.name,
-      this.username,
-      this.email,
-      this.gender,
-      this.phoneNumber,
-      this.address,
-      this.verified.toString(),
-      this.profileImage!,
-      this.profileCover!,
-      this.profileBio!,
-      this.nationality
+      id,
+      name,
+      username,
+      email,
+      gender,
+      phoneNumber,
+      address,
+      verified.toString(),
+      profileImage!,
+      profileCover!,
+      profileBio!,
+      nationality
     ];
   }
 }

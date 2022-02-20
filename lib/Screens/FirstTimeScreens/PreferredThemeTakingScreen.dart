@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:ataa/CustomWidgets/CustomSpacing.dart';
 import 'package:ataa/Screens/FirstTimeScreens/PreferredLanguageTakingScreen.dart';
 import 'package:ataa/Session/SessionManager.dart';
@@ -7,7 +9,9 @@ import 'package:flutter/material.dart';
 class PreferredThemeTakingScreen extends StatelessWidget {
   static late double w, h;
   static late AppTheme appTheme;
-  final SessionManager sessionManager = new SessionManager();
+  final SessionManager sessionManager = SessionManager();
+
+  PreferredThemeTakingScreen({Key? key}) : super(key: key);
 
   void finishedChoosing(context, bool theme) {
     sessionManager.createPreferredTheme(theme);
@@ -24,7 +28,7 @@ class PreferredThemeTakingScreen extends StatelessWidget {
     h = MediaQuery.of(context).size.height;
     appTheme = AppTheme(false, context);
     return Scaffold(
-        backgroundColor: Color.fromRGBO(186, 224, 255, 1),
+        backgroundColor: const Color.fromRGBO(186, 224, 255, 1),
         body: Container(
             height: h,
             width: w,
@@ -46,7 +50,7 @@ class PreferredThemeTakingScreen extends StatelessWidget {
                         'OpenSans'),
                     textAlign: TextAlign.center,
                   ),
-                  CustomSpacing(value: 50),
+                  const CustomSpacing(value: 50),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,

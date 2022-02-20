@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 class ResponseHandler {
   Map<String, dynamic> possibleErrors = {};
   Map<String, dynamic> initiateErrors(language) {

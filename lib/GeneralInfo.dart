@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, constant_identifier_names
+
 import 'package:ataa/Screens/AchievementScreen.dart';
 import 'package:ataa/Screens/ProfileScreen.dart';
 
@@ -27,9 +29,9 @@ final pageOptions = [
   HomeScreen(),
   SettingsScreen(),
   IntroPage(),
-  AtaaMainPage(),
-  MarkerCreationPage(),
-  ProfileScreen(),
+  const AtaaMainPage(),
+  const MarkerCreationPage(),
+  const ProfileScreen(),
   StayInTouchPage(),
-  AchievementScreen()
+  const AchievementScreen()
 ];

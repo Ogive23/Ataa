@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:ataa/CustomWidgets/CustomSpacing.dart';
 import 'package:ataa/Screens/FirstTimeScreens/PreferredThemeTakingScreen.dart';
 import 'package:ataa/Shared%20Data/AppTheme.dart';
@@ -7,13 +9,15 @@ import 'package:lottie/lottie.dart';
 class WelcomeScreen extends StatelessWidget {
   static late double w, h;
   static late AppTheme appTheme;
+
+  const WelcomeScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     w = MediaQuery.of(context).size.width;
     h = MediaQuery.of(context).size.height;
     appTheme = AppTheme(false, context);
     return Scaffold(
-        backgroundColor: Color.fromRGBO(186, 224, 255, 1),
+        backgroundColor: const Color.fromRGBO(186, 224, 255, 1),
         body: Container(
             alignment: Alignment.center,
             height: h,
@@ -26,7 +30,7 @@ class WelcomeScreen extends StatelessWidget {
                   width: MediaQuery.of(context).size.width / 2,
                   height: MediaQuery.of(context).size.height / 2,
                 ),
-                CustomSpacing(value: 50),
+                const CustomSpacing(value: 50),
                 Text(
                   'Welcome To Ataa App!\n'
                   'مرحباً بك في تطبيق عطاء',
@@ -40,7 +44,7 @@ class WelcomeScreen extends StatelessWidget {
                       'OpenSans'),
                   textAlign: TextAlign.center,
                 ),
-                CustomSpacing(value: 50),
+                const CustomSpacing(value: 50),
                 Text(
                   'We gonna help you to change \nTHE WORLD.\n'
                   'ســوف نــســاعــدك لإنــقــاذ\nالــــعـــالـــم',
@@ -54,16 +58,16 @@ class WelcomeScreen extends StatelessWidget {
                       'OpenSans'),
                   textAlign: TextAlign.center,
                 ),
-                CustomSpacing(value: 50),
+                const CustomSpacing(value: 50),
                 ElevatedButton.icon(
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all<Color>(Colors.white),
                         shape: MaterialStateProperty
-                            .all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                            .all<RoundedRectangleBorder>(const RoundedRectangleBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(30))))),
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.fast_forward,
                       color: Colors.green,
                     ),

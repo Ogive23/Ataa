@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:ataa/Session/SessionManager.dart';
 import 'package:ataa/Shared%20Data/AppLanguage.dart';
 import 'package:ataa/Shared%20Data/AppTheme.dart';
@@ -6,9 +8,11 @@ import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatelessWidget {
   static late double w, h;
-  final SessionManager sessionManager = new SessionManager();
+  final SessionManager sessionManager = SessionManager();
   static late AppTheme appTheme;
   static late AppLanguage appLanguage;
+
+  SettingsScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     w = MediaQuery.of(context).size.width;
@@ -43,8 +47,8 @@ class SettingsScreen extends StatelessWidget {
                       width: w / 20,
                     ),
                     children: <Widget>[
-                      Text('Animations rights reserved to Lottie'),
-                      Text('Fonts rights reserved to Google Fonts'),
+                      const Text('Animations rights reserved to Lottie'),
+                      const Text('Fonts rights reserved to Google Fonts'),
                       Text('OGIVE ©${DateTime.now().year}')
                     ],
                   );

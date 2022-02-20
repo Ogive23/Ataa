@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'dart:io';
 
 class AdManager {
@@ -7,7 +9,7 @@ class AdManager {
     } else if (Platform.isIOS) {
       return "<YOUR_IOS_ADMOB_APP_ID>";
     } else {
-      throw new UnsupportedError("Unsupported platform");
+      throw UnsupportedError("Unsupported platform");
     }
   }
 
@@ -17,7 +19,7 @@ class AdManager {
     } else if (Platform.isIOS) {
       return "<YOUR_IOS_ADMOB_APP_ID>";
     } else {
-      throw new UnsupportedError("Unsupported platform");
+      throw UnsupportedError("Unsupported platform");
     }
   }
 }
