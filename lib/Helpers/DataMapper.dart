@@ -43,17 +43,7 @@ class DataMapper {
 //  MarkerIcon markerOption = new MarkerIcon();      ///for custom marker icon
     List<Marker> returnedMarkers = <Marker>[];
     for (var marker in list) {
-      returnedMarkers.add(Marker(
-        markerId: MarkerId(marker['id'].toString()),
-        position: LatLng(double.parse(marker['latitude'].toString()),
-            double.parse(marker['longitude'].toString())),
-//      icon: markerOption.getIcon(),
-        icon: getMarkerColor(marker['priority'].toString()),
-        infoWindow: InfoWindow(
-            title: marker['type'].toString(),
-            snippet: marker['description'].toString() +
-                ' \nQuantity = ${double.parse(marker['quantity'].toString()).toInt()} bags'),
-      ));
+      returnedMarkers.add(getMarkerFromJson(marker));
     }
     return returnedMarkers;
   }
