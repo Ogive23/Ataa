@@ -2,6 +2,7 @@
 
 import 'dart:io';
 import 'package:ataa/GeneralInfo.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:ataa/Helpers/DataMapper.dart';
 import 'package:ataa/Helpers/ResponseHandler.dart';
@@ -41,6 +42,65 @@ class UserApiCaller {
       return {
         "Err_Flag": responseToJson['Err_Flag'],
         "User": dataMapper.getUserFromJson(responseToJson['data']),
+        "AccessToken": responseToJson['data']['token'],
+        "ExpiryDate": responseToJson['data']['expiryDate'],
+      };
+    } on TimeoutException {
+      return responseHandler.timeOutPrinter("En");
+    } on SocketException {
+      return responseHandler.errorPrinter("En", "InternetError");
+    } catch (e) {
+      print('e = $e');
+      return responseHandler.errorPrinter("En", 'SomethingWentWrong');
+    }
+  }
+
+  Future<String?> _getId() async {
+    var deviceInfo = DeviceInfoPlugin();
+    if (Platform.isIOS) {
+      // import 'dart:io'
+      var iosDeviceInfo = await deviceInfo.iosInfo;
+      return iosDeviceInfo.identifierForVendor; // unique ID on iOS
+    } else if (Platform.isAndroid) {
+      var androidDeviceInfo = await deviceInfo.androidInfo;
+      return androidDeviceInfo.id; // unique ID on Android
+    }
+    return null;
+  }
+
+  Future<Map<String, dynamic>> createAnonymousUser() async {
+    var headers = {
+      "Content-Type": "application/json",
+    };
+
+    String? deviceId = await _getId();
+
+    if (deviceId == null) {
+      return responseHandler.errorPrinter("En", "Couldn't load device info");
+    }
+
+    var body = {
+      "deviceId": deviceId,
+      "accessType": "Mobile",
+      "appType": "Ataa"
+    };
+    try {
+      print(body);
+      print(BASE_URL + "/api/anonymous-login");
+      var response = await http
+          .post(Uri.parse(BASE_URL + "/api/anonymous-login"),
+          headers: headers, body: jsonEncode(body))
+          .catchError((error) {
+        print(error);
+        throw error;
+      }).timeout(const Duration(seconds: 120));
+      print(response.body);
+      var responseToJson = jsonDecode(response.body);
+      print(responseToJson);
+      if (responseToJson['Err_Flag']) return responseToJson;
+      return {
+        "Err_Flag": responseToJson['Err_Flag'],
+        "AnonymousUser": dataMapper.getAnonymousUserFromJson(responseToJson['data']),
         "AccessToken": responseToJson['data']['token'],
         "ExpiryDate": responseToJson['data']['expiryDate'],
       };

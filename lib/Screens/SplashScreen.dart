@@ -56,9 +56,8 @@ class _SplashScreen extends State<SplashScreen>
     if (!sessionManager.notFirstTime()) return 'WelcomeScreen';
     if (sessionManager.isLoggedIn()) {
       sessionManager.loadSession();
-      return 'MainScreen';
     }
-    return 'LoginScreen';
+    return 'MainScreen';
   }
 
   @override

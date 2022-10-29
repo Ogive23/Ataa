@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:ataa/GeneralInfo.dart';
+import 'package:ataa/Models/AnonymousUser.dart';
 import 'package:ataa/Models/Prize.dart';
 import 'package:ataa/Models/User.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -66,6 +67,10 @@ class DataMapper {
             : 'N/A',
         helper.getAppropriateText(info['profile']['bio'].toString()),
         info['user']['nationality']);
+  }
+
+  AnonymousUser getAnonymousUserFromJson(Map<String, dynamic> info) {
+    return AnonymousUser(helper.getAppropriateText(info['user']['id']));
   }
 
   List<Prize> getPrizesFromJson(List<dynamic> list) {

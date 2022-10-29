@@ -2,6 +2,7 @@
 
 import 'package:ataa/Screens/AchievementScreen.dart';
 import 'package:ataa/Screens/ProfileScreen.dart';
+import 'package:ataa/Screens/RegistrationScreens/LoginScreen.dart';
 
 import 'Screens/AtaaMainPage.dart';
 import 'Screens/TopThree/HomeScreen.dart';
@@ -10,7 +11,7 @@ import 'Screens/MarkerCreationPage.dart';
 import 'Screens/SettingsScreen.dart';
 import 'Screens/StayInTouchPage.dart';
 
-const String BASE_URL = "http://192.168.1.155:8000";
+const String BASE_URL = "http://192.168.1.3:8000";
 
 enum Pages {
   StayInTouchPage,
@@ -21,7 +22,8 @@ enum Pages {
   MarkerCreationPage,
   ProfileScreen,
   StayInTouchScreen,
-  AchievementScreen
+  AchievementScreen,
+  LoginScreen
 }
 
 final pageOptions = [
@@ -33,5 +35,6 @@ final pageOptions = [
   const MarkerCreationPage(),
   const ProfileScreen(),
   StayInTouchPage(),
-  const AchievementScreen()
+  const AchievementScreen(),
+  const LoginScreen()
 ];

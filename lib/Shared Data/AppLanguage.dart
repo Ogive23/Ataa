@@ -23,6 +23,15 @@ class AppLanguage extends ChangeNotifier {
   Map<String, String> initWords(String language) {
     return language == 'En'
         ? {
+            'loginPageTitle': 'Ascend By Giving',
+            'loginPageDialogTitle': 'Sign in to your account',
+            'loginPageEmailField': 'Email',
+            'loginPagePasswordField': 'Password',
+            'loginPageLoginButton': 'Login',
+            'loginPageForgetPasswordButton': 'Forgot Password?',
+            'loginPageAnonymousButton': 'Continue as Anonymous',
+            'loginPageSignUpFirst': 'Don\'t have account?',
+            'loginPageSignUpSecond': 'Join Us Now!',
             'bottomNavigationItemFirst': 'Stay in touch',
             'bottomNavigationItemSecond': 'Home',
             'bottomNavigationItemThird': 'Settings',
@@ -46,16 +55,15 @@ class AppLanguage extends ChangeNotifier {
             'AtaaIntroAchievementCenter': 'Achievement Center\nComing Soon!',
             'AtaaIntroFirstButton': 'Share your food',
             'AtaaIntroSecondButton': 'Volunteer',
-            'AtaaIntroWord':
-                'Thank you for making the world a better place 😀',
+            'AtaaIntroWord': 'Thank you for making the world a better place 😀',
             'AchievementCenterOne': 'Hey, you have',
             'AchievementCenterTwo': 'Markers published',
             'AchievementCenterThree': '&',
             'AchievementCenterFour': 'Markers collected',
-      'AchievementCenterFive': 'Your Current Level is ',
-      'AchievementCenterSix': 'Latest acquired badge was ',
-      'AchievementCenterSeven': 'There is no badges acquired',
-      'AchievementCenterEight': 'Head to Your Achievement Center',
+            'AchievementCenterFive': 'Your Current Level is ',
+            'AchievementCenterSix': 'Latest acquired badge was ',
+            'AchievementCenterSeven': 'There is no badges acquired',
+            'AchievementCenterEight': 'Head to Your Achievement Center',
             'MarkerCreationTitle': 'Food Sharing',
             'MarkerCreationSubtitle':
                 'Remember That\n\nYou Don\'t Only Share It With The Poor\nSo Share the best you have.',
@@ -128,6 +136,15 @@ class AppLanguage extends ChangeNotifier {
             'QuitActionButtonTwo': 'No',
           }
         : {
+            'loginPageTitle': 'أرتقِ عبر العطاء',
+            'loginPageDialogTitle': 'تسجيل الدخول',
+            'loginPageEmailField': 'البريد الإلكتروني',
+            'loginPagePasswordField': 'كلمة المرور',
+            'loginPageLoginButton': 'تسجيل الدخول',
+            'loginPageForgetPasswordButton': 'نسيت كلمة المرور؟',
+            'loginPageAnonymousButton': 'الدخول بدون تسجيل',
+            'loginPageSignUpFirst': 'لا تملك حساب؟',
+            'loginPageSignUpSecond': 'أنضم إلينا الآن!',
             'bottomNavigationItemFirst': 'أبقي علي تواصل',
             'bottomNavigationItemSecond': 'الرئيسية',
             'bottomNavigationItemThird': 'إعدادات',
@@ -156,10 +173,10 @@ class AppLanguage extends ChangeNotifier {
             'AchievementCenterTwo': 'طعام مشارك',
             'AchievementCenterThree': '&',
             'AchievementCenterFour': 'طعام تم توصيله',
-      'AchievementCenterFive': 'مستواك الحالي هو ',
-      'AchievementCenterSix': 'آخر شارة تم تجميعها هي ',
-      'AchievementCenterSeven': 'لم تحصل علي أي من الشارات',
-      'AchievementCenterEight': 'الذهاب إلي نظام الإنجازات الخاص بك',
+            'AchievementCenterFive': 'مستواك الحالي هو ',
+            'AchievementCenterSix': 'آخر شارة تم تجميعها هي ',
+            'AchievementCenterSeven': 'لم تحصل علي أي من الشارات',
+            'AchievementCenterEight': 'الذهاب إلي نظام الإنجازات الخاص بك',
             'MarkerCreationTitle': 'مشاركة الطعام',
             'MarkerCreationSubtitle':
                 'تذكر ذلك\n\nأنت لا تشارك طعامك مع الفقراء فقط\n.فشارك أفضل ما تملك',
@@ -215,8 +232,7 @@ class AppLanguage extends ChangeNotifier {
             'AtaaMainFinishingDialogTwo': 'يبدو أنك علي بعد',
             'AtaaMainFinishingDialogThree': 'متر من الحصول عليها',
             'AtaaMainFinishingDialogFour': 'نعم حصلت عليها',
-            'AtaaMainFinishingDialogFive':
-                'شكراً لجعلك من العالم مكاناً أفضل',
+            'AtaaMainFinishingDialogFive': 'شكراً لجعلك من العالم مكاناً أفضل',
             'AtaaMainFinishingDialogSix': 'ليست موجودة',
             'AtaaMainFinishingDialogSeven':
                 'نأسف لتضييع وقتك، لكن أعتبر أنها ذهبت لمكانها الصحيح، شكراً لك',
@@ -237,6 +253,6 @@ class AppLanguage extends ChangeNotifier {
   }
 
   Alignment initAlignment(String language) {
-    return language == 'En' ? Alignment.topRight : Alignment.topLeft;
+    return language == 'En' ? Alignment.topLeft : Alignment.topRight;
   }
 }

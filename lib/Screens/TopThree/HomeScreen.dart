@@ -121,109 +121,168 @@ class HomeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Stack(
-                    children: [
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: GestureDetector(
-                          onTap: () =>
-                              commonData.changeStep(Pages.ProfileScreen.index),
-                          child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: w / 50, vertical: h / 100),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  // color: appTheme.themeData.accentColor,
-                                  border:
-                                      Border.all(color: Colors.white, width: 3),
-                                  shape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 2,
-                                      blurRadius: 5,
-                                      offset: const Offset(
-                                          0, 1), // changes position of shadow
+                  if (sessionManager.user != null)
+                    Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: GestureDetector(
+                            onTap: () => commonData
+                                .changeStep(Pages.ProfileScreen.index),
+                            child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: w / 50, vertical: h / 100),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    // color: appTheme.themeData.accentColor,
+                                    border: Border.all(
+                                        color: Colors.white, width: 3),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 2,
+                                        blurRadius: 5,
+                                        offset: const Offset(
+                                            0, 1), // changes position of shadow
+                                      ),
+                                    ],
+                                  ),
+                                  child: PopupMenuButton(
+                                    color: appTheme
+                                        .themeData.colorScheme.secondary,
+                                    child: CircleAvatar(
+                                      radius: h / 50,
+                                      backgroundColor: appTheme
+                                          .themeData.colorScheme.secondary,
+                                      foregroundColor: appTheme
+                                          .themeData.colorScheme.secondary,
+                                      child: ClipOval(
+                                        child: sessionManager
+                                                    .user!.profileImage !=
+                                                'N/A'
+                                            ? CachedNetworkImage(
+                                                imageUrl: sessionManager
+                                                    .user!.profileImage!,
+                                                placeholder: (context, url) =>
+                                                    const CircularProgressIndicator(),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        const Icon(Icons.error),
+                                                fit: BoxFit.contain,
+                                                width: w / 5,
+                                                height: h / 20,
+                                              )
+                                            : Image.asset(
+                                                'assets/images/user.png',
+                                                fit: BoxFit.cover,
+                                                width: w / 5,
+                                                height: h / 20,
+                                              ),
+                                      ),
                                     ),
-                                  ],
-                                ),
-                                child: PopupMenuButton(
-                                  color:
-                                      appTheme.themeData.colorScheme.secondary,
-                                  child: CircleAvatar(
-                                    radius: h / 50,
-                                    backgroundColor: appTheme
-                                        .themeData.colorScheme.secondary,
-                                    foregroundColor: appTheme
-                                        .themeData.colorScheme.secondary,
-                                    child: ClipOval(
-                                      child: sessionManager
-                                                  .user!.profileImage !=
-                                              'N/A'
-                                          ? CachedNetworkImage(
-                                              imageUrl: sessionManager
-                                                  .user!.profileImage!,
-                                              placeholder: (context, url) =>
-                                                  const CircularProgressIndicator(),
-                                              errorWidget:
-                                                  (context, url, error) =>
-                                                      const Icon(Icons.error),
-                                              fit: BoxFit.contain,
-                                              width: w / 5,
-                                              height: h / 20,
-                                            )
-                                          : Image.asset(
-                                              'assets/images/user.png',
-                                              fit: BoxFit.cover,
-                                              width: w / 5,
-                                              height: h / 20,
-                                            ),
+                                    onSelected: (value) {
+                                      if (value == 'Profile') {
+                                        commonData.changeStep(
+                                            Pages.ProfileScreen.index);
+                                      } else if (value == 'Logout') {
+                                        sessionManager.logout();
+                                        Navigator.popUntil(
+                                            context, (route) => false);
+                                        Navigator.pushNamed(
+                                            context, "LoginScreen");
+                                        memoryCache.clear();
+                                      }
+                                    },
+                                    itemBuilder: (context) {
+                                      return [
+                                        PopupMenuItem(
+                                          child: Text(
+                                            'الملف الشخصي',
+                                            style: appTheme.themeData
+                                                .primaryTextTheme.headline4,
+                                          ),
+                                          value: 'Profile',
+                                        ),
+                                        PopupMenuItem(
+                                          child: Text(
+                                            'تسجيل الخروج',
+                                            style: appTheme.themeData
+                                                .primaryTextTheme.headline4,
+                                          ),
+                                          value: 'Logout',
+                                        ),
+                                      ];
+                                    },
+                                  ),
+                                )),
+                          ),
+                        ),
+                        Center(
+                            child: Image.asset(
+                          'assets/images/Ataa.png',
+                          height: h / 15,
+                        ))
+                      ],
+                    )
+                  else
+                    Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: GestureDetector(
+                            onTap: () => commonData
+                                .changeStep(Pages.LoginScreen.index),
+                            child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: w / 50, vertical: h / 100),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    // color: appTheme.themeData.accentColor,
+                                    border: Border.all(
+                                        color: Colors.white, width: 3),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 2,
+                                        blurRadius: 5,
+                                        offset: const Offset(
+                                            0, 1), // changes position of shadow
+                                      ),
+                                    ],
+                                  ),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      commonData.changeStep(
+                                          Pages.LoginScreen.index);
+                                    },
+                                    child: CircleAvatar(
+                                      radius: h / 50,
+                                      backgroundColor: appTheme
+                                          .themeData.colorScheme.secondary,
+                                      foregroundColor: appTheme
+                                          .themeData.colorScheme.secondary,
+                                      child: ClipOval(
+                                        child: Image.asset(
+                                          'assets/images/user.png',
+                                          fit: BoxFit.cover,
+                                          width: w / 5,
+                                          height: h / 20,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                  onSelected: (value) {
-                                    if (value == 'Profile') {
-                                      commonData.changeStep(
-                                          Pages.ProfileScreen.index);
-                                    } else if (value == 'Logout') {
-                                      sessionManager.logout();
-                                      Navigator.popUntil(
-                                          context, (route) => false);
-                                      Navigator.pushNamed(
-                                          context, "LoginScreen");
-                                      memoryCache.clear();
-                                    }
-                                  },
-                                  itemBuilder: (context) {
-                                    return [
-                                      PopupMenuItem(
-                                        child: Text(
-                                          'الملف الشخصي',
-                                          style: appTheme.themeData
-                                              .primaryTextTheme.headline4,
-                                        ),
-                                        value: 'Profile',
-                                      ),
-                                      PopupMenuItem(
-                                        child: Text(
-                                          'تسجيل الخروج',
-                                          style: appTheme.themeData
-                                              .primaryTextTheme.headline4,
-                                        ),
-                                        value: 'Logout',
-                                      ),
-                                    ];
-                                  },
-                                ),
-                              )),
+                                )),
+                          ),
                         ),
-                      ),
-                      Center(
-                          child: Image.asset(
-                        'assets/images/Ataa.png',
-                        height: h / 15,
-                      ))
-                    ],
-                  ),
+                        Center(
+                            child: Image.asset(
+                          'assets/images/Ataa.png',
+                          height: h / 15,
+                        ))
+                      ],
+                    ),
                   Column(
                     children: [
                       const CustomSpacing(value: 50),

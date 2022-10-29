@@ -2,9 +2,13 @@
 
 import 'package:ataa/APICallers/UserApiCaller.dart';
 import 'package:ataa/CustomWidgets/CustomButtonLoading.dart';
+import 'package:ataa/GeneralInfo.dart';
 import 'package:ataa/Session/SessionManager.dart';
+import 'package:ataa/Shared%20Data/AppLanguage.dart';
 import 'package:ataa/Shared%20Data/AppTheme.dart';
+import 'package:ataa/Shared%20Data/CommonData.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -19,23 +23,26 @@ class _LoginScreenState extends State<LoginScreen> {
       TextEditingController();
   static late double w, h;
   static late AppTheme appTheme;
+  static late AppLanguage appLanguage;
+  final SessionManager sessionManager = SessionManager();
   String error = '';
-  bool isLoading = false;
+  bool loginButtonIsLoading = false;
+  bool loginAsAnonymousButtonIsLoading = false;
   String get email => emailController.text;
   String get password => passwordController.text;
 
-  Future<dynamic> onSubmit(context) async {
-    changeLoadingState();
+  Future<dynamic> login(context) async {
+    changeLoadingState(loginButtonIsLoading);
     UserApiCaller userApiCaller = UserApiCaller();
     Map<String, dynamic> status = await userApiCaller.login(email, password);
-    changeLoadingState();
+    changeLoadingState(loginButtonIsLoading);
+    print(status);
     if (status['Err_Flag']) {
       setState(() {
         error = status['Err_Desc'];
       });
       return;
     }
-    SessionManager sessionManager = SessionManager();
     print(status['Values']);
     //ToDo: Access Token Duration
     sessionManager.createSession(status['User'], status['AccessToken'],
@@ -45,9 +52,26 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.pushNamed(context, 'MainScreen');
   }
 
-  changeLoadingState() {
+  Future<dynamic> createAnonymousUser(context) async {
+    changeLoadingState(loginAsAnonymousButtonIsLoading);
+    UserApiCaller userApiCaller = UserApiCaller();
+    Map<String, dynamic> status = await userApiCaller.createAnonymousUser();
+    changeLoadingState(loginAsAnonymousButtonIsLoading);
+    if (status['Err_Flag']) {
+      setState(() {
+        error = status['Err_Desc'];
+      });
+      return;
+    }
+    //ToDo: Access Token Duration
+    sessionManager.createAnonymousSession(status['AnonymousUser'], status['AccessToken'],
+        DateTime.parse(status['ExpiryDate']));
+    Navigator.popUntil(context, (route) => false);
+    Navigator.pushNamed(context, 'MainScreen');
+  }
+  changeLoadingState(buttonLoading) {
     setState(() {
-      isLoading = !isLoading;
+      buttonLoading = !buttonLoading;
     });
   }
 
@@ -55,7 +79,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     w = MediaQuery.of(context).size.width;
     h = MediaQuery.of(context).size.height;
-    appTheme = AppTheme(false, context);
+    appTheme = Provider.of<AppTheme>(context);
+    appLanguage = Provider.of<AppLanguage>(context);
     return GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
@@ -90,16 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     )),
                 Text(
-                  'أرتقِ عبر العطاء',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: appTheme.mediumTextSize(context),
-                    fontWeight: FontWeight.w400,
-                    letterSpacing: 2.0,
-                  ),
-                ),
-                Text(
-                  'Ascend By Giving',
+                  appLanguage.words['loginPageTitle']!,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: appTheme.mediumTextSize(context),
@@ -124,11 +140,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(left: w / 25),
+                        padding: EdgeInsets.symmetric(horizontal: w / 25),
                         child: Align(
-                            alignment: Alignment.topLeft,
+                            alignment: appLanguage.alignment,
                             child: Text(
-                              'Sign In to your account',
+                              appLanguage.words['loginPageDialogTitle']!,
                               style: appTheme.nonStaticGetTextStyle(
                                   2.0,
                                   Colors.white,
@@ -171,7 +187,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   Icons.person,
                                   color: Colors.white,
                                 ),
-                                labelText: 'Email',
+                                labelText:
+                                    appLanguage.words['loginPageEmailField']!,
                                 labelStyle:
                                     const TextStyle(color: Colors.white)),
                           )),
@@ -206,7 +223,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   Icons.lock,
                                   color: Colors.white,
                                 ),
-                                labelText: 'Password',
+                                labelText: appLanguage
+                                    .words['loginPagePasswordField']!,
                                 labelStyle:
                                     const TextStyle(color: Colors.white)),
                           )),
@@ -233,12 +251,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            if (isLoading)
+                            if (loginButtonIsLoading)
                               const CustomButtonLoading()
                             else
                               ElevatedButton(
                                 child: Text(
-                                  'Login',
+                                  appLanguage.words['loginPageLoginButton']!,
                                   style: appTheme.nonStaticGetTextStyle(
                                       1.0,
                                       Colors.white,
@@ -262,13 +280,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(10)))),
                                 onPressed: () {
-                                  onSubmit(context);
+                                  login(context);
                                 },
                               ),
                             Padding(
-                              padding: const EdgeInsets.only(left: 25),
+                              padding: EdgeInsets.symmetric(horizontal: w / 25),
                               child: Text(
-                                'Forgot password?',
+                                appLanguage
+                                    .words['loginPageForgetPasswordButton']!,
                                 style: appTheme.nonStaticGetTextStyle(
                                     1.0,
                                     Colors.red,
@@ -280,6 +299,42 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             )
                           ]),
+                      if (loginAsAnonymousButtonIsLoading)
+                        const CustomButtonLoading()
+                      else
+                      ElevatedButton(
+                        child: Text(
+                          appLanguage.words['loginPageAnonymousButton']!,
+                          style: appTheme.nonStaticGetTextStyle(
+                              1.0,
+                              const Color.fromRGBO(255, 255, 255, 1.0),
+                              appTheme.mediumTextSize(context),
+                              FontWeight.normal,
+                              1.0,
+                              TextDecoration.none,
+                              'OpenSans'),
+                          textAlign: TextAlign.center,
+                        ),
+                        style: ButtonStyle(
+                            elevation: MaterialStateProperty.all<double>(0),
+                            minimumSize: MaterialStateProperty.all<Size>(
+                                Size(w / 4, h / 20)),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                const Color.fromRGBO(234, 249, 255, 0.1)),
+                            shape: MaterialStateProperty.all<OutlinedBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)))),
+                        onPressed: () async {
+                          if(sessionManager.hasAnonymousUser())
+                            {
+                              Navigator.popUntil(context, (route) => false);
+                              Navigator.pushNamed(context, 'MainScreen');
+                              return;
+                            }
+
+                          await createAnonymousUser(context);
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -293,7 +348,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                'Don\'t have Account? ',
+                                appLanguage
+                                    .words['loginPageSignUpFirst']!,
                                 style: appTheme.nonStaticGetTextStyle(
                                     1.0,
                                     Colors.white,
@@ -308,10 +364,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   Navigator.pushNamed(context, "SignUp");
                                 },
                                 child: Text(
-                                  'Join Us Now!',
+                                  appLanguage
+                                      .words['loginPageSignUpSecond']!,
                                   style: appTheme.nonStaticGetTextStyle(
                                       1.0,
-                                      Colors.green,
+                                      Colors.green[700],
                                       appTheme.mediumTextSize(context),
                                       FontWeight.w600,
                                       1.0,

@@ -1,11 +1,13 @@
 // ignore_for_file: file_names
 
+import 'package:ataa/Models/AnonymousUser.dart';
 import 'package:ataa/Models/User.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SessionManager {
   late SharedPreferences? sharedPreferences;
-  late User? user;
+  AnonymousUser? anonymousUser;
+  User? user;
   late String? accessToken;
   late DateTime? expiryDate;
   SessionManager._privateConstructor();
@@ -25,6 +27,16 @@ class SessionManager {
     this.expiryDate = expiryDate;
     print(user.toList());
     sharedPreferences!.setStringList('user', user.toList());
+    sharedPreferences!.setString('accessToken', accessToken.toString());
+    sharedPreferences!.setString('expiryDate', expiryDate.toString());
+  }
+
+  createAnonymousSession(AnonymousUser anonymousUser, String accessToken, DateTime expiryDate) {
+    this.anonymousUser = anonymousUser;
+    this.accessToken = accessToken;
+    this.expiryDate = expiryDate;
+    print(anonymousUser.toList());
+    sharedPreferences!.setStringList('anonymousUser', anonymousUser.toList());
     sharedPreferences!.setString('accessToken', accessToken.toString());
     sharedPreferences!.setString('expiryDate', expiryDate.toString());
   }
@@ -89,6 +101,19 @@ class SessionManager {
 
   String? loadPreferredLanguage() {
     return sharedPreferences!.getString('lang');
+  }
+
+  bool hasAnonymousUser() {
+    return sharedPreferences!.containsKey('anonymousUser');
+  }
+
+  loadAnonymousUser() {
+    expiryDate = DateTime.parse(sharedPreferences!.getString('expiryDate')!);
+    accessToken = sharedPreferences!.getString('accessToken')!;
+    List<String> anonymousUserData = sharedPreferences!.getStringList('anonymousUser')!;
+    anonymousUser = AnonymousUser(
+        anonymousUserData[0]
+    );
   }
 
   logout() {
