@@ -1,6 +1,9 @@
 // ignore_for_file: file_names
 
-class AnonymousUser {
+import 'package:ataa/Models/BaseUser.dart';
+
+class AnonymousUser implements BaseUser {
+  @override
   String id;
 
   AnonymousUser(this.id);

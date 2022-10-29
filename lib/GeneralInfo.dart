@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, constant_identifier_names
 
 import 'package:ataa/Screens/AchievementScreen.dart';
+import 'package:ataa/Screens/AnonymousProfileScreen.dart';
 import 'package:ataa/Screens/ProfileScreen.dart';
 import 'package:ataa/Screens/RegistrationScreens/LoginScreen.dart';
 
@@ -23,7 +24,8 @@ enum Pages {
   ProfileScreen,
   StayInTouchScreen,
   AchievementScreen,
-  LoginScreen
+  LoginScreen,
+  AnonymousProfileScreen
 }
 
 final pageOptions = [
@@ -36,5 +38,6 @@ final pageOptions = [
   const ProfileScreen(),
   StayInTouchPage(),
   const AchievementScreen(),
-  const LoginScreen()
+  const LoginScreen(),
+  const AnonymousProfileScreen()
 ];

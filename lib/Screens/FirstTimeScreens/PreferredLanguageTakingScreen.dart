@@ -15,7 +15,7 @@ class PreferredLanguageTakingScreen extends StatelessWidget {
   void finishedChoosing(context, String lang) {
     sessionManager.createPreferredLanguage(lang);
     sessionManager.changeStatus();
-    Navigator.popAndPushNamed(context, 'MainScreen');
+    Navigator.popAndPushNamed(context, 'LoginScreen');
   }
 
   @override

@@ -79,8 +79,8 @@ class SessionManager {
     sharedPreferences!.setString('expiryDate', expiryDate.toString());
   }
 
-  bool notFirstTime() {
-    return sharedPreferences!.containsKey('notFirstTime'); //true if there
+  bool firstTime() {
+    return ! (sharedPreferences!.containsKey('notFirstTime')); //true if there
   }
 
   changeStatus() {
@@ -118,10 +118,13 @@ class SessionManager {
 
   logout() {
     user = null;
+
+    anonymousUser = null;
     accessToken = null;
     expiryDate = null;
     sharedPreferences!.remove('expiryDate');
     sharedPreferences!.remove('accessToken');
     sharedPreferences!.remove('user');
+    sharedPreferences!.remove('anonymousUser');
   }
 }

@@ -1,6 +1,9 @@
 // ignore_for_file: file_names
 
-class User {
+import 'package:ataa/Models/BaseUser.dart';
+
+class User implements BaseUser{
+  @override
   String id;
   String name;
   String username;

@@ -232,7 +232,7 @@ class HomeScreen extends StatelessWidget {
                           alignment: Alignment.topLeft,
                           child: GestureDetector(
                             onTap: () => commonData
-                                .changeStep(Pages.LoginScreen.index),
+                                .changeStep(Pages.AnonymousProfileScreen.index),
                             child: Padding(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: w / 50, vertical: h / 100),
@@ -252,11 +252,9 @@ class HomeScreen extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      commonData.changeStep(
-                                          Pages.LoginScreen.index);
-                                    },
+                                  child: PopupMenuButton(
+                                    color: appTheme
+                                        .themeData.colorScheme.secondary,
                                     child: CircleAvatar(
                                       radius: h / 50,
                                       backgroundColor: appTheme
@@ -265,13 +263,46 @@ class HomeScreen extends StatelessWidget {
                                           .themeData.colorScheme.secondary,
                                       child: ClipOval(
                                         child: Image.asset(
-                                          'assets/images/user.png',
-                                          fit: BoxFit.cover,
-                                          width: w / 5,
-                                          height: h / 20,
-                                        ),
+                                                'assets/images/user.png',
+                                                fit: BoxFit.cover,
+                                                width: w / 5,
+                                                height: h / 20,
+                                              ),
                                       ),
                                     ),
+                                    onSelected: (value) {
+                                      if (value == 'Profile') {
+                                        commonData.changeStep(
+                                            Pages.ProfileScreen.index);
+                                      } else if (value == 'Logout') {
+                                        sessionManager.logout();
+                                        Navigator.popUntil(
+                                            context, (route) => false);
+                                        Navigator.pushNamed(
+                                            context, "LoginScreen");
+                                        memoryCache.clear();
+                                      }
+                                    },
+                                    itemBuilder: (context) {
+                                      return [
+                                        PopupMenuItem(
+                                          child: Text(
+                                            'الملف الشخصي',
+                                            style: appTheme.themeData
+                                                .primaryTextTheme.headline4,
+                                          ),
+                                          value: 'Profile',
+                                        ),
+                                        PopupMenuItem(
+                                          child: Text(
+                                            'تسجيل الخروج',
+                                            style: appTheme.themeData
+                                                .primaryTextTheme.headline4,
+                                          ),
+                                          value: 'Logout',
+                                        ),
+                                      ];
+                                    },
                                   ),
                                 )),
                           ),

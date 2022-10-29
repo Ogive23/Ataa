@@ -144,7 +144,7 @@ class AppLanguage extends ChangeNotifier {
             'loginPageForgetPasswordButton': 'نسيت كلمة المرور؟',
             'loginPageAnonymousButton': 'الدخول بدون تسجيل',
             'loginPageSignUpFirst': 'لا تملك حساب؟',
-            'loginPageSignUpSecond': 'أنضم إلينا الآن!',
+            'loginPageSignUpSecond': '!أنضم إلينا الآن',
             'bottomNavigationItemFirst': 'أبقي علي تواصل',
             'bottomNavigationItemSecond': 'الرئيسية',
             'bottomNavigationItemThird': 'إعدادات',
