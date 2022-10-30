@@ -18,9 +18,10 @@ class UserApiCaller {
   DataMapper dataMapper = DataMapper();
   TokenApiCaller tokenApiCaller = TokenApiCaller();
 
-  Future<Map<String, dynamic>> login(String email, String password) async {
+  Future<Map<String, dynamic>> login(String language, String email, String password) async {
     var headers = {
       "Content-Type": "application/json",
+      'Content-Language': language,
     };
     var body = {
       "email": email,
@@ -68,8 +69,9 @@ class UserApiCaller {
     return null;
   }
 
-  Future<Map<String, dynamic>> createAnonymousUser() async {
+  Future<Map<String, dynamic>> createAnonymousUser(String language, String? nationality) async {
     var headers = {
+      'Content-Language': language,
       "Content-Type": "application/json",
     };
 
@@ -82,8 +84,10 @@ class UserApiCaller {
     var body = {
       "deviceId": deviceId,
       "accessType": "Mobile",
-      "appType": "Ataa"
+      "appType": "Ataa",
+      "nationality": nationality
     };
+
     try {
       print(body);
       print(BASE_URL + "/api/anonymous-login");
@@ -94,9 +98,7 @@ class UserApiCaller {
         print(error);
         throw error;
       }).timeout(const Duration(seconds: 120));
-      print(response.body);
       var responseToJson = jsonDecode(response.body);
-      print(responseToJson);
       if (responseToJson['Err_Flag']) return responseToJson;
       return {
         "Err_Flag": responseToJson['Err_Flag'],
@@ -123,6 +125,7 @@ class UserApiCaller {
     }
     var headers = {
       "Content-Type": "application/json",
+      'Content-Language': language,
       'Authorization': 'Bearer ${sessionManager.accessToken}',
     };
     FormData formData = FormData.fromMap({
@@ -176,6 +179,7 @@ class UserApiCaller {
     }
     var headers = {
       "Content-Type": "application/json",
+      'Content-Language': language,
       'Authorization': 'Bearer ${sessionManager.accessToken}',
     };
     FormData formData = FormData.fromMap({
@@ -229,6 +233,7 @@ class UserApiCaller {
     }
     var headers = {
       "Content-Type": "application/json",
+      'Content-Language': language,
       'Authorization': 'Bearer ${sessionManager.accessToken}',
     };
     var body = {

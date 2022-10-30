@@ -22,24 +22,22 @@ class AchievementApiCaller {
       status = await tokenApiCaller.refreshAccessToken(language);
       if (status['Err_Flag']) return status;
     }
-    print(sessionManager.accessToken);
     var headers = {
       "Content-Type": "application/json",
+      'Content-Language': language,
       'Authorization': 'Bearer ${sessionManager.accessToken}',
     };
     try {
-      print(BASE_URL + "/api/ataa/achievement/${sessionManager.user!.id}");
+      print(BASE_URL + "/api/ataa/achievement");
       var response = await http
           .get(
               Uri.parse(BASE_URL +
-                  "/api/ataa/achievement/${sessionManager.user!.id}?requesterId=${sessionManager.user!.id}"),
+                  "/api/ataa/achievement"),
               headers: headers)
           .catchError((error) {
-        print(error);
         throw error;
       }).timeout(const Duration(seconds: 120));
       Map<String, dynamic> responseToJson = jsonDecode(response.body);
-      print(responseToJson);
       return responseToJson;
     } on TimeoutException {
       return responseHandler.timeOutPrinter(language);
@@ -53,21 +51,21 @@ class AchievementApiCaller {
 
   Future<Map<String, dynamic>> getAtaaPrizes(String language) async {
     Map<String, dynamic> status;
-    print(sessionManager.accessToken);
     if (sessionManager.accessTokenExpired()) {
       status = await tokenApiCaller.refreshAccessToken(language);
       if (status['Err_Flag']) return status;
     }
     var headers = {
       "Content-Type": "application/json",
+      'Content-Language': language,
       'Authorization': 'Bearer ${sessionManager.accessToken}',
     };
     try {
-      print(BASE_URL + "/api/ataa/prizes/${sessionManager.user!.id}");
+      print(BASE_URL + "/api/ataa/prizes");
       var response = await http
           .get(
               Uri.parse(BASE_URL +
-                  "/api/ataa/prizes?userId=${sessionManager.user!.id}"),
+                  "/api/ataa/prizes"),
               headers: headers)
           .catchError((error) {
         print(error);
@@ -81,7 +79,6 @@ class AchievementApiCaller {
     } on SocketException {
       return responseHandler.errorPrinter(language, "InternetError");
     } catch (e) {
-      print('e = $e');
       return responseHandler.errorPrinter(language, "SomethingWentWrong");
     }
   }
@@ -94,14 +91,15 @@ class AchievementApiCaller {
     }
     var headers = {
       "Content-Type": "application/json",
+      'Content-Language': language,
       'Authorization': 'Bearer ${sessionManager.accessToken}',
     };
     try {
-      print(BASE_URL + "/api/ataa/badges/${sessionManager.user!.id}");
+      print(BASE_URL + "/api/ataa/badges");
       var response = await http
           .get(
               Uri.parse(BASE_URL +
-                  "/api/ataa/badges?userId=${sessionManager.user!.id}"),
+                  "/api/ataa/badges"),
               headers: headers)
           .catchError((error) {
         print(error);

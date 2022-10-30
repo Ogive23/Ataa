@@ -16,6 +16,7 @@ class TokenApiCaller {
   Future<Map<String, dynamic>> refreshAccessToken(String language) async {
     var headers = {
       "Content-Type": "application/json",
+      'Content-Language': language,
     };
     var body = {'oauthAccessToken': sessionManager.accessToken};
     try {
