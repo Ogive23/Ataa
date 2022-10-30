@@ -21,7 +21,14 @@ class SessionManager {
     sharedPreferences = await SharedPreferences.getInstance();
   }
 
-  createSession(User user, String accessToken, DateTime expiryDate) {
+  String getUserId() {
+    if (user != null) {
+      return user!.id;
+    }
+    return anonymousUser!.id;
+  }
+
+  void createSession(User user, String accessToken, DateTime expiryDate) {
     this.user = user;
     this.accessToken = accessToken;
     this.expiryDate = expiryDate;
@@ -31,7 +38,8 @@ class SessionManager {
     sharedPreferences!.setString('expiryDate', expiryDate.toString());
   }
 
-  createAnonymousSession(AnonymousUser anonymousUser, String accessToken, DateTime expiryDate) {
+  void createAnonymousSession(
+      AnonymousUser anonymousUser, String accessToken, DateTime expiryDate) {
     this.anonymousUser = anonymousUser;
     this.accessToken = accessToken;
     this.expiryDate = expiryDate;
@@ -80,7 +88,7 @@ class SessionManager {
   }
 
   bool firstTime() {
-    return ! (sharedPreferences!.containsKey('notFirstTime')); //true if there
+    return !(sharedPreferences!.containsKey('notFirstTime')); //true if there
   }
 
   changeStatus() {
@@ -110,10 +118,9 @@ class SessionManager {
   loadAnonymousUser() {
     expiryDate = DateTime.parse(sharedPreferences!.getString('expiryDate')!);
     accessToken = sharedPreferences!.getString('accessToken')!;
-    List<String> anonymousUserData = sharedPreferences!.getStringList('anonymousUser')!;
-    anonymousUser = AnonymousUser(
-        anonymousUserData[0]
-    );
+    List<String> anonymousUserData =
+        sharedPreferences!.getStringList('anonymousUser')!;
+    anonymousUser = AnonymousUser(anonymousUserData[0]);
   }
 
   logout() {
