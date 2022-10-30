@@ -1,15 +1,20 @@
 // ignore_for_file: file_names
 
+import 'package:ataa/APICallers/OptionApiCaller.dart';
 import 'package:ataa/APICallers/UserApiCaller.dart';
 import 'package:ataa/CustomWidgets/CustomActionTextRow.dart';
 import 'package:ataa/CustomWidgets/CustomButtonLoading.dart';
-import 'package:ataa/GeneralInfo.dart';
+import 'package:ataa/CustomWidgets/CustomDropdownButton.dart';
+import 'package:ataa/CustomWidgets/CustomSpacing.dart';
+import 'package:ataa/CustomWidgets/ErrorMessage.dart';
+import 'package:ataa/Helpers/DataMapper.dart';
+import 'package:ataa/Models/Nationality.dart';
 import 'package:ataa/Session/SessionManager.dart';
 import 'package:ataa/Shared%20Data/AppLanguage.dart';
 import 'package:ataa/Shared%20Data/AppTheme.dart';
-import 'package:ataa/Shared%20Data/CommonData.dart';
+import 'package:ataa/Shared%20Data/MemoryCache.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -25,19 +30,48 @@ class _LoginScreenState extends State<LoginScreen> {
   static late double w, h;
   static late AppTheme appTheme;
   static late AppLanguage appLanguage;
-  String language = 'En';
   final SessionManager sessionManager = SessionManager();
+  final MemoryCache memoryCache = MemoryCache();
+  final OptionApiCaller optionApiCaller = new OptionApiCaller();
   String error = '';
-  bool loginButtonIsLoading = false;
-  bool loginAsAnonymousButtonIsLoading = false;
+  List<String> availableNationalities = ['Egyptian', 'xDian'];
+  String? nationality;
+  final Map<String, bool> loadingButtons = {
+    "login": false,
+    "loginAsAnonymous": false
+  };
   String get email => emailController.text;
   String get password => passwordController.text;
+  cacheData(List<Nationality> nationalities) {
+    memoryCache.setData('nationalities', nationalities);
+  }
+
+  void saveSession(
+      bool anonymous, dynamic data, String accessToken, DateTime expiryDate) {
+    if (anonymous) {
+      return sessionManager.createAnonymousSession(
+          data, accessToken, expiryDate);
+    }
+    return sessionManager.createSession(data, accessToken, expiryDate);
+  }
+
+  void redirect() {
+    Navigator.popUntil(context, (route) => false);
+    Navigator.pushNamed(context, 'MainScreen');
+  }
+
+  void saveSessionAndRedirect(
+      bool anonymous, dynamic user, String accessToken, DateTime expiryDate) {
+    saveSession(anonymous, user, accessToken, expiryDate);
+    redirect();
+  }
 
   Future<dynamic> login(context) async {
-    changeLoadingState(loginButtonIsLoading);
+    changeLoadingState('login');
     UserApiCaller userApiCaller = UserApiCaller();
-    Map<String, dynamic> status = await userApiCaller.login(email, password);
-    changeLoadingState(loginButtonIsLoading);
+    Map<String, dynamic> status =
+        await userApiCaller.login(appLanguage.language, email, password);
+    changeLoadingState('login');
     print(status);
     if (status['Err_Flag']) {
       setState(() {
@@ -45,36 +79,29 @@ class _LoginScreenState extends State<LoginScreen> {
       });
       return;
     }
-    print(status['Values']);
-    //ToDo: Access Token Duration
-    sessionManager.createSession(status['User'], status['AccessToken'],
+    saveSessionAndRedirect(false, status['User'], status['AccessToken'],
         DateTime.parse(status['ExpiryDate']));
-    print('thing ${sessionManager.sharedPreferences}');
-    Navigator.popUntil(context, (route) => false);
-    Navigator.pushNamed(context, 'MainScreen');
   }
 
   Future<dynamic> createAnonymousUser(context) async {
-    changeLoadingState(loginAsAnonymousButtonIsLoading);
+    changeLoadingState('loginAsAnonymous');
     UserApiCaller userApiCaller = UserApiCaller();
-    Map<String, dynamic> status = await userApiCaller.createAnonymousUser();
-    changeLoadingState(loginAsAnonymousButtonIsLoading);
+    Map<String, dynamic> status =
+        await userApiCaller.createAnonymousUser(appLanguage.language, nationality);
+    changeLoadingState('loginAsAnonymous');
     if (status['Err_Flag']) {
       setState(() {
         error = status['Err_Desc'];
       });
       return;
     }
-    //ToDo: Access Token Duration
-    sessionManager.createAnonymousSession(status['AnonymousUser'],
-        status['AccessToken'], DateTime.parse(status['ExpiryDate']));
-    Navigator.popUntil(context, (route) => false);
-    Navigator.pushNamed(context, 'MainScreen');
+    saveSessionAndRedirect(true, status['AnonymousUser'], status['AccessToken'],
+        DateTime.parse(status['ExpiryDate']));
   }
 
-  changeLoadingState(buttonLoading) {
+  changeLoadingState(button) {
     setState(() {
-      buttonLoading = !buttonLoading;
+      loadingButtons[button] = !loadingButtons[button]!;
     });
   }
 
@@ -83,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
     w = MediaQuery.of(context).size.width;
     h = MediaQuery.of(context).size.height;
     appTheme = AppTheme(true, context);
-    appLanguage = AppLanguage(language);
+    appLanguage = AppLanguage(sessionManager.loadPreferredLanguage()!);
     return GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
@@ -258,7 +285,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                if (loginButtonIsLoading)
+                                if (loadingButtons['login']!)
                                   const CustomButtonLoading()
                                 else
                                   ElevatedButton(
@@ -308,45 +335,40 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 )
                               ]),
-                          if (loginAsAnonymousButtonIsLoading)
-                            const CustomButtonLoading()
-                          else
-                            ElevatedButton(
-                              child: Text(
-                                appLanguage.words['loginPageAnonymousButton']!,
-                                style: appTheme.nonStaticGetTextStyle(
-                                    1.0,
-                                    const Color.fromRGBO(255, 255, 255, 1.0),
-                                    appTheme.mediumTextSize(context),
-                                    FontWeight.normal,
-                                    1.0,
-                                    TextDecoration.none,
-                                    'OpenSans'),
-                                textAlign: TextAlign.center,
-                              ),
-                              style: ButtonStyle(
-                                  elevation:
-                                      MaterialStateProperty.all<double>(0),
-                                  minimumSize: MaterialStateProperty.all<Size>(
-                                      Size(w / 4, h / 20)),
-                                  backgroundColor: MaterialStateProperty.all<
-                                          Color>(
-                                      const Color.fromRGBO(234, 249, 255, 0.1)),
-                                  shape:
-                                      MaterialStateProperty.all<OutlinedBorder>(
-                                          RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10)))),
-                              onPressed: () async {
-                                if (sessionManager.hasAnonymousUser()) {
-                                  Navigator.popUntil(context, (route) => false);
-                                  Navigator.pushNamed(context, 'MainScreen');
-                                  return;
-                                }
-
-                                await createAnonymousUser(context);
-                              },
+                          ElevatedButton(
+                            child: Text(
+                              appLanguage.words['loginPageAnonymousButton']!,
+                              style: appTheme.nonStaticGetTextStyle(
+                                  1.0,
+                                  const Color.fromRGBO(255, 255, 255, 1.0),
+                                  appTheme.mediumTextSize(context),
+                                  FontWeight.normal,
+                                  1.0,
+                                  TextDecoration.none,
+                                  'OpenSans'),
+                              textAlign: TextAlign.center,
                             ),
+                            style: ButtonStyle(
+                                elevation: MaterialStateProperty.all<double>(0),
+                                minimumSize: MaterialStateProperty.all<Size>(
+                                    Size(w / 4, h / 20)),
+                                backgroundColor: MaterialStateProperty.all<
+                                        Color>(
+                                    const Color.fromRGBO(234, 249, 255, 0.1)),
+                                shape:
+                                    MaterialStateProperty.all<OutlinedBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)))),
+                            onPressed: () async {
+                              if (sessionManager.hasAnonymousUser()) {
+                                Navigator.popUntil(context, (route) => false);
+                                Navigator.pushNamed(context, 'MainScreen');
+                                return;
+                              }
+                              showAnonymousLoginDialog();
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -356,22 +378,30 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: <Widget>[
                           Padding(
                               padding: const EdgeInsets.only(bottom: 20),
-                               child: CustomActionTextRow(firstText: appLanguage.words['loginPageSignUpFirst']!, secondText: appLanguage
-                                  .words['loginPageSignUpSecond']!, firstTextStyle: appTheme.nonStaticGetTextStyle(
-                                  1.0,
-                                  Colors.white,
-                                  appTheme.smallTextSize(context),
-                                  FontWeight.normal,
-                                  1.0,
-                                  TextDecoration.none,
-                                  'OpenSans'), secondTextStyle: appTheme.nonStaticGetTextStyle(
-                                  1.0,
-                                  Colors.green[700],
-                                  appTheme.mediumTextSize(context),
-                                  FontWeight.w600,
-                                  1.0,
-                                  TextDecoration.none,
-                                  'OpenSans'), language: appLanguage.language))
+                              child: CustomActionTextRow(
+                                  firstText: appLanguage
+                                      .words['loginPageSignUpFirst']!,
+                                  secondText: appLanguage
+                                      .words['loginPageSignUpSecond']!,
+                                  firstTextStyle:
+                                      appTheme.nonStaticGetTextStyle(
+                                          1.0,
+                                          Colors.white,
+                                          appTheme.smallTextSize(context),
+                                          FontWeight.normal,
+                                          1.0,
+                                          TextDecoration.none,
+                                          'OpenSans'),
+                                  secondTextStyle:
+                                      appTheme.nonStaticGetTextStyle(
+                                          1.0,
+                                          Colors.green[700],
+                                          appTheme.mediumTextSize(context),
+                                          FontWeight.w600,
+                                          1.0,
+                                          TextDecoration.none,
+                                          'OpenSans'),
+                                  language: appLanguage.language))
                         ],
                       ),
                     )
@@ -383,15 +413,17 @@ class _LoginScreenState extends State<LoginScreen> {
               alignment: Alignment.topLeft,
               child: GestureDetector(
                 onTap: () {
+                  String language = appLanguage.language == 'En' ? 'Ar' : 'En';
+                  appLanguage.changeLanguage(language);
                   setState(() {
-                    language = language == 'En' ? 'Ar' : 'En';
+                    sessionManager.createPreferredLanguage(language);
                   });
                 },
                 child: Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: w / 25, vertical: h / 25),
                   child: Text(
-                    language == 'En' ? 'العربية' : 'English',
+                    appLanguage.language == 'En' ? 'العربية' : 'English',
                     style: appTheme.nonStaticGetTextStyle(
                         2.0,
                         Colors.white,
@@ -406,5 +438,161 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ],
         ));
+  }
+
+  void showAnonymousLoginDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext dialogContext) {
+          return Directionality(
+            textDirection: appLanguage.textDirection,
+            child: StatefulBuilder(builder: (context, setState) {
+              return AlertDialog(
+                backgroundColor: appTheme.themeData.primaryColor,
+                insetPadding:
+                    EdgeInsets.symmetric(horizontal: w / 20, vertical: h / 10),
+                contentPadding: EdgeInsets.symmetric(horizontal: w / 25),
+                title: Text(
+                  appLanguage.words['LoginPageAnonymousDialogTitle']!,
+                  style: appTheme.themeData.primaryTextTheme.headline4,
+                ),
+                titlePadding:
+                    EdgeInsets.symmetric(horizontal: w / 50, vertical: h / 50),
+                content: SizedBox(
+                  width: double.maxFinite,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: Container(
+                            width: w - w / 10,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.grey.withOpacity(0.5))),
+                            child: Theme(
+                                data: Theme.of(context).copyWith(
+                                  canvasColor: appTheme.themeData.primaryColor,
+                                ),
+                                child: memoryCache.hasData('nationalities')
+                                    ? showNationalitiesDropdown(
+                                        context, setState)
+                                    : FutureBuilder<Map<String, dynamic>>(
+                                        future:
+                                            optionApiCaller.getNationalities(
+                                                appLanguage.language),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<Map<String, dynamic>>
+                                                snapshot) {
+                                          if (snapshot.connectionState ==
+                                                  ConnectionState.done &&
+                                              snapshot.data != null) {
+                                            if (snapshot.data!['Err_Flag']) {
+                                              return Container(
+                                                alignment: Alignment.center,
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: h / 100),
+                                                child: ErrorMessage(
+                                                    message: snapshot
+                                                        .data!['Err_Desc']),
+                                              );
+                                            }
+                                            DataMapper dataMapper =
+                                                DataMapper();
+                                            List<Nationality> nationalities =
+                                                dataMapper
+                                                    .getNationalitiesFromJson(
+                                                        snapshot.data!['data']);
+                                            cacheData(nationalities);
+                                            return showNationalitiesDropdown(
+                                                context, setState);
+                                          } else if (snapshot.error != null) {
+                                            print(snapshot.error);
+                                            return Container(
+                                              alignment: Alignment.center,
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: h / 100),
+                                              child: ErrorMessage(
+                                                message: appLanguage.words[
+                                                    'AtaaMainAcquiringErrorTwo']!,
+                                                appTheme: appTheme,
+                                                appLanguage: appLanguage,
+                                              ),
+                                            );
+                                          } else {
+                                            return Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                CupertinoActivityIndicator(
+                                                  radius: w / 10,
+                                                ),
+                                                const CustomSpacing(value: 50),
+                                                Text(
+                                                  appLanguage.words['loading']!,
+                                                  style: appTheme
+                                                      .themeData
+                                                      .primaryTextTheme
+                                                      .headline3,
+                                                )
+                                              ],
+                                            );
+                                          }
+                                        },
+                                      )),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                actions: <Widget>[
+                  if (loadingButtons['loginAsAnonymous']!)
+                    const CustomButtonLoading()
+                  else
+                  TextButton(
+                    child: Text(
+                        appLanguage.words['LoginPageAnonymousDialogOkButton']!,
+                        textDirection: appLanguage.textDirection,
+                        style: appTheme.themeData.primaryTextTheme.headline4),
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            appTheme.themeData.colorScheme.secondary)),
+                    onPressed: () {
+                      createAnonymousUser(context);
+                    },
+                  ),
+                ],
+              );
+            }),
+          );
+        });
+  }
+
+  Widget showNationalitiesDropdown(context, setState) {
+    return CustomDropdownButton(
+      text: appLanguage.words['LoginPageAnonymousDialogDropDown']!,
+      selectedValue: nationality,
+      onChanged: (selectedNationality) {
+        setState(() {
+          nationality = selectedNationality;
+        });
+      },
+      items: (memoryCache.getData('nationalities') as List<Nationality>)
+          .map((nationality) => DropdownMenuItem(
+                child: Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: SizedBox(
+                      width: w,
+                      child: Text(
+                        nationality.label,
+                        textAlign: TextAlign.right,
+                      ),
+                    )),
+                value: nationality.label,
+              ))
+          .toList(),
+      appTheme: appTheme,
+    );
   }
 }
