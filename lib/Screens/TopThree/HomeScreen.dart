@@ -159,7 +159,7 @@ class HomeScreen extends StatelessWidget {
                                           .themeData.colorScheme.secondary,
                                       child: ClipOval(
                                         child: sessionManager
-                                                    .user!.profileImage !=
+                                                    .user!.profileImage! !=
                                                 'N/A'
                                             ? CachedNetworkImage(
                                                 imageUrl: sessionManager

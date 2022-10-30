@@ -259,7 +259,8 @@ class _MarkerCreationPageState extends State<MarkerCreationPage> {
                     fillColor: appTheme.themeData.colorScheme.secondary,
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                     borderColor: appTheme.themeData.colorScheme.secondary,
-                    selectedBorderColor: appTheme.themeData.colorScheme.secondary,
+                    selectedBorderColor:
+                        appTheme.themeData.colorScheme.secondary,
                     children: List.generate(priorities.length,
                         (index) => Text(priorities[index].toString())),
                     isSelected: chosenPriority,
@@ -289,7 +290,8 @@ class _MarkerCreationPageState extends State<MarkerCreationPage> {
                     selectedColor: Colors.amber,
                     splashColor: Colors.green,
                     fillColor: appTheme.themeData.colorScheme.secondary,
-                    selectedBorderColor: appTheme.themeData.colorScheme.secondary,
+                    selectedBorderColor:
+                        appTheme.themeData.colorScheme.secondary,
                     borderColor: appTheme.themeData.colorScheme.secondary,
                     children: [
                       Column(
@@ -343,8 +345,8 @@ class _MarkerCreationPageState extends State<MarkerCreationPage> {
                       divisions: 9,
                       label: '${quantity.toInt()}',
                       activeColor: Colors.amber,
-                      inactiveColor:
-                          appTheme.themeData.colorScheme.secondary.withOpacity(0.5),
+                      inactiveColor: appTheme.themeData.colorScheme.secondary
+                          .withOpacity(0.5),
                     ),
                   ),
                   ElevatedButton(
@@ -395,8 +397,7 @@ class _MarkerCreationPageState extends State<MarkerCreationPage> {
                             context: context,
                             type: CoolAlertType.success,
                             lottieAsset: 'assets/animations/6951-success.json',
-                            text:
-                                appLanguage.words['MarkerCreationSuccessText'],
+                            text: status['message'],
                             confirmBtnColor: const Color(0xff1c9691),
                             title: '');
                       }
