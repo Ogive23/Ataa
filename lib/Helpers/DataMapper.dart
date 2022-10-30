@@ -2,6 +2,7 @@
 
 import 'package:ataa/GeneralInfo.dart';
 import 'package:ataa/Models/AnonymousUser.dart';
+import 'package:ataa/Models/Nationality.dart';
 import 'package:ataa/Models/Prize.dart';
 import 'package:ataa/Models/User.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -113,5 +114,15 @@ class DataMapper {
               : null));
     }
     return returnedBadges;
+  }
+
+  List<Nationality> getNationalitiesFromJson(List<dynamic> list) {
+    List<Nationality> returnedNationalities = <Nationality>[];
+    for (var nationality in list) {
+      returnedNationalities.add(Nationality(
+          value: nationality['value'].toString(),
+          label: nationality['label'].toString()));
+    }
+    return returnedNationalities;
   }
 }
